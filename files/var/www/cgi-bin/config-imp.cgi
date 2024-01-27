@@ -212,21 +212,23 @@ check_mirror() {
   </div>
 </div>
 
-<h3>Debug</h3>
-<div class="row">
-  <div class="col col-3 mb-3">
-    <b>/etc/imp.conf</b>
-    <pre><% cat /etc/imp.conf %></pre>
-    <b>/tmp/imp.conf</b>
-    <pre><% cat /tmp/imp.conf %></pre>
-  </div>
-  <div class="col col-3 mb-3">
-    <b>in memory values</b>
-    <pre><% for i in $commands; do eval "echo $i = \$$i"; done %></pre>
-  </div>
-  <div class="col col-6 mb-3">
-    <b>commands to fix</b>
-    <pre><% for i in $commands_do_not_work; do echo -e "$i\n$(/usr/sbin/imp-control.sh $i)\n"; done %></pre>
+<div class="row g-4 mb-4 ui-expert">
+  <h3>Debug</h3>
+  <div class="row">
+    <div class="col col-3 mb-3">
+      <b>/etc/imp.conf</b>
+      <pre><% cat /etc/imp.conf %></pre>
+      <b>/tmp/imp.conf</b>
+      <pre><% cat /tmp/imp.conf %></pre>
+    </div>
+    <div class="col col-3 mb-3">
+      <b>in memory values</b>
+      <pre><% for i in $commands; do eval "echo $i = \$$i"; done %></pre>
+    </div>
+    <div class="col col-6 mb-3">
+      <b>commands to fix</b>
+      <pre><% for i in $commands_do_not_work; do echo -e "$i\n$(/usr/sbin/imp-control.sh $i)\n"; done %></pre>
+    </div>
   </div>
 </div>
 
