@@ -8,8 +8,6 @@ page_title="Majestic Endpoints"
   <div class="col">
     <h3>Video</h3>
     <dl>
-      <dt class="cp2cb">http://<%= $network_address %>/mjpeg</dt>
-      <dd>MJPEG video stream.</dd>
       <dt class="cp2cb">http://<%= $network_address %>/video.mp4</dt>
       <dd>fMP4 video stream.</dd>
       <dt class="cp2cb">rtsp://username:password@<%= $network_address %>/stream=0</dt>
@@ -20,8 +18,6 @@ page_title="Majestic Endpoints"
       <dd>HLS live-streaming in web browser.</dd>
       <dt class="cp2cb">http://<%= $network_address %>/webrtc</dt>
       <dd>WebRTC live-streaming in web browser.</dd>
-      <dt class="cp2cb">http://<%= $network_address %>/mjpeg.html</dt>
-      <dd>MJPEG &amp; MP3 live-streaming in web browser.</dd>
     </dl>
   </div>
   <div class="col">
@@ -41,9 +37,6 @@ page_title="Majestic Endpoints"
       <dd>μ-law compressed audio stream.</dd>
       <dt class="cp2cb">http://<%= $network_address %>/audio.g711a</dt>
       <dd>G.711 A-law audio stream.</dd>
-      <dt class="cp2cb">http://<%= $network_address %>/play_audio</dt>
-      <dd>Play audio file on camera&#39;s speaker.<sup>1,3</sup>
-        <div class="small">Accepts POST requests with audio file as a parameter.</div></dd>
     </dl>
   </div>
   <div class="col">
@@ -62,19 +55,6 @@ page_title="Majestic Endpoints"
       <dd>Snapshot in HEIF format.</dd>
       <dt class="cp2cb">http://<%= $network_address %>/image.yuv420</dt>
       <dd>Snapshot in YUV420 format.</dd>
-      <dt class="cp2cb">http://<%= $network_address %>/image.dng</dt>
-      <dd>Snapshot in Adobe DNG format (raw).<sup>3</sup></dd>
-    </dl>
-  </div>
-  <div class="col">
-    <h3>Night API</h3>
-    <dl>
-      <dt class="cp2cb">http://<%= $network_address %>/night/on</dt>
-      <dd>Turn on night mode.</dd>
-      <dt class="cp2cb">http://<%= $network_address %>/night/off</dt>
-      <dd>Turn off night mode.</dd>
-      <dt class="cp2cb">http://<%= $network_address %>/night/toggle</dt>
-      <dd>Toggle current night mode.</dd>
     </dl>
   </div>
   <div class="col">
@@ -89,8 +69,6 @@ page_title="Majestic Endpoints"
 </div>
 
 <ol class="footnotes small">
-  <li class="text-body-secondary">Only HiSilicon and Goke SoCs.</li>
-  <li class="text-body-secondary">Only HiSilicon SoCs v2 and up.</li>
   <li class="text-body-secondary">E.g. <i>ffplay -ar 48000 -ac 1 -f s16le http://<%= $network_address %>/audio.pcm</i></li>
   <li class="text-body-secondary">E.g. <i>http://<%= $network_address %>/image.jpg?width=640&height=480&qfactor=50&color2gray=1&crop=80x32x512x400</i></li>
 </ol>

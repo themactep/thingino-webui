@@ -4,12 +4,6 @@ plugin="speaker"
 
 . /usr/sbin/common-plugins
 
-SUPPORTED="goke hisilicon ingenic sigmastar"
-if [ -z "$(echo $SUPPORTED | sed -n "/\b$(ipcinfo --vendor)\b/p")" ]; then
-	log "Playing on speaker is not supported on your camera!"
-	exit 1
-fi
-
 show_help() {
 	echo "Usage: $0 [-u url] [-f file] [-v] [-h]
   -u url      Audio URL.

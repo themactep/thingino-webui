@@ -1,12 +1,6 @@
 #!/usr/bin/haserl
 <%in p/common.cgi %>
-<%
-page_title="Camera preview"
-
-size=$(yaml-cli -g .mjpeg.size); [ -z "$size" ] && size="640x480"
-size_w=${size%x*}
-size_h=${size#*x}
-%>
+<% page_title="Camera preview" %>
 <%in p/header.cgi %>
 
 <div class="row preview">

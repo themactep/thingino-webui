@@ -7,7 +7,7 @@
 <p id="uptime" class="text-secondary"></p>
 </div>
 <div class="col col-10">
-<p class="text-end">Powered by <a href="https://github.com/OpenIPC/webui">Web UI</a>, a part of <a href="https://openipc.org/">OpenIPC project</a>.</p>
+<p class="text-end">Powered by <a href="https://github.com/themactep/openipc-webui">Web UI</a>.</p>
 </div>
 </div>
 </div>

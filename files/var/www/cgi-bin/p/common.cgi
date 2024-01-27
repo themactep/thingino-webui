@@ -716,10 +716,8 @@ update_caminfo() {
 	sensor=$(ipcinfo --short-sensor)
 	[ -z "$sensor" ] && sensor=$(echo $sensor_ini | cut -d_ -f1)
 
-	soc_vendor=$(ipcinfo --vendor)
-
 	soc=$(ipcinfo --chip-name)
-	if [ -z "$soc" ] || [ "unknown" = "$soc" ] || [ "sigmastar" = "$soc_vendor" ]; then
+	if [ -z "$soc" ] || [ "unknown" = "$soc" ]; then
 		soc=$(fw_printenv -n soc)
 	fi
 

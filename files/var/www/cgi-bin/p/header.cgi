@@ -61,21 +61,12 @@ majestic_menu() {
             <% if [ -e /proc/umap ]; then %>
               <li><a class="dropdown-item" href="info-proc-umap.cgi">Information from /proc/umap</a></li>
             <% fi %>
-            <% if [ "$debug" -gt 0 -a "$soc_vendor" = "ingenic" ]; then %>
               <li><a class="dropdown-item" href="info-imp.cgi">IMP Control</a></li>
-            <% fi %>
               <li><a class="dropdown-item" href="info-netstat.cgi">Output of netstat</a></li>
               <li><a class="dropdown-item" href="info-modules.cgi">Output of lsmod</a></li>
               <li><a class="dropdown-item" href="info-ipctool.cgi">Output of ipctool</a></li>
               <li><a class="dropdown-item" href="info-dmesg.cgi">Output of dmesg</a></li>
               <li><a class="dropdown-item" href="info-log.cgi">Output of logread</a></li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownUpdates" role="button">Updates</a>
-            <ul aria-labelledby="dropdownUpdates" class="dropdown-menu">
-              <li><a class="dropdown-item" href="firmware.cgi">Firmware</a></li>
-              <li><a class="dropdown-item" href="webui.cgi">Web Interface</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
@@ -88,7 +79,6 @@ majestic_menu() {
               <li><a class="dropdown-item" href="webui-settings.cgi">Web Interface</a></li>
               <li><a class="dropdown-item" href="admin.cgi">Admin Profile</a></li>
               <li><a class="dropdown-item" href="users.cgi">Users</a></li>
-              <li><a class="dropdown-item" href="debugging.cgi">Debugging</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="reset.cgi">Reset...</a></li>
             </ul>
@@ -187,16 +177,6 @@ majestic_menu() {
 <span class="d-flex gap-3">
 <a class="btn btn-danger" href="reboot.cgi">Reboot camera</a>
 <a class="btn btn-primary" href="network.cgi">See network settings</a>
-</span>
-</div>
-<% fi %>
-
-<% if [ -f /tmp/coredump-restart.txt ]; then %>
-<div class="alert alert-danger">
-<p>Majestic debugging settings have been updated. Restart to apply changes.</p>
-<span class="d-flex gap-3">
-<a class="btn btn-danger" href="reboot.cgi">Reboot camera</a>
-<a class="btn btn-primary" href="debugging.cgi">See debugging settings</a>
 </span>
 </div>
 <% fi %>

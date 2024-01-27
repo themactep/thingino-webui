@@ -91,8 +91,6 @@ for line in $mj; do    # line
 	if [ "$cpd" != "$pd" ]; then
 		# hide certain domains for certain familier
 		[ -n "$(eval echo "\$mj_hide_${pd}" | sed -n "/\b${soc_family}\b/p")" ] && continue
-		# show certain domains only for certain vendors
-		[ -n "$(eval echo "\$mj_show_${pd}_vendor")" ] && [ -z "$(eval echo "\$mj_show_${pd}_vendor" | sed -n "/\b${soc_vendor}\b/p")" ] && continue
 		cpd="$pd"
 		c="class=\"nav-link\""
 		[ "$pd" = "$only" ] && c="class=\"nav-link active\" aria-current=\"true\""
@@ -120,17 +118,11 @@ for line in $_mj2; do                # line: .isp.exposure|Sensor_exposure_time|
 	# hide certain domains if blacklisted
 	[ -n "$(eval echo "\$mj_hide_${domain}" | sed -n "/\b${soc_family}\b/p")" ] && continue
 	# hide certain parameters if blacklisted
-	[ -n "$(eval echo "\$mj_hide_${pn}_vendor" | sed -n "/\b${soc_vendor}\b/p")" ] && continue
 	[ -n "$(eval echo "\$mj_hide_${pn}" | sed -n "/\b${soc_family}\b/p")" ] && continue
-	# show certain domains only if whitelisted
-	[ -n "$(eval echo "\$mj_show_${domain}_vendor")" ] && [ -z "$(eval echo "\$mj_show_${domain}_vendor" | sed -n "/\b${soc_vendor}\b/p")" ] && continue
 	# show certain parameters only if whitelisted
 	[ -n "$(eval echo "\$mj_show_${pn}")" ] && [ -z "$(eval echo "\$mj_show_${pn}" | sed -n "/\b${soc_family}\b/p")" ] && continue
-	[ -n "$(eval echo "\$mj_show_${pn}_vendor")" ] && [ -z "$(eval echo "\$mj_show_${pn}_vendor" | sed -n "/\b${soc_vendor}\b/p")" ] && continue
 	# show certain parameters only in debug mode
 	[ -n "$(echo "$mj_hide_unless_debug" | sed -n "/\b${pn}\b/p")" ] && [ "0$debug" -lt "1" ] && continue
-	# hide certain parameters for specific vendor
-	[ -n "$(eval echo "\$mj_hide_vendor_${soc_vendor}" | sed -n "/\b${pn}\b/p")" ] && continue
 
 	form_field_name=mj_${pn}       # => mj_isp_exposure
 	line=${line#*|}                # line: Sensor_exposure_time|&micro;s|range|auto,1-500000|auto|From_1_to_500000.

@@ -29,7 +29,6 @@ sensor=$(ipcinfo --short-sensor)
 
 #sensor_config=$(yaml-cli -g .isp.sensorConfig)
 soc=$(ipcinfo --chip-name)
-[ "sigmastar" = "$(ipcinfo -v)" ] && soc=$(fw_printenv -n soc)
 
 soc_temperature=$(ipcinfo --temp)
 streamer=$(basename "$(ipcinfo --streamer)")

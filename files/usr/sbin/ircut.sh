@@ -27,8 +27,6 @@ fi
 
 MODE_FILE=/tmp/ircutmode.txt
 
-vendor=$(ipcinfo --vendor)
-
 ir_filter_off() {
 	if [ -z "$pin2" ]; then
 		gpio set "$pin1"
