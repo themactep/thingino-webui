@@ -61,7 +61,6 @@ majestic_menu() {
             <% if [ -e /proc/umap ]; then %>
               <li><a class="dropdown-item" href="info-proc-umap.cgi">Information from /proc/umap</a></li>
             <% fi %>
-              <li><a class="dropdown-item" href="info-imp.cgi">IMP Control</a></li>
               <li><a class="dropdown-item" href="info-netstat.cgi">Output of netstat</a></li>
               <li><a class="dropdown-item" href="info-modules.cgi">Output of lsmod</a></li>
               <li><a class="dropdown-item" href="info-ipctool.cgi">Output of ipctool</a></li>
@@ -75,6 +74,7 @@ majestic_menu() {
               <li><a class="dropdown-item" href="network.cgi">Network</a></li>
               <li><a class="dropdown-item" href="time-config.cgi">Time</a></li>
               <li><a class="dropdown-item" href="config-light.cgi">Illumination</a></li>
+              <li><a class="dropdown-item" href="info-config.cgi">IMP Control</a></li>
               <li><a class="dropdown-item" href="network-socks5.cgi">SOCKS5 Proxy</a></li>
               <li><a class="dropdown-item" href="webui-settings.cgi">Web Interface</a></li>
               <li><a class="dropdown-item" href="admin.cgi">Admin Profile</a></li>

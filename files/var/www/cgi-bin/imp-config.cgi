@@ -27,8 +27,8 @@ fi
 page_title="IMP Configuration"
 
 commands_do_not_work="aemin aiaec aiagc aihpf ains aogain aovol autozoom
-framerate gopattr mask rcmode setbitrate setgoplength setqp
-setqpbounds setqpipdelta whitebalance"
+framerate gopattr mask rcmode setbitrate setgoplength setqp setqpbounds
+setqpipdelta whitebalance"
 
 commands="aecomp aeitmax again aigain aialc aigain aivol backlightcomp brightness
 contrast defogstrength dgain dpc drc flicker flip frontcrop hilight hue ispmode
