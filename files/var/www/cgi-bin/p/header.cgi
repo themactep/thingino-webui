@@ -97,9 +97,7 @@ majestic_menu() {
             <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownTools" role="button">Tools</a>
             <ul aria-labelledby="dropdownTools" class="dropdown-menu">
               <li><a class="dropdown-item" href="tools.cgi">Ping & Traceroute</a></li>
-              <li><a class="dropdown-item" href="console.cgi">Web Console</a></li>
               <li><a class="dropdown-item" href="file-manager.cgi">File Manager</a></li>
-              <li><a class="dropdown-item" href="ssh-keys.cgi">SSH Key</a></li>
               <li><a class="dropdown-item" href="sdcard.cgi">SD Card</a></li>
             </ul>
           </li>
