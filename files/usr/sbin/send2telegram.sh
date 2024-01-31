@@ -76,7 +76,7 @@ if [ -z "$telegram_channel" ]; then
 fi
 
 if [ -z "$telegram_message" ]; then
-	telegram_message="$(echo "$telegram_caption" | sed "s/%hostname/$(hostname -s)/;s/%datetime/$(date +"%F %T")/;s/%soctemp/$(ipcinfo --temp)/")"
+	telegram_message="$(echo "$telegram_caption" | sed "s/%hostname/$(hostname -s)/;s/%datetime/$(date +"%F %T")/")"
 
 	if [ -z "$telegram_photo" ]; then
 		if [ "true" = "$telegram_use_heif" ] && [ "h265" = "$(yaml-cli -g .video0.codec)" ]; then

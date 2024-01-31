@@ -35,12 +35,6 @@ function heartbeat() {
     fetch('/cgi-bin/j/heartbeat.cgi')
          .then((response) => response.json())
          .then((json) => {
-            if (json.soc_temp !== '') {
-                const st = $('#soc-temp')
-                st.textContent = json.soc_temp;
-                st.classList.add(['text-primary','bg-white','rounded','small']);
-                st.title = 'SoC temperature ' + json.soc_temp;
-            }
             if (json.time_now !== '') {
                 const d = new Date(json.time_now * 1000);
                 $('#time-now').textContent = d.toLocaleString() + ' ' + json.timezone;

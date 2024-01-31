@@ -30,7 +30,6 @@ sensor=$(ipcinfo --short-sensor)
 #sensor_config=$(yaml-cli -g .isp.sensorConfig)
 soc=$(ipcinfo --chip-name)
 
-soc_temperature=$(ipcinfo --temp)
 streamer=$(basename "$(ipcinfo --streamer)")
 uptime=$(uptime | sed -r 's/^.+ up ([^,]+), .+$/\1/')
 
@@ -91,7 +90,6 @@ command="${command} -F 'caption=${openwall_caption}'"
 command="${command} -F 'sensor=${sensor}'"
 # command="${command} -F 'sensor_config=${sensor_config}'"
 command="${command} -F 'soc=${soc}'"
-command="${command} -F 'soc_temperature=${soc_temperature}'"
 command="${command} -F 'streamer=${streamer}'"
 command="${command} -F 'uptime=${uptime}'"
 command="${command} -F 'file=@${snapshot}'"

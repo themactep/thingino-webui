@@ -53,7 +53,7 @@ fi
     <div class="col">
       <% field_text "telegram_token" "Token" "Your Telegram Bot authentication token." %>
       <% field_text "telegram_channel" "Chat ID" "Numeric ID of the channel you want the bot to post images to." %>
-      <% field_text "telegram_caption" "Photo caption" "Available variables: %hostname, %datetime, %soctemp." %>
+      <% field_text "telegram_caption" "Photo caption" "Available variables: %hostname, %datetime." %>
     </div>
     <div class="col">
       <% field_switch "telegram_as_attachment" "Send as attachment." %>

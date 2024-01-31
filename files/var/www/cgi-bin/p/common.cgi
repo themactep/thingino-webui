@@ -418,10 +418,6 @@ flash_save() {
 	echo "${1}:${2}" >$flash_file
 }
 
-get_soc_temp() {
-	[ "true" = "$soc_has_temp" ] && soc_temp=$(ipcinfo --temp)
-}
-
 header_bad_request() {
 	echo "HTTP/1.1 400 Bad Request
 Cache-Control: no-store
@@ -726,13 +722,6 @@ update_caminfo() {
 		soc_family="t21"
 	fi
 
-	# ipcinfo reports to stderr
-	if [ "Temperature cannot be retrieved" = "$(ipcinfo --temp 2>&1)" ]; then
-		soc_has_temp="false"
-	else
-		soc_has_temp="true"
-	fi
-
 	# Firmware
 	uboot_version=$(fw_printenv -n ver)
 	[ -z "$uboot_version" ] && uboot_version=$(strings /dev/mtdblock0 | grep '^U-Boot \d' | head -1)
@@ -784,7 +773,7 @@ update_caminfo() {
 	local variables="flash_size flash_type fw_version fw_variant fw_build
 network_address network_cidr network_default_interface network_dhcp network_dns_1
 network_dns_2 network_gateway network_hostname network_interfaces network_macaddr network_netmask
-overlay_root mj_version soc soc_family soc_has_temp soc_vendor sensor sensor_ini tz_data tz_name
+overlay_root mj_version soc soc_family sensor sensor_ini tz_data tz_name
 uboot_version ui_password ui_version"
 	local v
 	for v in $variables; do
@@ -868,5 +857,4 @@ include /etc/webui/yadisk.conf
 
 # FIXME: mandatory password change disabled for testing purposes
 check_password
-get_soc_temp
 %>

@@ -20,7 +20,6 @@ majestic_menu() {
 		if [ "$cpd" != "$pd" ]; then
 			# hide certain domains if not supported
 			[ -n "$(eval echo "\$mj_hide_${pd}" | sed -n "/\b${soc_family}\b/p")" ] && continue
-			[ -n "$(eval echo "\$mj_show_${pd}_vendor")" ] && [ -z "$(eval echo "\$mj_show_${pd}_vendor" | sed -n "/\b${soc_vendor}\b/p")" ] && continue
 			cpd="$pd"
 			c="class=\"dropdown-item\""
 			[ "$pd" = "$only" ] && c="class=\"dropdown-item active\" aria-current=\"true\""
@@ -133,7 +132,6 @@ majestic_menu() {
         <div class="col-1" id="daynight_value"></div>
         <div class="col-md-4 col-lg-3 mb-2 text-end">
           <div><a href="/cgi-bin/time-config.cgi" id="time-now" class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover"></a></div>
-          <div id="soc-temp"></div>
         </div>
       </div>
 <% if [ -z "$network_gateway" ]; then %>
