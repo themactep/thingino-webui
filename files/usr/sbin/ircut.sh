@@ -6,23 +6,19 @@ pin1=$2
 pin2=$3
 
 # read IRCUT pins from bootloader environment
-ircut_pins=$(fw_printenv -n ircut_pins)
-[ -z "$pin1" ] && pin1=$(echo $ircut_pins | awk '{print $1}')
-[ -z "$pin2" ] && pin2=$(echo $ircut_pins | awk '{print $2}')
-
-# read IRCUT pins from majestic config, if empty
-[ -z "$pin1" ] && pin1=$(cli -g .nightMode.irCutPin1)
-[ -z "$pin2" ] && pin2=$(cli -g .nightMode.irCutPin2)
+gpio_ircut=$(fw_printenv -n gpio_ircut)
+[ -z "$pin1" ] && pin1=$(echo $gpio_ircut | awk '{print $1}')
+[ -z "$pin2" ] && pin2=$(echo $gpio_ircut | awk '{print $2}')
 
 if [ -z "$pin1" ]; then
 	echo "Please define IRCUT pin"
-	echo "fw_setenv ircut_pins <pin>"
+	echo "fw_setenv gpio_ircut <pin>"
 	exit 1
 fi
 
 if [ -z "$pin2" ]; then
 	echo "Unless you have a single GPIO IRCUT driver, please define the second pin:"
-	echo "fw_setenv ircut_pins <pin1> <pin2>"
+	echo "fw_setenv gpio_ircut <pin1> <pin2>"
 fi
 
 MODE_FILE=/tmp/ircutmode.txt

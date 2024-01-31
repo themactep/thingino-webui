@@ -21,14 +21,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 	update_uboot_env white_led_pin $POST_white_led_pin
 	update_uboot_env day_night_min $day_night_min
 	update_uboot_env day_night_max $day_night_max
-	update_uboot_env ircut_pins "$POST_ircut_pin1 $POST_ircut_pin2"
-
-	# update Majestic config
-	cli -s .nightMode.irCutPin1 $ircut_pin1
-	cli -s .nightMode.irCutPin2 $ircut_pin2
-	# take the first non-empty LED pin and use as backlight pin in majestic
-	backlight_pin=$(echo "$POST_ir850_led_pin $POST_ir940_led_pin $POST_white_led_pin" | awk '{print $1}')
-	cli -s .nightMode.backlightPin $backlight_pin
+	update_uboot_env gpio_ircut "$POST_ircut_pin1 $POST_ircut_pin2"
 fi
 
 # read data from env
@@ -37,23 +30,10 @@ ir940_led_pin=$(fw_printenv -n ir940_led_pin)
 white_led_pin=$(fw_printenv -n white_led_pin)
 day_night_min=$(fw_printenv -n day_night_min)
 day_night_max=$(fw_printenv -n day_night_max)
-ircut_pins=$(fw_printenv -n ircut_pins)
-ircut_pin1=$(echo $ircut_pins | awk '{print $1}')
-ircut_pin2=$(echo $ircut_pins | awk '{print $2}')
 
-ircut_pin1=$(echo $ircut_pins | awk '{print $1}')
-ircut_pin2=$(echo $ircut_pins | awk '{print $2}')
-
-# reuse Majestic values is not found in env
-if [ -z "$ir850_led_pin" ]; then
-	ir850_led_pin=$(cli -g .nightMode.backlightPin)
-fi
-
-if [ -z "$ircut_pins" ]; then
-	ircut_pin1=$(cli -g .nightMode.irCutPin1)
-	ircut_pin2=$(cli -g .nightMode.irCutPin2)
-	ircut_pins="$ircut_pin1 $ircut_pin2"
-fi
+gpio_ircut=$(fw_printenv -n gpio_ircut)
+ircut_pin1=$(echo $gpio_ircut | awk '{print $1}')
+ircut_pin2=$(echo $gpio_ircut | awk '{print $2}')
 
 # calculate threshold and tolerance from min and max limits
 if [ -n "$day_night_min" ]; then
@@ -87,7 +67,7 @@ ir940_led_pin: <%= $ir940_led_pin %>
 white_led_pin: <%= $white_led_pin %>
 day_night_min: <%= $day_night_min %>
 day_night_max: <%= $day_night_max %>
-ircut_pins: <%= $ircut_pins %>
+gpio_ircut: <%= $gpio_ircut %>
 </pre>
     </div>
     <div class="col">
