@@ -16,24 +16,23 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 	[ -z "$day_night_max" ] && day_night_max=600
 
 	# save values to env
-	update_uboot_env ir850_led_pin $POST_ir850_led_pin
-	update_uboot_env ir940_led_pin $POST_ir940_led_pin
-	update_uboot_env white_led_pin $POST_white_led_pin
 	update_uboot_env day_night_min $day_night_min
 	update_uboot_env day_night_max $day_night_max
+	update_uboot_env gpio_ir850 $POST_ir850_pin
+	update_uboot_env gpio_ir940 $POST_ir940_pin
+	update_uboot_env gpio_whled $POST_whled_pin
 	update_uboot_env gpio_ircut "$POST_ircut_pin1 $POST_ircut_pin2"
 fi
 
 # read data from env
-ir850_led_pin=$(fw_printenv -n ir850_led_pin)
-ir940_led_pin=$(fw_printenv -n ir940_led_pin)
-white_led_pin=$(fw_printenv -n white_led_pin)
 day_night_min=$(fw_printenv -n day_night_min)
 day_night_max=$(fw_printenv -n day_night_max)
-
-gpio_ircut=$(fw_printenv -n gpio_ircut)
-ircut_pin1=$(echo $gpio_ircut | awk '{print $1}')
-ircut_pin2=$(echo $gpio_ircut | awk '{print $2}')
+ir850_pin=$(fw_printenv -n gpio_ir850)
+ir940_pin=$(fw_printenv -n gpio_ir940)
+whled_pin=$(fw_printenv -n gpio_whled)
+ircut_pins=$(fw_printenv -n gpio_ircut)
+ircut_pin1=$(echo $ircut_pins | awk '{print $1}')
+ircut_pin2=$(echo $ircut_pins | awk '{print $2}')
 
 # calculate threshold and tolerance from min and max limits
 if [ -n "$day_night_min" ]; then
@@ -51,23 +50,23 @@ fi
 <form action="<%= $SCRIPT_NAME %>" method="post">
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
     <div class="col">
-      <% field_number "ir850_led_pin" "850 nm IR LED GPIO pin" %>
-      <% field_number "ir940_led_pin" "940 nm IR LED GPIO pin" %>
-      <% field_number "white_led_pin" "White Light LED GPIO pin" %>
-      <% field_number "day_night_threshold" "Day/Night Trigger Threshold" %>
-      <% field_number "day_night_tolerance" "Day/Night Tolerance" %>
+      <% field_number "ir850_pin" "850 nm IR LED GPIO pin" %>
+      <% field_number "ir940_pin" "940 nm IR LED GPIO pin" %>
+      <% field_number "whled_pin" "White Light LED GPIO pin" %>
       <% field_number "ircut_pin1" "IR CUT filter GPIO pin 1" %>
       <% field_number "ircut_pin2" "IR CUT filter GPIO pin 2" %>
+      <% field_number "day_night_threshold" "Day/Night Trigger Threshold" %>
+      <% field_number "day_night_tolerance" "Day/Night Tolerance" %>
     </div>
     <div class="col">
       <h3>Environment settings</h3>
       <pre>
-ir850_led_pin: <%= $ir850_led_pin %>
-ir940_led_pin: <%= $ir940_led_pin %>
-white_led_pin: <%= $white_led_pin %>
+gpio_ir850: <%= $ir850_pin %>
+gpio_ir940: <%= $ir940_pin %>
+gpio_whled: <%= $whled_pin %>
+gpio_ircut: <%= $ircut_pins %>
 day_night_min: <%= $day_night_min %>
 day_night_max: <%= $day_night_max %>
-gpio_ircut: <%= $gpio_ircut %>
 </pre>
     </div>
     <div class="col">

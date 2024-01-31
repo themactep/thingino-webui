@@ -4,34 +4,24 @@
 [ -z "$mode" ] && mode=$1
 [ -z "$type" ] && type=$2
 
-# set parameters to default values, if empty
-[ -z "$type" ] && type="ir850" # most common IR led
-
-# read LED pin from bootloader environment
-pin=$(fw_printenv -n ${type}_led_pin)
-
-if [ -z "$pin" ]; then
-	# read LED pin from majestic config
-	case "$type" in
-		ir850)
-			[ -z "$pin" ] && pin=$(cli -g .nightMode.backlightPin)
-			;;
-		ir940)
-			#[ -z "$pin" ] && pin=$(cli -g .nightMode.backlightPin)
-			;;
-		white)
-			#[ -z "$pin" ] && pin=$(cli -g .nightMode.backlightPin)
-			;;
-		*)
-			echo "Unknown LED type"
-			exit 2
-			;;
-	esac
-fi
+case "$type" in
+	ir850 | ir940 | whled)
+		pin=$(fw_printenv -n gpio_${type})
+		;;
+	*)
+		# select first non-empty pin of available
+		for type in ir850 ir940 whled; do
+			pin=$(fw_printenv -n gpio_${type})
+			[ -n "$pin" ] && break
+		fi
+		# set most common type for error message below
+		type=ir850
+		;;
+esac
 
 if [ -z "$pin" ]; then
-	echo "Please define ${type} GPIO pin"
-	echo "fw_setenv ${type}_led_pin <pin>"
+	echo "Please define LED GPIO pin"
+	echo "fw_setenv gpio_${type} <pin>"
 	exit 1
 fi
 
@@ -42,9 +32,9 @@ case "$mode" in
 	off | 0)
 		gpio clear $pin >/dev/null
 		;;
-  	~ | toggle)
-   		gpio toggle $pin >/dev/null
-     		;;
+	~ | toggle)
+		gpio toggle $pin >/dev/null
+		;;
 	*)
 		echo "Unknown mode"
 		exit 3
