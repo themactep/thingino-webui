@@ -13,7 +13,7 @@ case "$type" in
 		for type in ir850 ir940 whled; do
 			pin=$(fw_printenv -n gpio_${type})
 			[ -n "$pin" ] && break
-		fi
+		done
 		# set most common type for error message below
 		type=ir850
 		;;
