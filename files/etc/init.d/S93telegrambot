@@ -41,7 +41,6 @@ start | stop | restart)
 	"$1"
 	;;
 reload)
-	# Restart, since there is no true "reload" feature.
 	restart
 	;;
 *)
