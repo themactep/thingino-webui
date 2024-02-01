@@ -6,12 +6,6 @@ plugin="motion"
 singleton
 
 STOP_FILE=/tmp/motion.stop
-UNSUPPORTED="hi3516cv100 hi3516av100"
-
-if [ -n "$(echo $UNSUPPORTED | sed -n "/\b$(ipcinfo --family)\b/p")" ]; then
-	log "Motion detection is not supported on your camera!"
-	 quit_clean 1
- fi
 
 if [ "true" != "$motion_enabled" ]; then
 	log "Motion detection is disabled in config!"
