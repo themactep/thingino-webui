@@ -24,7 +24,7 @@ prompt() {
 	echo -e "<b>[$(whoami)@$(hostname) $PWD]# ${1}</b>"
 }
 
-export PATH=/usr/local/bin:/usr/local/sbin:/bin:/sbin:/usr/bin:/usr/sbin
+export PATH=/usr/local/bin:/usr/local/sbin:/bin:/usr/bin:/usr/sbin
 cd /tmp || return
 prompt "$c\n"
 eval $c 2>&1
