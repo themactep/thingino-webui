@@ -73,7 +73,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 	rm $temp_yaml
 
 	# reload majestic
-	/etc/init.d/S95majestic restart
+	killall -1 majestic
 
 	redirect_to "$HTTP_REFERER"
 fi
