@@ -16,4 +16,4 @@ Please note that this will also affect your login via ssh!
 Please report any problems via Issues in this repo.
 
 [1]: https://github.com/OpenIPC/webui
-[2]: https://github.com/themactep/openipc-firmware
+[2]: https://github.com/themactep/wehaveopenipcathome-firmware
