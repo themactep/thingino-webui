@@ -13,7 +13,7 @@ fi
 
 case "$mode" in
 	off | on | toggle)
-		/usr/sbin/color.sh "$mode"
+		/usr/sbin/color "$mode"
 		echo "HTTP/1.1 200 OK
 Content-type: application/json
 Pragma: no-cache

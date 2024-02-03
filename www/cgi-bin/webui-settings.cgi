@@ -10,8 +10,6 @@ tmp_file=/tmp/${plugin}.conf
 config_file="${ui_config_dir}/${plugin}.conf"
 [ ! -f "$config_file" ] && touch $config_file
 
-locale_file=/etc/webui/locale
-
 if [ "POST" = "$REQUEST_METHOD" ]; then
 	case "$POST_action" in
 		access)
@@ -23,7 +21,6 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 
 			redirect_to "/" "success" "Password updated."
 			;;
-
 		interface)
 			params="level theme"
 			for p in $params; do
@@ -45,23 +42,6 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 				redirect_back "success" "${plugin_name} config updated."
 			fi
 			;;
-
-		locale)
-			locale="$POST_ui_language" # set language.
-			# upload new language and switch to it. overrides aboveset language.
-			fn="$POST_ui_locale_file_name"
-			if [ -n "$fn" ]; then
-				mv "$POST_ui_locale_file_path" /var/www/lang/$fn
-				locale=${fn%%.*}
-			fi; unset fn
-			# save new language settings and reload locale
-			[ -z "$locale" ] && locale="en"
-			echo "$locale" >$locale_file
-			reload_locale
-			update_caminfo
-			redirect_to $SCRIPT_NAME "success" "Locale updated."
-			;;
-
 		*)
 			redirect_to $SCRIPT_NAME "danger" "UNKNOWN ACTION: $POST_action"
 			;;
@@ -72,17 +52,6 @@ page_title="Web Interface Settings"
 
 # data for form fields
 ui_username="$USER"
-ui_language="$locale"
-
-ui_locales="en|English"
-if [ -d /var/www/lang/ ]; then
-	for i in $(ls -1 /var/www/lang/); do
-		code="$(basename $i)"
-		code="${code%%.sh}"
-		name="$(sed -n 2p $i|sed "s/ /_/g"|cut -d: -f2)"
-		ui_locales="${ui_locales},${code}|${name}"
-	done
-fi
 %>
 <%in p/header.cgi %>
 
@@ -108,24 +77,10 @@ fi
       <% button_submit %>
     </form>
   </div>
-<!--
-  <div class="col">
-    <h3>Locale</h3>
-    <form action="<%= $SCRIPT_NAME %>" method="post" enctype="multipart/form-data">
-      <% field_hidden "action" "locale" %>
-      <% field_select "ui_language" "Interface Language" "$ui_locales" %>
-      <%# field_file "ui_locale_file" "Locale file" %>
-      <% button_submit %>
-    </form>
-  </div>
--->
   <div class="col">
     <h3>Configuration</h3>
     <%
     ex "cat /etc/httpd.conf"
-    #ex "echo \$locale"
-    #ex "cat $locale_file"
-    #ex "ls /var/www/lang/"
     ex "cat $config_file"
     %>
   </div>

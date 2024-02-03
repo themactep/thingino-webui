@@ -33,9 +33,9 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 
 		# Disable/enable cron job
 		cp /etc/crontabs/root /tmp/crontabs.tmp
-		sed -i /send2openwall\.sh/d /tmp/crontabs.tmp
+		sed -i /send2openwall/d /tmp/crontabs.tmp
 		[ "true" = "$openwall_enabled" ] &&
-		echo "*/${openwall_interval} * * * * /usr/sbin/send2openwall.sh" >>/tmp/crontabs.tmp
+		echo "*/${openwall_interval} * * * * /usr/sbin/send2openwall" >>/tmp/crontabs.tmp
 		mv /tmp/crontabs.tmp /etc/crontabs/root
 
 		update_caminfo

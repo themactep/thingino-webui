@@ -127,10 +127,10 @@ const default_commands = [
   {command:'start',script:'echo "Hello"',description:'Start conversation'},
   {command:'help',script:'echo "Try https://t.me/openipc"',description:'Request help'},
   {command:'info',script:'cat /etc/os-release',description:'Information about system'},
-  {command:'snap',script:'snapshot4cron.sh && send2telegram.sh -c $chat_id -p /tmp/snapshot4cron.jpg -i',description:'Take a snapshot'},
+  {command:'snap',script:'snapshot4cron && send2telegram -c $chat_id -p /tmp/snapshot4cron.jpg -i',description:'Take a snapshot'},
   {command:'stop',script:'/etc/init.d/S93telegrambot stop',description:'Stop the bot'},
-  {command:'wall',script:'send2openwall.sh && send2telegram.sh -c $chat_id -m "Sent to OpenWall"',description:'Send snapshot to OpenWall'},
-  {command:'yadisk',script:'send2yadisk.sh && send2telegram.sh -c $chat_id -m "Sent to Yandex Disk"',description:'Send snapshot to Yandex Disk'},
+  {command:'wall',script:'send2openwall && send2telegram -c $chat_id -m "Sent to OpenWall"',description:'Send snapshot to OpenWall'},
+  {command:'yadisk',script:'send2yadisk && send2telegram -c $chat_id -m "Sent to Yandex Disk"',description:'Send snapshot to Yandex Disk'},
   {command:'restart',script:'/etc/init.d/S93telegrambot restart',description:'Restart the bot'},
 ]
 function resetBotCommands() {

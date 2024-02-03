@@ -591,17 +591,6 @@ Location: $1
 	exit 0
 }
 
-reload_locale() {
-	local l
-	[ -f /etc/webui/locale ] && l="$(cat /etc/webui/locale)"
-	if [ -n "$l" ] && [ -f "/var/www/lang/${l}.sh" ]; then
-		. "/var/www/lang/${l}.sh"
-		locale="$l"
-	else
-		locale="en"
-	fi
-}
-
 report_error() {
 	echo "<h4 class=\"text-danger\">Oops. Something happened.</h4>"
 	alert "$1" "danger"
@@ -843,7 +832,7 @@ include $sysinfo_file
 pagename=$(basename "$SCRIPT_NAME")
 pagename="${pagename%%.*}"
 
-include p/locale_en.sh
+include p/locale_en.cgi
 include p/mj.cgi
 include /etc/webui/mqtt.conf
 include /etc/webui/socks5.conf

@@ -24,7 +24,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 			fi
 			;;
 		reset)
-			/usr/sbin/sysreset.sh -n
+			/usr/sbin/sysreset -n
 			redirect_back
 			;;
 		update)
@@ -53,7 +53,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 			fi
 
 			if [ -z "$error" ]; then
-				command="setnetiface.sh"
+				command="setnetiface"
 				command="${command} -i $network_interface"
 				command="${command} -m $network_mode"
 				command="${command} -h $network_hostname"

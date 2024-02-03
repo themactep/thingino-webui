@@ -16,7 +16,7 @@ fi
 
 case "$mode" in
 	off | on | toggle)
-		/usr/sbin/irled.sh "$mode" "$type"
+		/usr/sbin/irled "$mode" "$type"
 		echo "HTTP/1.1 200 OK
 Content-type: application/json
 Pragma: no-cache

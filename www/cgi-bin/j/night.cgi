@@ -13,7 +13,7 @@ fi
 
 case "$mode" in
 	day | night | toggle)
-		/usr/sbin/daynight.sh "$mode"
+		/usr/sbin/daynight "$mode"
 		echo "HTTP/1.1 200 OK
 Content-type: application/json
 Pragma: no-cache

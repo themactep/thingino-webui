@@ -96,7 +96,7 @@ esac
 sed -i "/^$cmd/d" /tmp/imp.conf
 echo "$cmd $val" >> /tmp/imp.conf
 
-command="/usr/sbin/imp-control.sh $cmd $val"
+command="/usr/sbin/imp-control $cmd $val"
 result=$($command)
 
 echo "HTTP/1.1 200 OK

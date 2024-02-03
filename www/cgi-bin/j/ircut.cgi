@@ -13,7 +13,7 @@ fi
 
 case "$mode" in
 	off | on | toggle)
-		/usr/sbin/ircut.sh "$mode" $pin1 $pin2
+		/usr/sbin/ircut "$mode" $pin1 $pin2
 		echo "HTTP/1.1 200 OK
 Content-type: application/json
 Pragma: no-cache

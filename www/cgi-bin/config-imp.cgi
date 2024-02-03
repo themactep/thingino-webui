@@ -41,7 +41,7 @@ cp -f $imp_config_file $imp_config_temp_file
 
 # reading actual values from implib
 for i in $commands; do
-	eval "$i=\"$(/usr/sbin/imp-control.sh $i)\""
+	eval "$i=\"$(/usr/sbin/imp-control $i)\""
 done
 
 # read values from temp config file
@@ -227,7 +227,7 @@ check_mirror() {
     </div>
     <div class="col col-6 mb-3">
       <b>commands to fix</b>
-      <pre><% for i in $commands_do_not_work; do echo -e "$i\n$(/usr/sbin/imp-control.sh $i)\n"; done %></pre>
+      <pre><% for i in $commands_do_not_work; do echo -e "$i\n$(/usr/sbin/imp-control $i)\n"; done %></pre>
     </div>
   </div>
 </div>
