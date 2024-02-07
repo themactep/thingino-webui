@@ -48,13 +48,6 @@
         </div>
       </div>
       <div class="input-group">
-        <button class="form-control btn btn-primary text-start" type="button" data-sendto="openwall">Send to Open Wall</button>
-        <div class="input-group-text">
-          <a href="plugin-send2openwall.cgi" title="Open Wall settings"><img src="/a/gear.svg" alt="Gear"></a>
-        </div>
-      </div>
-
-      <div class="input-group">
         <button type="button" class="form-control btn btn-primary text-start" id="toggle-night" data-bs-toggle="button">Day/Night Mode</button>
         <div class="input-group-text">
           <a href="#night-buttons" data-bs-toggle="collapse" data-bs-target="#night-buttons"><img src="/a/chevron-compact-down.svg" alt="Open"></a>

@@ -2,9 +2,8 @@
 <%in p/common.cgi %>
 <%
 target="$GET_to"
-if [ -n "$(echo "email ftp openwall telegram yadisk webhook" | sed -n "/\b${target}\b/p")" ]; then
+if [ -n "$(echo "email ftp telegram yadisk webhook" | sed -n "/\b${target}\b/p")" ]; then
 	/usr/sbin/snapshot4cron -f >/dev/null
-	[ "openwall" = "$target" ] && opts="-f"
 	/usr/sbin/send2${target} ${opts} >/dev/null
 	redirect_back "success" "Sent to ${target}."
 elif [ "pastebin" = "$target" ]; then
