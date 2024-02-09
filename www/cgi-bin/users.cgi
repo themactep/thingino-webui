@@ -34,7 +34,7 @@ if [ -n "$POST_action" ] && [ "$POST_action" = "create" ]; then
 		fi
 
 		if [ -z "$error" ]; then
-			result=$(echo "${user_name}:${user_password}" | chpasswd 2>&1)
+			result=$(echo "${user_name}:${user_password}" | chpasswd -c sha512 2>&1)
 			if [ $? -eq 0 ]; then
 				flash_append "success" "Password for ${user_name} set."
 				redirect_back
