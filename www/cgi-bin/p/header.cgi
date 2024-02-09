@@ -98,6 +98,7 @@ majestic_menu() {
               <li><a class="dropdown-item" href="tools.cgi">Ping & Traceroute</a></li>
               <li><a class="dropdown-item" href="file-manager.cgi">File Manager</a></li>
               <li><a class="dropdown-item" href="sdcard.cgi">SD Card</a></li>
+              <li><a class="dropdown-item" href="ssh-keys.cgi">SSH Key</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown">
