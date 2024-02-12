@@ -521,38 +521,38 @@ preview() {
 	fi
 	echo "<script>
 function calculatePreviewSize() {
-  const i = new Image();
-  i.src = pimg;
-  i.onload = function() {
-    ratio = i.naturalWidth / i.naturalHeight;
-    pw = canvas.clientWidth
-    pw -= pw % 16
-    ph = pw / ratio
-    ph -= ph % 16
-    canvas.width = pw;
-    canvas.height = ph;
-    updatePreview();
-  }
+	const i = new Image();
+	i.src = pimg;
+	i.onload = function() {
+		ratio = i.naturalWidth / i.naturalHeight;
+		pw = canvas.clientWidth
+		pw -= pw % 16
+		ph = pw / ratio
+		ph -= ph % 16
+		canvas.width = pw;
+		canvas.height = ph;
+		updatePreview();
+	}
 }
 
 async function updatePreview() {
-  if (typeof(pw) != 'undefined' && typeof(ph) != 'undefined') {
-    jpg.src = pimg + '?width=' + pw + '&height=' + ph + '&qfactor=50&t=' + Date.now();
-  } else {
-    jpg.src = pimg + '?qfactor=50&t=' + Date.now();
-  }
-  jpg.onload = function() {
-    ctx.drawImage(jpg, 0, 0, jpg.width, jpg.height, 0, 0, pw, ph);
-    canvas.style.background = null;
-  }
+	if (typeof(pw) != 'undefined' && typeof(ph) != 'undefined') {
+		jpg.src = pimg + '?width=' + pw + '&height=' + ph + '&qfactor=50&t=' + Date.now();
+	} else {
+		jpg.src = pimg + '?qfactor=50&t=' + Date.now();
+	}
+	jpg.onload = function() {
+	ctx.drawImage(jpg, 0, 0, jpg.width, jpg.height, 0, 0, pw, ph);
+	canvas.style.background = null;
+	}
 }
 
 const l = document.location;
 const pimg = '/cgi-bin/image.cgi';
 const jpg = new Image();
 jpg.addEventListener('load', async function() {
-  await sleep(${refresh_rate} * 1000);
-  updatePreview();
+	await sleep(${refresh_rate} * 1000);
+	updatePreview();
 });
 
 const canvas = \$('#preview');

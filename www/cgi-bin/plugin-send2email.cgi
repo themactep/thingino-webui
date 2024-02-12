@@ -90,12 +90,12 @@ fi
 $('#email_body').style.height = "6rem";
 
 $('#email_smtp_use_ssl').addEventListener('change', evt => {
-  const elPort=$('#email_smtp_port');
-  if (evt.target.checked) {
-    if (elPort.value === "25") elPort.value="465";
-  } else {
-    if (elPort.value === "465") elPort.value="25";
-  }
+	const elPort=$('#email_smtp_port');
+	if (evt.target.checked) {
+		if (elPort.value === "25") elPort.value="465";
+	} else {
+		if (elPort.value === "465") elPort.value="25";
+	}
 });
 </script>
 

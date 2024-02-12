@@ -12,26 +12,26 @@
 
 <script>
 function generateMacAddress(ev) {
-    ev.preventDefault();
-    const el = document.querySelector('#mac_address');
-    if (el.value == "") {
-        let mac = "";
-        for (let i = 1; i <= 6; i++) {
-            let b = ((Math.random() * 255) >>> 0);
-            if (i === 1) {
-                b = b | 2;
-                b = b & ~1;
-            }
-            mac += b.toString(16).toUpperCase().padStart(2, '0');
-            if (i < 6) mac += ":";
-        }
-        el.value = mac;
-    } else {
-        alert("There's a value in MAC address field. Please empty the field and try again.");
-    }
+	ev.preventDefault();
+	const el = document.querySelector('#mac_address');
+	if (el.value == "") {
+		let mac = "";
+		for (let i = 1; i <= 6; i++) {
+			let b = ((Math.random() * 255) >>> 0);
+			if (i === 1) {
+				b = b | 2;
+				b = b & ~1;
+			}
+			mac += b.toString(16).toUpperCase().padStart(2, '0');
+			if (i < 6) mac += ":";
+		}
+		el.value = mac;
+	} else {
+		alert("There's a value in MAC address field. Please empty the field and try again.");
+	}
 }
 
 window.addEventListener('load', function() {
-  document.querySelector('#generate-mac-address').addEventListener('click', generateMacAddress);
+	document.querySelector('#generate-mac-address').addEventListener('click', generateMacAddress);
 });
 </script>

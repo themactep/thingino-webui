@@ -1,46 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" x="0" y="0" version="1.1">
-    <style>
-        .st0{fill:#666}
-        .st1{fill:#bfbfbf}
-        .st15{fill:#262626}
-        .st16{fill:#fff}
-    </style>
-    <g>
-        <path d="M0 0h1920v1080H0z"/>
-        <path d="M0 0h240v630H0z" class="st0"/>
-        <path d="M240 0h205v630H240z" class="st1"/>
-        <path d="M445 0h206v630H445z" fill="#bfbf00"/>
-        <path d="M651 0h206v630H651z" fill="#00bfbf"/>
-        <path d="M857 0h206v630H857z" fill="#00bf00"/>
-        <path d="M1063 0h206v630h-206z" fill="#bf00bf"/>
-        <path d="M1269 0h206v630h-206z" fill="#bf0000"/>
-        <path d="M1475 0h205v630h-205z" fill="#0000bf"/>
-        <path d="M1680 0h240v630h-240z" class="st0"/>
-        <path d="M0 630h240v90H0z" fill="#0ff"/>
-        <path d="M240 630h205v90H240z" fill="#003f69"/>
-        <path d="M445 630h1235v90H445z" class="st1"/>
-        <path d="M1680 630h240v90h-240z" fill="#00f"/>
-        <path d="M0 720h240v90H0z" fill="#ff0"/>
-        <path d="M240 720h205v90H240z" fill="#410077"/>
-        <linearGradient id="r1" x1="437.331604" x2="1466.7346191" y1="16067" y2="16067"
-                        gradientTransform="matrix(1.00058 0 0 1 7.4147592 -15302)" gradientUnits="userSpaceOnUse">
-            <stop offset="0"/>
-            <stop offset="1" stop-color="#fff"/>
-        </linearGradient>
-        <path d="M445 720h1030v90H445z" fill="url(#r1)"/>
-        <path d="M1680 720h240v90h-240z" fill="red"/>
-        <path d="M0 810h240v270H0z" class="st15"/>
-        <path d="M240 810h309v270H240z"/>
-        <path d="M549 810h411v270H549z" class="st16"/>
-        <path d="M960 810h171v270H960z"/>
-        <path d="M1131 810h69v270h-69z"/>
-        <path d="M1200 810h68v270h-68z"/>
-        <path d="M1268 810h69v270h-69z" fill="#050505"/>
-        <path d="M1337 810h68v270h-68z"/>
-        <path d="M1405 810h69v270h-69z" fill="#050505"/>
-        <path d="M1474 810h206v270h-206z"/>
-        <path d="M1680 810h240v270h-240z" class="st15"/>
-    </g>
-    <path d="M1475 720h205v90h-205z" class="st16"/>
+<style>
+.st0{fill:#666}
+.st1{fill:#bfbfbf}
+.st15{fill:#262626}
+.st16{fill:#fff}
+</style>
+<g>
+<path d="M0 0h1920v1080H0z"/>
+<path d="M0 0h240v630H0z" class="st0"/>
+<path d="M240 0h205v630H240z" class="st1"/>
+<path d="M445 0h206v630H445z" fill="#bfbf00"/>
+<path d="M651 0h206v630H651z" fill="#00bfbf"/>
+<path d="M857 0h206v630H857z" fill="#00bf00"/>
+<path d="M1063 0h206v630h-206z" fill="#bf00bf"/>
+<path d="M1269 0h206v630h-206z" fill="#bf0000"/>
+<path d="M1475 0h205v630h-205z" fill="#0000bf"/>
+<path d="M1680 0h240v630h-240z" class="st0"/>
+<path d="M0 630h240v90H0z" fill="#0ff"/>
+<path d="M240 630h205v90H240z" fill="#003f69"/>
+<path d="M445 630h1235v90H445z" class="st1"/>
+<path d="M1680 630h240v90h-240z" fill="#00f"/>
+<path d="M0 720h240v90H0z" fill="#ff0"/>
+<path d="M240 720h205v90H240z" fill="#410077"/>
+<linearGradient id="r1" x1="437.331604" x2="1466.7346191" y1="16067" y2="16067" gradientTransform="matrix(1.00058 0 0 1 7.4147592 -15302)" gradientUnits="userSpaceOnUse">
+<stop offset="0"/>
+<stop offset="1" stop-color="#fff"/>
+</linearGradient>
+<path d="M445 720h1030v90H445z" fill="url(#r1)"/>
+<path d="M1680 720h240v90h-240z" fill="red"/>
+<path d="M0 810h240v270H0z" class="st15"/>
+<path d="M240 810h309v270H240z"/>
+<path d="M549 810h411v270H549z" class="st16"/>
+<path d="M960 810h171v270H960z"/>
+<path d="M1131 810h69v270h-69z"/>
+<path d="M1200 810h68v270h-68z"/>
+<path d="M1268 810h69v270h-69z" fill="#050505"/>
+<path d="M1337 810h68v270h-68z"/>
+<path d="M1405 810h69v270h-69z" fill="#050505"/>
+<path d="M1474 810h206v270h-206z"/>
+<path d="M1680 810h240v270h-240z" class="st15"/>
+</g>
+<path d="M1475 720h205v90h-205z" class="st16"/>
 </svg>

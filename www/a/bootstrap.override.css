@@ -3,127 +3,127 @@
 @import 'debug.css';
 
 :root {
-    --bs-font-sans-serif: 'Montserrat', sans-serif;
-    --bs-font-monospace: 'PT Mono', monospace;
+	--bs-font-sans-serif: 'Montserrat', sans-serif;
+	--bs-font-monospace: 'PT Mono', monospace;
 }
 
 .btn {
-    white-space: nowrap;
+	white-space: nowrap;
 }
 
 .card-body {
-    position: relative;
+	position: relative;
 }
 
 .container {
-    display: block;
+	display: block;
 }
 
 .cp2cb {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .col > h3 {
-    color: var(--bs-secondary-color);
-    font-size: 1.3rem;
-    margin-bottom: 1.3rem;
+	color: var(--bs-secondary-color);
+	font-size: 1.3rem;
+	margin-bottom: 1.3rem;
 }
 
 .col .ex > h6 {
-    font-weight: 500;
-    color: var(--bs-tertiary-color);
+	font-weight: 500;
+	color: var(--bs-tertiary-color);
 }
 
 .dropdown-item {
-    font-size: 0.9rem;
+	font-size: 0.9rem;
 }
 
 .form-control::placeholder {
-    color: var(--bs-tertiary-color);
+	color: var(--bs-tertiary-color);
 }
 
 .form-label {
-    margin-bottom: 0.125rem;
+	margin-bottom: 0.125rem;
 }
 
 .form-range {
-    height: 2.5rem;
-    padding: 0.75rem;
+	height: 2.5rem;
+	padding: 0.75rem;
 }
 
 .hint {
-    font-size: 0.875rem;
-    margin-top: 0.2rem;
-    margin-bottom: 0;
+	font-size: 0.875rem;
+	margin-top: 0.2rem;
+	margin-bottom: 0;
 }
 
 .navbar-brand {
-    padding: .5rem 0 0;
+	padding: .5rem 0 0;
 }
 
 .plugin-enabled {
-    border-left: 5px solid green;
-    margin-left: -5px;
+	border-left: 5px solid green;
+	margin-left: -5px;
 }
 
 .range span.show-value {
-    display: block;
-    min-width: 3.5rem;
-    text-align: center;
+	display: block;
+	min-width: 3.5rem;
+	text-align: center;
 }
 
 .range-value {
-    text-align: right;
+	text-align: right;
 }
 
 .tab-pane {
-    padding: 1rem 0;
+	padding: 1rem 0;
 }
 
 .x-small {
-    font-size: 0.8125rem;
+	font-size: 0.8125rem;
 }
 
 body > main > .container > h2 {
-    color: var(--bs-primary);
-    margin: 2rem 0 1.5rem;
+	color: var(--bs-primary);
+	margin: 2rem 0 1.5rem;
 }
 
 body.user .ui-expert {
-    display: none;
+	display: none;
 }
 
 body.expert .ui-expert {
-    display: initial;
+	display: initial;
 }
 
 dt {
-    font-weight: 500;
-    color: var(--bs-light);
+	font-weight: 500;
+	color: var(--bs-light);
 }
 
 pre {
-    background: var(--bs-secondary-bg);
-    font-size: 0.8125rem;
-    padding: 1rem;
+	background: var(--bs-secondary-bg);
+	font-size: 0.8125rem;
+	padding: 1rem;
 }
 
 pre.list b {
-    display: inline-block;
-    width: 8em;
+	display: inline-block;
+	width: 8em;
 }
 
 textarea {
-    font-family: var(--bs-font-monospace);
-    height: 50vh;
-    white-space: pre;
+	font-family: var(--bs-font-monospace);
+	height: 50vh;
+	white-space: pre;
 }
 
 #page-texteditor .tab-pane {
-    min-height: 60vh;
+	min-height: 60vh;
 }
 
 #pb-memory, #pb-overlay {
-    height: 4px;
-    cursor: pointer;
+	height: 4px;
+	cursor: pointer;
 }

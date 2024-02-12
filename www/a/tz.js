@@ -454,48 +454,48 @@ const TZ = [
 ];
 
 function findTimezone(tz) {
-    return tz.n == $("#tz_name").value;
+	return tz.n == $("#tz_name").value;
 }
 
 function updateTimezone() {
-    const tz = TZ.filter(findTimezone);
-    $("#tz_data").value = (tz.length == 0) ? "" : tz[0].v;
+	const tz = TZ.filter(findTimezone);
+	$("#tz_data").value = (tz.length == 0) ? "" : tz[0].v;
 }
 
 function useBrowserTimezone(event) {
-    event.preventDefault();
-    $("#tz_name").value = Intl.DateTimeFormat().resolvedOptions().timeZone.replaceAll('_', ' ');
-    updateTimezone();
+	event.preventDefault();
+	$("#tz_name").value = Intl.DateTimeFormat().resolvedOptions().timeZone.replaceAll('_', ' ');
+	updateTimezone();
 }
 
 window.addEventListener('load', () => {
-    const tzn = $("#tz_name");
-    if (navigator.userAgent.includes("Android") && navigator.userAgent.includes("Firefox")) {
-        const sel = document.createElement("select");
-        sel.classList.add("form-select");
-        sel.name = "tz_name";
-        sel.id = "tz_name";
-        sel.options.add(new Option());
-        let opt;
-        TZ.forEach(function (tz) {
-            opt = new Option(tz.n);
-            opt.selected = (tz.n == tzn.value);
-            sel.options.add(opt);
-        });
-        tzn.replaceWith(sel);
-    } else {
-        const el = $("#tz_list");
-        el.innerHTML = "";
-        TZ.forEach(function (tz) {
-            const o = document.createElement("option");
-            o.value = tz.n;
-            el.appendChild(o);
-        });
-    }
-    tzn.addEventListener("focus", ev => ev.target.select());
-    tzn.addEventListener("selectionchange", updateTimezone);
-    tzn.addEventListener("change", updateTimezone);
-    $("#frombrowser").addEventListener("click", useBrowserTimezone);
+	const tzn = $("#tz_name");
+	if (navigator.userAgent.includes("Android") && navigator.userAgent.includes("Firefox")) {
+		const sel = document.createElement("select");
+		sel.classList.add("form-select");
+		sel.name = "tz_name";
+		sel.id = "tz_name";
+		sel.options.add(new Option());
+		let opt;
+		TZ.forEach(function (tz) {
+			opt = new Option(tz.n);
+			opt.selected = (tz.n == tzn.value);
+			sel.options.add(opt);
+		});
+		tzn.replaceWith(sel);
+	} else {
+		const el = $("#tz_list");
+		el.innerHTML = "";
+		TZ.forEach(function (tz) {
+			const o = document.createElement("option");
+			o.value = tz.n;
+			el.appendChild(o);
+		});
+	}
+	tzn.addEventListener("focus", ev => ev.target.select());
+	tzn.addEventListener("selectionchange", updateTimezone);
+	tzn.addEventListener("change", updateTimezone);
+	$("#frombrowser").addEventListener("click", useBrowserTimezone);
 
-//    updateTimezone();
+//	updateTimezone();
 });
