@@ -1,21 +1,21 @@
 #!/usr/bin/haserl
 <%in p/common.cgi %>
 <%
-target="$GET_to"
-if [ -n "$(echo "email ftp telegram yadisk webhook" | sed -n "/\b${target}\b/p")" ]; then
-	/usr/sbin/snapshot4cron -f >/dev/null
-	/usr/sbin/send2${target} ${opts} >/dev/null
-	redirect_back "success" "Sent to ${target}."
-elif [ "pastebin" = "$target" ]; then
-	if [ "mjlog" = "$GET_file" ]; then
+target=$GET_to
+case "$target" in
+	email | ftp | telegram | webhook | yadisk)
+		/usr/sbin/snapshot4cron -f >/dev/null
+		/usr/sbin/send2${target} $opts >/dev/null
+		redirect_back "success" "Sent to $target"
+		;;
+	dmesg | pastebin)
 		t=$(mktemp)
-		logread | grep 'user.info majestic' >$t
+		$GET_file >$t
 		url=$(/usr/sbin/send2${target} $t)
 		rm $t
-		unset t
 		redirect_to $url
-	fi
-else
-	redirect_back "danger" "Unknown target ${target}!"
-fi
+		;;
+	*)
+		redirect_back "danger" "Unknown target $target"
+esac
 %>

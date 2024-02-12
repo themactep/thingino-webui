@@ -61,45 +61,45 @@ fi
 <%in p/header.cgi %>
 
 <div class="row row-cols-1 row-cols-lg-3 g-4 mb-4">
-  <div class="col">
-    <h3>Backup config</h3>
-    <p>Download recent majestic.yaml to preserve changes you made to the default configuration.</p>
-    <form action="<%= $SCRIPT_NAME %>" method="post">
-      <% field_hidden "action" "backup" %>
-      <% button_submit "Download config" %>
-    </form>
-  </div>
-  <div class="col">
-    <h3>Restore config</h3>
-    <p>Restore custom Majestic configuration from a saved copy of majestic.yaml file.</p>
-    <form action="<%= $SCRIPT_NAME %>" method="post" enctype="multipart/form-data">
-      <% field_hidden "action" "restore" %>
-      <% field_file "mj_restore_file" "Backup file" "majestic.yaml" %>
-      <% button_submit "Upload config" "warning" %>
-    </form>
-  </div>
-  <div class="col">
-    <h3>Review difference</h3>
-    <p>Compare recent majestic.yaml with the one supplied with the firmware.</p>
-    <a class="btn btn-primary" href="majestic-config-compare.cgi">Review changes</a>
-  </div>
-  <div class="col">
-    <h3>Export as patch</h3>
-    <p>Export changes made to majestic.yaml in a form of a patch file.</p>
-    <form action="<%= $SCRIPT_NAME %>" method="post">
-      <% field_hidden "action" "patch" %>
-      <% button_submit "Download patch file" %>
-    </form>
-  </div>
-  <div class="col">
-    <h3>Reset</h3>
-    <% if [ "$(diff -q $config_file_fw $config_file)" ]; then %>
-      <p>Reset Majestic configuration to its original state, as supplied with the firmware.</p>
-      <% button_mj_reset %>
-    <% else %>
-      <p>There is nothing to reset. Recent Majestic configuration does not differ from the one supplied with the firmware.</p>
-    <% fi %>
-  </div>
+<div class="col">
+<h3>Backup Config</h3>
+<p>Download recent majestic.yaml to preserve changes you made to the default configuration.</p>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "backup" %>
+<% button_submit "Download config" %>
+</form>
+</div>
+<div class="col">
+<h3>Restore Config</h3>
+<p>Restore custom Majestic configuration from a saved copy of majestic.yaml file.</p>
+<form action="<%= $SCRIPT_NAME %>" method="post" enctype="multipart/form-data">
+<% field_hidden "action" "restore" %>
+<% field_file "mj_restore_file" "Backup file" "majestic.yaml" %>
+<% button_submit "Upload config" "warning" %>
+</form>
+</div>
+<div class="col">
+<h3>Review Difference</h3>
+<p>Compare recent majestic.yaml with the one supplied with the firmware.</p>
+<a class="btn btn-primary" href="majestic-config-compare.cgi">Review changes</a>
+</div>
+<div class="col">
+<h3>Export Patch</h3>
+<p>Export changes made to majestic.yaml in a form of a patch file.</p>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "patch" %>
+<% button_submit "Download patch file" %>
+</form>
+</div>
+<div class="col">
+<h3>Reset</h3>
+<% if [ "$(diff -q $config_file_fw $config_file)" ]; then %>
+<p>Reset Majestic configuration to its original state, as supplied with the firmware.</p>
+<% button_mj_reset %>
+<% else %>
+<p>There is nothing to reset. Recent Majestic configuration does not differ from the one supplied with the firmware.</p>
+<% fi %>
+</div>
 </div>
 
 <%in p/footer.cgi %>

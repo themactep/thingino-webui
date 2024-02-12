@@ -21,6 +21,10 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 
 			redirect_to "/" "success" "Password updated."
 			;;
+		init)
+			update_caminfo
+			redirect_to "$HTTP_REFERER" "success" "Environment re-initialized."
+			;;
 		interface)
 			params="level theme"
 			for p in $params; do
@@ -56,34 +60,34 @@ ui_username="$USER"
 <%in p/header.cgi %>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-  <div class="col">
-    <h3>Access</h3>
-    <form action="<%= $SCRIPT_NAME %>" method="post">
-      <% field_hidden "action" "access" %>
-      <p class="string">
-        <label for="ui_username" class="form-label">Username</label>
-        <input type="text" id="ui_username" name="ui_username" value="<%= $ui_username %>" class="form-control" autocomplete="username" disabled>
-      </p>
-      <% field_password "ui_password_new" "Password" %>
-      <% button_submit %>
-    </form>
-  </div>
-  <div class="col">
-    <h3>Interface Details</h3>
-    <form action="<%= $SCRIPT_NAME %>" method="post">
-      <% field_hidden "action" "interface" %>
-      <% field_select "webui_level" "Level" "user,expert" %>
-      <% field_select "webui_theme" "Theme" "light,dark" %>
-      <% button_submit %>
-    </form>
-  </div>
-  <div class="col">
-    <h3>Configuration</h3>
-    <%
-    ex "cat /etc/httpd.conf"
-    ex "cat $config_file"
-    %>
-  </div>
+<div class="col">
+<h3>Access</h3>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "access" %>
+<p class="string">
+<label for="ui_username" class="form-label">Username</label>
+<input type="text" id="ui_username" name="ui_username" value="<%= $ui_username %>" class="form-control" autocomplete="username" disabled>
+</p>
+<% field_password "ui_password_new" "Password" %>
+<% button_submit %>
+</form>
+</div>
+<div class="col">
+<h3>Interface Details</h3>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "interface" %>
+<% field_select "webui_level" "Level" "user,expert" %>
+<% field_select "webui_theme" "Theme" "light,dark" %>
+<% button_submit %>
+</form>
+</div>
+<div class="col">
+<h3>Configuration</h3>
+<%
+ex "cat /etc/httpd.conf"
+ex "cat $config_file"
+%>
+</div>
 </div>
 
 <%in p/footer.cgi %>

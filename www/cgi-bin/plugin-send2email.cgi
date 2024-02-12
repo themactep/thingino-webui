@@ -58,32 +58,32 @@ fi
 <%in p/header.cgi %>
 
 <form action="<%= $SCRIPT_NAME %>" method="post">
-  <% field_switch "email_enabled" "Enable sending to email" %>
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-    <div class="col">
-      <% field_text "email_smtp_host" "SMTP host" %>
-      <% field_text "email_smtp_port" "SMTP port" %>
-      <% field_switch "email_smtp_use_ssl" "Use TLS/SSL" %>
-      <% field_text "email_smtp_username" "SMTP username" %>
-      <% field_password "email_smtp_password" "SMTP password" %>
-      <% field_text "email_from_name" "Sender's name" %>
-      <% field_text "email_from_address" "Sender's address" "Use an email address where bounce reports can be sent to." %>
-    </div>
-    <div class="col">
-      <% field_text "email_to_name" "Recipient's name" %>
-      <% field_text "email_to_address" "Recipient's address" %>
-      <% field_text "email_subject" "Email subject" %>
-      <% field_textarea "email_body" "Email text" "Line breaks will be replaced with whitespace." %>
-      <% field_switch "email_attach_snapshot" "Attach snapshot" %>
-      <% field_switch "email_use_heif" "Use HEIF image format" "Requires H.265 codec on Video0." %>
-      <% # field_switch "email_socks5_enabled" "Use SOCKS5" "<a href=\"network-socks5.cgi\">Configure</a> SOCKS5 access" %>
-    </div>
-    <div class="col">
-      <% ex "cat $config_file" %>
-      <% button_webui_log %>
-    </div>
-  </div>
-  <% button_submit %>
+<% field_switch "email_enabled" "Enable sending to email" %>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+<div class="col">
+<% field_text "email_smtp_host" "SMTP host" %>
+<% field_text "email_smtp_port" "SMTP port" %>
+<% field_switch "email_smtp_use_ssl" "Use TLS/SSL" %>
+<% field_text "email_smtp_username" "SMTP username" %>
+<% field_password "email_smtp_password" "SMTP password" %>
+<% field_text "email_from_name" "Sender's name" %>
+<% field_text "email_from_address" "Sender's address" "Use an email address where bounce reports can be sent to." %>
+</div>
+<div class="col">
+<% field_text "email_to_name" "Recipient's name" %>
+<% field_text "email_to_address" "Recipient's address" %>
+<% field_text "email_subject" "Email subject" %>
+<% field_textarea "email_body" "Email text" "Line breaks will be replaced with whitespace." %>
+<% field_switch "email_attach_snapshot" "Attach snapshot" %>
+<% field_switch "email_use_heif" "Use HEIF image format" "Requires H.265 codec on Video0." %>
+<% # field_switch "email_socks5_enabled" "Use SOCKS5" "<a href=\"network-socks5.cgi\">Configure</a> SOCKS5 access" %>
+</div>
+<div class="col">
+<% ex "cat $config_file" %>
+<% button_webui_log %>
+</div>
+</div>
+<% button_submit %>
 </form>
 
 <script>

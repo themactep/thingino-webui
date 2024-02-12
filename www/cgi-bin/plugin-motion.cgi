@@ -6,8 +6,6 @@ plugin_name="Motion guard"
 page_title="Motion guard"
 params="enabled sensitivity send2email send2ftp send2mqtt send2telegram send2webhook send2yadisk playonspeaker throttle"
 
-[ -n "$(echo "$mj_hide_motionDetect" | sed -n "/\b${soc_family}\b/p")" ] && redirect_to "/" "danger" "Motion detection is not supported on your camera."
-
 tmp_file=/tmp/${plugin}
 
 config_file="${ui_config_dir}/${plugin}.conf"
@@ -54,44 +52,44 @@ fi
 <%in p/header.cgi %>
 
 <form action="<%= $SCRIPT_NAME %>" method="post">
-  <div class="row g-4 mb-4">
-    <div class="col col-lg-4">
-      <% field_switch "motion_enabled" "Enable motion guard" %>
-      <% field_range "motion_sensitivity" "Minimum number of objects" "1,30,1" %>
-      <% field_range "motion_throttle" "Delay between notifications, sec." "1,30,1" %>
-    </div>
-    <div class="col col-lg-4">
-      <h5>Actions</h5>
-      <ul class="list-group mb-3">
-        <li class="list-group-item send2email">
-          <% field_checkbox "motion_send2email" "Send to email" "<a href=\"plugin-send2email.cgi\">Configure sending to email</a>" %>
-        </li>
-        <li class="list-group-item send2ftp">
-          <% field_checkbox "motion_send2ftp" "Upload to FTP" "<a href=\"plugin-send2ftp.cgi\">Configure uploading to FTP</a>" %>
-        </li>
-        <li class="list-group-item send2mqtt">
-          <% field_checkbox "motion_send2mqtt" "Send to MQTT" "<a href=\"plugin-send2mqtt.cgi\">Configure sending to MQTT</a>" %>
-        </li>
-        <li class="list-group-item send2telegram">
-          <% field_checkbox "motion_send2telegram" "Send to Telegram" "<a href=\"plugin-send2telegram.cgi\">Configure sending to Telegram</a>" %>
-        </li>
-        <li class="list-group-item send2webhook">
-          <% field_checkbox "motion_send2webhook" "Send to webhook" "<a href=\"plugin-send2webhook.cgi\">Configure sending to a webhook</a>" %>
-        </li>
-        <li class="list-group-item send2yadisk">
-          <% field_checkbox "motion_send2yadisk" "Upload to Yandex Disk" "<a href=\"plugin-send2yadisk.cgi\">Configure sending to Yandex Disk</a>" %>
-        </li>
-        <li class="list-group-item playonspeaker">
-          <% field_checkbox "motion_playonspeaker" "Play sound file on speaker" "<a href=\"plugin-playonspeaker.cgi\">Configure playing on speaker</a>" %>
-        </li>
-      </ul>
-    </div>
-    <div class="col col-lg-4">
-      <% [ -f $config_file ] && ex "cat $config_file" %>
-    </div>
-  </div>
+<div class="row g-4 mb-4">
+<div class="col col-lg-4">
+<% field_switch "motion_enabled" "Enable motion guard" %>
+<% field_range "motion_sensitivity" "Minimum number of objects" "1,30,1" %>
+<% field_range "motion_throttle" "Delay between notifications, sec." "1,30,1" %>
+</div>
+<div class="col col-lg-4">
+<h3>Actions</h3>
+<ul class="list-group mb-3">
+<li class="list-group-item send2email">
+<% field_checkbox "motion_send2email" "Send to email" "<a href=\"plugin-send2email.cgi\">Configure sending to email</a>" %>
+</li>
+<li class="list-group-item send2ftp">
+<% field_checkbox "motion_send2ftp" "Upload to FTP" "<a href=\"plugin-send2ftp.cgi\">Configure uploading to FTP</a>" %>
+</li>
+<li class="list-group-item send2mqtt">
+<% field_checkbox "motion_send2mqtt" "Send to MQTT" "<a href=\"plugin-send2mqtt.cgi\">Configure sending to MQTT</a>" %>
+</li>
+<li class="list-group-item send2telegram">
+<% field_checkbox "motion_send2telegram" "Send to Telegram" "<a href=\"plugin-send2telegram.cgi\">Configure sending to Telegram</a>" %>
+</li>
+<li class="list-group-item send2webhook">
+<% field_checkbox "motion_send2webhook" "Send to webhook" "<a href=\"plugin-send2webhook.cgi\">Configure sending to a webhook</a>" %>
+</li>
+<li class="list-group-item send2yadisk">
+<% field_checkbox "motion_send2yadisk" "Upload to Yandex Disk" "<a href=\"plugin-send2yadisk.cgi\">Configure sending to Yandex Disk</a>" %>
+</li>
+<li class="list-group-item playonspeaker">
+<% field_checkbox "motion_playonspeaker" "Play sound file on speaker" "<a href=\"plugin-playonspeaker.cgi\">Configure playing on speaker</a>" %>
+</li>
+</ul>
+</div>
+<div class="col col-lg-4">
+<% [ -f $config_file ] && ex "cat $config_file" %>
+</div>
+</div>
 
-  <% button_submit %>
+<% button_submit %>
 </form>
 
 <script>

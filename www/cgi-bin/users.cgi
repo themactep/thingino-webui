@@ -55,62 +55,62 @@ users=$(awk 'BEGIN { FS = ":" } ; { if ($3 > 1000) print $1 }' /etc/passwd)
 <%in p/header.cgi %>
 
 <div class="row g-4 mb-4">
-  <div class="col col-lg-4">
-    <h3>Settings</h3>
-    <form action="<%= $SCRIPT_NAME %>" method="post">
-      <% field_hidden "action" "create" %>
-      <% field_select "user_name" "Username" "$users" "<a href=\"#\" id=\"show_new_user\">Create a new user</a>" %>
-      <% field_text "user_name_new" "Username" "<a href=\"#\" id=\"hide_new_user\">Select an existing user</a>" %>
-      <% field_password "user_password" "Password" %>
-      <% field_text "user_full_name" "Full name" %>
-      <% field_text "user_home" "Home directory" %>
-      <% field_text "user_shell" "Shell" %>
-      <% field_text "user_group" "Group" %>
-      <% button_submit %>
-    </form>
-  </div>
-  <div class="col col-lg-8">
-    <h3>Configuration files</h3>
-    <% ex "cat /etc/passwd" %>
-    <% ex "cat /etc/shadow" %>
-    <% ex "cat /etc/group" %>
-  </div>
+<div class="col col-lg-4">
+<h3>Settings</h3>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "create" %>
+<% field_select "user_name" "Username" "$users" "<a href=\"#\" id=\"show_new_user\">Create a new user</a>" %>
+<% field_text "user_name_new" "Username" "<a href=\"#\" id=\"hide_new_user\">Select an existing user</a>" %>
+<% field_password "user_password" "Password" %>
+<% field_text "user_full_name" "Full name" %>
+<% field_text "user_home" "Home directory" %>
+<% field_text "user_shell" "Shell" %>
+<% field_text "user_group" "Group" %>
+<% button_submit %>
+</form>
+</div>
+<div class="col col-lg-8">
+<h3>Configuration files</h3>
+<% ex "cat /etc/passwd" %>
+<% ex "cat /etc/shadow" %>
+<% ex "cat /etc/group" %>
+</div>
 </div>
 
 <script>
 function showNewUser() {
-  document.querySelector('#user_full_name').disabled = false;
-  document.querySelector('#user_name_new_wrap').classList.remove('d-none');
-  document.querySelector('#user_name_wrap').classList.add('d-none');
-  document.querySelector('#user_name').value = '';
+	$('#user_full_name').disabled = false;
+	$('#user_name_new_wrap').classList.remove('d-none');
+	$('#user_name_wrap').classList.add('d-none');
+	$('#user_name').value = '';
 }
 
 function hideNewUser() {
-  document.querySelector('#user_full_name').disabled = true;
-  document.querySelector('#user_name_wrap').classList.remove('d-none');
-  document.querySelector('#user_name_new_wrap').classList.add('d-none');
-  document.querySelector('#user_name_new').value = '';
+	$('#user_full_name').disabled = true;
+	$('#user_name_wrap').classList.remove('d-none');
+	$('#user_name_new_wrap').classList.add('d-none');
+	$('#user_name_new').value = '';
 }
 
-document.querySelector('#show_new_user').addEventListener('click', event => {
-  event.preventDefault();
-  showNewUser();
+document.querySelector('#show_new_user').addEventListener('click', ev => {
+	ev.preventDefault();
+	showNewUser();
 });
 
-document.querySelector('#hide_new_user').addEventListener('click', event => {
-  event.preventDefault();
-  hideNewUser();
+document.querySelector('#hide_new_user').addEventListener('click', ev => {
+	ev.preventDefault();
+	hideNewUser();
 });
 
 if (document.querySelector('#user_name_new').value == "") {
-  hideNewUser();
+	hideNewUser();
 } else {
-  showNewUser();
+	showNewUser();
 }
 
-document.querySelector('#user_home').disabled = true;
-document.querySelector('#user_shell').disabled = true;
-document.querySelector('#user_group').disabled = true;
+$('#user_home').disabled = true;
+$('#user_shell').disabled = true;
+$('#user_group').disabled = true;
 </script>
 
 <%in p/footer.cgi %>

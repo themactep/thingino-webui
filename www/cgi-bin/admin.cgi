@@ -41,20 +41,20 @@ fi
 <%in p/header.cgi %>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-  <div class="col">
-    <h3>Settings</h3>
-    <form action="<%= $SCRIPT_NAME %>" method="post">
-      <% field_hidden "action" "update" %>
-      <% field_text "admin_name" "Admin's full name" "will be used for sending emails" %>
-      <% field_text "admin_email" "Admin's email address" %>
-      <% field_text "admin_telegram" "Admin's nick on Telegram" %>
-      <% button_submit %>
-    </form>
-  </div>
-  <div class="col">
-    <h3>Config file</h3>
-    <% ex "cat $config_file" %>
-  </div>
+<div class="col">
+<h3>Settings</h3>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "update" %>
+<% field_text "admin_name" "Admin's full name" "will be used for sending emails" %>
+<% field_text "admin_email" "Admin's email address" %>
+<% field_text "admin_telegram" "Admin's nick on Telegram" %>
+<% button_submit %>
+</form>
+</div>
+<div class="col">
+<h3>Config file</h3>
+<% ex "cat $config_file" %>
+</div>
 </div>
 
 <%in p/footer.cgi %>

@@ -48,19 +48,19 @@ fi
 <%in p/header.cgi %>
 
 <form action="<%= $SCRIPT_NAME %>" method="post">
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-    <div class="col">
-      <% field_number "ir850_pin" "850 nm IR LED GPIO pin" %>
-      <% field_number "ir940_pin" "940 nm IR LED GPIO pin" %>
-      <% field_number "whled_pin" "White Light LED GPIO pin" %>
-      <% field_number "ircut_pin1" "IR CUT filter GPIO pin 1" %>
-      <% field_number "ircut_pin2" "IR CUT filter GPIO pin 2" %>
-      <% field_number "day_night_threshold" "Day/Night Trigger Threshold" %>
-      <% field_number "day_night_tolerance" "Day/Night Tolerance" %>
-    </div>
-    <div class="col">
-      <h3>Environment settings</h3>
-      <pre>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+<div class="col">
+<% field_number "ir850_pin" "850 nm IR LED GPIO pin" %>
+<% field_number "ir940_pin" "940 nm IR LED GPIO pin" %>
+<% field_number "whled_pin" "White Light LED GPIO pin" %>
+<% field_number "ircut_pin1" "IR CUT filter GPIO pin 1" %>
+<% field_number "ircut_pin2" "IR CUT filter GPIO pin 2" %>
+<% field_number "day_night_threshold" "Day/Night Trigger Threshold" %>
+<% field_number "day_night_tolerance" "Day/Night Tolerance" %>
+</div>
+<div class="col">
+<h3>Environment Settings</h3>
+<pre>
 gpio_ir850: <%= $ir850_pin %>
 gpio_ir940: <%= $ir940_pin %>
 gpio_whled: <%= $whled_pin %>
@@ -68,12 +68,12 @@ gpio_ircut: <%= $ircut_pins %>
 day_night_min: <%= $day_night_min %>
 day_night_max: <%= $day_night_max %>
 </pre>
-    </div>
-    <div class="col">
-      <% button_webui_log %>
-    </div>
-  </div>
-  <% button_submit %>
+</div>
+<div class="col">
+<% button_webui_log %>
+</div>
+</div>
+<% button_submit %>
 </form>
 
 <%in p/footer.cgi %>

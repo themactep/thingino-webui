@@ -72,73 +72,69 @@ fi
 <%in p/header.cgi %>
 
 <div class="row g-4 mb-4">
-  <div class="col col-lg-4">
-    <h3>Settings</h3>
+<div class="col col-lg-4">
+<h3>Settings</h3>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "create" %>
+<% field_switch "zerotier_enabled" "Enable ZeroTier network on restart" %>
+<% field_text "zerotier_nwid" "ZeroTier Network ID" "Don't have it? Get one at <a href=\"https://my.zerotier.com/\">my.zerotier.com</a>" %>
+<% button_submit %>
+</form>
+<br>
+<% zerotier-cli info >/dev/null; if [ $? -eq 0 ]; then %>
+<div class="alert alert-success">
+<h5>ZeroTier Tunnel is open</h5>
+<% if [ -f "$zt_network_config_file" ]; then %>
+<% zt_id="$(grep ^nwid= ${zt_network_config_file} | cut -d= -f2)" %>
+<% zt_name="$(grep ^n= ${zt_network_config_file} | cut -d= -f2)" %>
+<% if [ -n "$zt_id" ] && [ -n "$zt_name" ]; then %>
+<p>Use the following credentials to set up remote access via active virtual tunnel:</p>
+<dl>
+<dt>NWID: <%= $zt_id %></dd>
+<dt>Name: <%= $zt_name %></dd>
+</dl>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "leave" %>
+<% button_submit "Leave network" "danger" %>
+</form>
+<% fi %>
+<% else %>
+<div class="row">
+<div class="col">
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "join" %>
+<% button_submit "Join network" %>
+</form>
+</div>
+<div class="col">
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "stop" %>
+<% button_submit "Close tunnel" "danger" %>
+</form>
+</div>
+</div>
+<% fi %>
+</div>
+<% else %>
+<div class="alert alert-warning">
+<h4>ZeroTier Tunnel is closed</h4>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "start" %>
+<% button_submit "Open tunnel" %>
+</form>
+</div>
+<% fi %>
+</div>
 
-    <form action="<%= $SCRIPT_NAME %>" method="post">
-      <% field_hidden "action" "create" %>
-      <% field_switch "zerotier_enabled" "Enable ZeroTier network on restart" %>
-      <% field_text "zerotier_nwid" "ZeroTier Network ID" "Don't have it? Get one at <a href=\"https://my.zerotier.com/\">my.zerotier.com</a>" %>
-      <% button_submit %>
-    </form>
-
-    <br>
-
-    <% zerotier-cli info >/dev/null; if [ $? -eq 0 ]; then %>
-      <div class="alert alert-success">
-        <h5>ZeroTier Tunnel is open</h5>
-
-        <% if [ -f "$zt_network_config_file" ]; then %>
-          <% zt_id="$(grep ^nwid= ${zt_network_config_file} | cut -d= -f2)" %>
-          <% zt_name="$(grep ^n= ${zt_network_config_file} | cut -d= -f2)" %>
-          <% if [ -n "$zt_id" ] && [ -n "$zt_name" ]; then %>
-            <p>Use the following credentials to set up remote access via active virtual tunnel:</p>
-            <dl>
-              <dt>NWID: <%= $zt_id %></dd>
-              <dt>Name: <%= $zt_name %></dd>
-            </dl>
-            <form action="<%= $SCRIPT_NAME %>" method="post">
-              <% field_hidden "action" "leave" %>
-              <% button_submit "Leave network" "danger" %>
-            </form>
-          <% fi %>
-        <% else %>
-          <div class="row">
-            <div class="col">
-              <form action="<%= $SCRIPT_NAME %>" method="post">
-                <% field_hidden "action" "join" %>
-                <% button_submit "Join network" %>
-              </form>
-            </div>
-            <div class="col">
-              <form action="<%= $SCRIPT_NAME %>" method="post">
-                <% field_hidden "action" "stop" %>
-                <% button_submit "Close tunnel" "danger" %>
-              </form>
-            </div>
-          </div>
-        <% fi %>
-      </div>
-    <% else %>
-      <div class="alert alert-warning">
-        <h4>ZeroTier Tunnel is closed</h4>
-        <form action="<%= $SCRIPT_NAME %>" method="post">
-          <% field_hidden "action" "start" %>
-          <% button_submit "Open tunnel" %>
-        </form>
-      </div>
-    <% fi %>
-  </div>
-
-  <div class="col col-lg-8">
-    <h3>Configuration files</h3>
+<div class="col col-lg-8">
+<h3>Configuration</h3>
 <%
 [ -f "$service_file" ] && ex "cat $service_file"
 [ -f "$config_file" ] && ex "cat $config_file"
 [ -f "$zt_network_config_file" ] && ex "cat $zt_network_config_file"
 ex "ps | grep zerotier"
 %>
-  </div>
+</div>
 </div>
 
 <%in p/footer.cgi %>

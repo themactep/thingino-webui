@@ -38,7 +38,7 @@ else
 		fi
 
 		if [ -z "$error" ]; then
-			_c="mkfs.vfat -v -n OpenIPC $card_partition"
+			_c="mkfs.vfat -v -n thingino $card_partition"
 			_o="${_o}\n${_c}\n$($_c 2>&1)"
 			[ $? -ne 0 ] && error="Cannot format SD Card partition."
 		fi

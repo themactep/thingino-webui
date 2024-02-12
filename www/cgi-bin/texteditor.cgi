@@ -57,43 +57,43 @@ page_title="Text editor"
 <%in p/header.cgi %>
 
 <ul class="nav nav-tabs" role="tablist">
-  <% tab_lap "edit" "Editor" "active" %>
-  <% tab_lap "file" "File" %>
+<% tab_lap "edit" "Editor" "active" %>
+<% tab_lap "file" "File" %>
 <% if [ -f "${editor_file}.backup" ]; then %>
-  <% tab_lap "back" "Backup" %>
-  <% tab_lap "diff" "Difference" %>
+<% tab_lap "back" "Backup" %>
+<% tab_lap "diff" "Difference" %>
 <% fi %>
 </ul>
 
 <div class="tab-content p-2" id="tab-content">
-  <div id="edit-tab-pane" role="tabpanel" class="tab-pane fade show active" aria-labelledby="edit-tab" tabindex="0">
-    <form action="<%= $SCRIPT_NAME %>" method="post" class="mb-4">
-      <% field_hidden "action" "save" %>
-      <% field_hidden "editor_file" "$editor_file" %>
-      <% field_textedit "editor_text" "$editor_file" "File content" %>
-      <p class="boolean"><span class="form-check form-switch">
-        <input type="checkbox" id="editor_backup" name="editor_backup" value="true" class="form-check-input" role="switch">
-        <label for="editor_backup" class="form-label form-check-label">Create backup file</label>
-      </span></p>
-      <% button_submit %>
-    </form>
-  </div>
+<div id="edit-tab-pane" role="tabpanel" class="tab-pane fade show active" aria-labelledby="edit-tab" tabindex="0">
+<form action="<%= $SCRIPT_NAME %>" method="post" class="mb-4">
+<% field_hidden "action" "save" %>
+<% field_hidden "editor_file" "$editor_file" %>
+<% field_textedit "editor_text" "$editor_file" "File content" %>
+<p class="boolean"><span class="form-check form-switch">
+<input type="checkbox" id="editor_backup" name="editor_backup" value="true" class="form-check-input" role="switch">
+<label for="editor_backup" class="form-label form-check-label">Create backup file</label>
+</span></p>
+<% button_submit %>
+</form>
+</div>
 
-  <div id="file-tab-pane" role="tabpanel" class="tab-pane fade" aria-labelledby="file-tab" tabindex="0">
-    <% ex "cat -t $editor_file" %>
-  </div>
+<div id="file-tab-pane" role="tabpanel" class="tab-pane fade" aria-labelledby="file-tab" tabindex="0">
+<% ex "cat -t $editor_file" %>
+</div>
 
-  <% if [ -f "${editor_file}.backup" ]; then %>
-    <div id="back-tab-pane" role="tabpanel" class="tab-pane fade" aria-labelledby="back-tab" tabindex="0">
-      <% ex "cat -t ${editor_file}.backup" %>
-      <form action="<%= $SCRIPT_NAME %>" method="post">
-        <% field_hidden "action" "restore" %>
-        <% field_hidden "editor_file" "$editor_file" %>
-        <% button_submit "Restore" "danger" %>
-      </form>
-    </div>
-    <div id="diff-tab-pane" role="tabpanel" class="tab-pane fade" aria-labelledby="diff-tab" tabindex="0">
-      <h4>Changes against previous version</h4>
+<% if [ -f "${editor_file}.backup" ]; then %>
+<div id="back-tab-pane" role="tabpanel" class="tab-pane fade" aria-labelledby="back-tab" tabindex="0">
+<% ex "cat -t ${editor_file}.backup" %>
+<form action="<%= $SCRIPT_NAME %>" method="post">
+<% field_hidden "action" "restore" %>
+<% field_hidden "editor_file" "$editor_file" %>
+<% button_submit "Restore" "danger" %>
+</form>
+</div>
+<div id="diff-tab-pane" role="tabpanel" class="tab-pane fade" aria-labelledby="diff-tab" tabindex="0">
+<h4>Changes against previous version</h4>
 <%
 # it's ugly but shows non-printed characters (^M/^I)
 _n=$(basename $editor_file)
@@ -103,8 +103,8 @@ pre "$(diff -s -d -U0 /tmp/${_n}.backup.np -L ${editor_file}.backup /tmp/${_n}.n
 rm /tmp/${_n}.np /tmp/${_n}.backup.np
 unset _n
 %>
-    </div>
-  <% fi %>
+</div>
+<% fi %>
 </div>
 
 <%in p/footer.cgi %>

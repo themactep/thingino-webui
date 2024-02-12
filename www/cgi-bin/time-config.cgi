@@ -43,66 +43,64 @@ fi
 <%in p/header.cgi %>
 
 <form action="<%= $SCRIPT_NAME %>" method="post">
-  <% field_hidden "action" "update" %>
-
+<% field_hidden "action" "update" %>
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-  <div class="col">
-    <h4>Time Zone</h4>
-    <datalist id="tz_list"></datalist>
-    <p class="string">
-      <label for="tz_name" class="form-label">Zone name</label>
-      <input type="text" id="tz_name" name="tz_name" value="<%= $tz_name %>" class="form-control" list="tz_list">
-      <span class="hint text-secondary">Start typing the name of the nearest large city in the box above then select from available variants.</span>
-    </p>
-    <p class="string">
-      <label for="tz_data" class="form-label">Zone string</label>
-      <input type="text" id="tz_data" name="tz_data" value="<%= $tz_data %>" class="form-control" readonly>
-      <span class="hint text-secondary">Control string of the timezone selected above. Read-only field, only for monitoring.</span>
-    </p>
-    <p><a href="#" id="frombrowser">Pick up timezone from browser</a></p>
-  </div>
-  <div class="col">
-    <h4>Time Synchronization</h4>
+<div class="col">
+<h3>Time Zone</h3>
+<datalist id="tz_list"></datalist>
+<p class="string">
+<label for="tz_name" class="form-label">Zone name</label>
+<input type="text" id="tz_name" name="tz_name" value="<%= $tz_name %>" class="form-control" list="tz_list">
+<span class="hint text-secondary">Start typing the name of the nearest large city in the box above then select from available variants.</span>
+</p>
+<p class="string">
+<label for="tz_data" class="form-label">Zone string</label>
+<input type="text" id="tz_data" name="tz_data" value="<%= $tz_data %>" class="form-control" readonly>
+<span class="hint text-secondary">Control string of the timezone selected above. Read-only field, only for monitoring.</span>
+</p>
+<p><a href="#" id="frombrowser">Pick up timezone from browser</a></p>
+</div>
+<div class="col">
+<h3>Time Synchronization</h3>
 <%
 for i in $seq; do
-  x=$(expr $i + 1)
-  eval ntp_server_${i}="$(sed -n ${x}p /etc/ntp.conf | cut -d' ' -f2)"
-  field_text "ntp_server_${i}" "NTP Server $(( i + 1 ))"
+	x=$(expr $i + 1)
+	eval ntp_server_${i}="$(sed -n ${x}p /etc/ntp.conf | cut -d' ' -f2)"
+	field_text "ntp_server_${i}" "NTP Server $(( i + 1 ))"
 done; unset i; unset x
 %>
-  </div>
-  <div class="col">
-    <% ex "cat /etc/timezone" %>
-    <% ex "cat /etc/TZ" %>
-    <%# ex "echo \$TZ" %>
-    <% ex "cat /etc/ntp.conf" %>
-    <p id="sync-time-wrapper"><a href="#" id="sync-time">Sync time</a></p>
-  </div>
-  <div class="col">
-  <% if [ "$(diff -q -- "/rom${config_file}" "$config_file")" ]; then %>
-    <form action="<%= $SCRIPT_NAME %>" method="post" class="mt-4">
-      <% field_hidden "action" "reset" %>
-      <% button_submit "Restore firmware defaults" "danger" %>
-    </form>
-  <% fi %>
-  </div>
 </div>
-
-  <% button_submit %>
+<div class="col">
+<h3>Configuration</h3>
+<% ex "cat /etc/timezone" %>
+<% ex "cat /etc/TZ" %>
+<%# ex "echo \$TZ" %>
+<% ex "cat /etc/ntp.conf" %>
+<p id="sync-time-wrapper"><a href="#" id="sync-time">Sync time</a></p>
+</div>
+</div>
+<% button_submit %>
 </form>
+
+<% if [ ! "$(diff -q -- "/rom${config_file}" "$config_file")" ]; then %>
+<form action="<%= $SCRIPT_NAME %>" method="post" class="float-end">
+<% field_hidden "action" "reset" %>
+<% button_submit "Restore firmware defaults" "danger" %>
+</form>
+<% fi %>
 
 <script src="/a/tz.js"></script>
 <script>
-  $('#sync-time').addEventListener('click', event => {
-    event.preventDefault();
-    fetch('/cgi-bin/j/sync-time.cgi')
-      .then((response) => response.json())
-      .then((json) => {
-        p = document.createElement('p');
-        p.classList.add('alert', 'alert-' + json.result);
-        p.textContent = json.message;
-        $('#sync-time-wrapper').replaceWith(p);
-      })
-  });
+	$('#sync-time').addEventListener('click', event => {
+		event.preventDefault();
+		fetch('/cgi-bin/j/sync-time.cgi')
+			.then((response) => response.json())
+			.then((json) => {
+				p = document.createElement('p');
+				p.classList.add('alert', 'alert-' + json.result);
+				p.textContent = json.message;
+				$('#sync-time-wrapper').replaceWith(p);
+			})
+	});
 </script>
 <%in p/footer.cgi %>

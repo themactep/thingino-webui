@@ -65,7 +65,7 @@ else
 	# Default values
 	[ -z "$mqtt_client_id" ] && mqtt_client_id="${network_macaddr//:/}"
 	[ -z "$mqtt_port" ] && mqtt_port="1883"
-	[ -z "$mqtt_topic" ] && mqtt_topic="openipc/${mqtt_client_id}"
+	[ -z "$mqtt_topic" ] && mqtt_topic="thingino/${mqtt_client_id}"
 	[ -z "$mqtt_message" ] && mqtt_message=""
 	[ -z "$mqtt_use_heif" ] && mqtt_use_heif="false"
 fi
@@ -73,30 +73,30 @@ fi
 <%in p/header.cgi %>
 
 <form action="<%= $SCRIPT_NAME %>" method="post">
-  <% field_switch "mqtt_enabled" "Enable MQTT client" %>
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
-    <div class="col">
-      <% field_text "mqtt_host" "MQTT broker host" %>
-      <% field_switch "mqtt_use_ssl" "Use SSL" %>
-      <% field_text "mqtt_port" "MQTT broker port" %>
-      <% field_text "mqtt_client_id" "MQTT client ID" %>
-      <% field_text "mqtt_username" "MQTT broker username" %>
-      <% field_password "mqtt_password" "MQTT broker password" %>
-    </div>
-    <div class="col">
-      <% field_text "mqtt_topic" "MQTT topic" %>
-      <% field_textarea "mqtt_message" "MQTT message" "Supports <a href=\"https://man7.org/linux/man-pages/man3/strftime.3.html \" target=\"_blank\">strftime()</a> format." %>
-      <% field_switch "mqtt_send_snap" "Send a snapshot" %>
-      <% field_switch "mqtt_use_heif" "Use HEIF image format" "Requires H.265 codec on Video0." %>
-      <% field_text "mqtt_snap_topic" "MQTT topic to send the snapshot to" %>
-      <% field_switch "mqtt_socks5_enabled" "Use SOCKS5" "<a href=\"network-socks5.cgi\">Configure</a> SOCKS5 access" %>
-    </div>
-    <div class="col">
-      <% ex "cat $config_file" %>
-      <% button_webui_log %>
-    </div>
-  </div>
-  <% button_submit %>
+<% field_switch "mqtt_enabled" "Enable MQTT client" %>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+<div class="col">
+<% field_text "mqtt_host" "MQTT broker host" %>
+<% field_switch "mqtt_use_ssl" "Use SSL" %>
+<% field_text "mqtt_port" "MQTT broker port" %>
+<% field_text "mqtt_client_id" "MQTT client ID" %>
+<% field_text "mqtt_username" "MQTT broker username" %>
+<% field_password "mqtt_password" "MQTT broker password" %>
+</div>
+<div class="col">
+<% field_text "mqtt_topic" "MQTT topic" %>
+<% field_textarea "mqtt_message" "MQTT message" "Supports <a href=\"https://man7.org/linux/man-pages/man3/strftime.3.html \" target=\"_blank\">strftime()</a> format." %>
+<% field_switch "mqtt_send_snap" "Send a snapshot" %>
+<% field_switch "mqtt_use_heif" "Use HEIF image format" "Requires H.265 codec on Video0." %>
+<% field_text "mqtt_snap_topic" "MQTT topic to send the snapshot to" %>
+<% field_switch "mqtt_socks5_enabled" "Use SOCKS5" "<a href=\"network-socks5.cgi\">Configure</a> SOCKS5 access" %>
+</div>
+<div class="col">
+<% ex "cat $config_file" %>
+<% button_webui_log %>
+</div>
+</div>
+<% button_submit %>
 </form>
 
 <script>

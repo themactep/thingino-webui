@@ -178,8 +178,8 @@ e() {
 }
 
 ex() {
+	echo "<div class=\"${2:-ex}\"><h6># ${1}</h6><pre class=\"small\">"
 	# NB! $() forks process and stalls output.
-	echo "<div class=\"${2}\"><h6># ${1}</h6><pre class=\"small\">"
 	eval "$1" | sed "s/&/\&amp;/g;s/</\&lt;/g;s/>/\&gt;/g;s/\"/\&quot;/g"
 	echo "</pre></div>"
 }
@@ -442,7 +442,7 @@ Server: $SERVER_SOFTWARE
 html_title() {
 	[ -n "$page_title" ] && echo -n "$page_title"
 	[ -n "$title" ] && echo -n ": $title"
-	echo -n " - OpenIPC"
+	echo -n " - thingino"
 }
 
 # label "name" "classes" "extras" "units"
@@ -632,9 +632,9 @@ sanitize() {
 	local n=$1
 	# strip trailing whitespace
 	eval $n=$(echo \$${n})
-	# escape doublequotes
+	# escape double-quotes
 	eval $n=$(echo \${$n//\\\"/\\\\\\\"})
-	# escape varialbles
+	# escape variables
 	eval $n=$(echo \${$n//\$/\\\\\$})
 }
 
@@ -651,7 +651,7 @@ set_error_flag() {
 }
 
 generate_signature() {
-	echo "${soc} (${soc_family} family), $sensor, ${flash_size} MB ${flash_type} flash, ${fw_version}-${fw_variant}, ${network_hostname}, ${network_macaddr}" >$signature_file
+	echo "$soc ($soc_family) SoC, $sensor Sensor, $flash_size_mb MB Flash, $network_hostname, $network_macaddr" >$signature_file
 }
 
 signature() {
@@ -691,9 +691,12 @@ update_caminfo() {
 
 	# Hardware
 	flash_type=$(ipcinfo --flash-type)
-
-	mtd_size=$(grep -E "nor|nand" $(ls /sys/class/mtd/mtd*/type) | sed -E "s|type.+|size|g")
-	flash_size=$(awk '{sum+=$1} END{print sum/1024/1024}' $mtd_size)
+	flash_size=$((0x$(awk '/"all"/ {print $2}' /proc/mtd)))
+	if [ -z "$flash_size" ]; then
+		mtd_size=$(grep -E "nor|nand" $(ls /sys/class/mtd/mtd*/type) | sed -E "s|type.+|size|g")
+		flash_size=$(awk '{sum+=$1} END{print sum}' $mtd_size)
+	fi
+	flash_size_mb=$((flash_size / 1024 / 1024))
 
 	sensor_ini=$(ipcinfo --long-sensor)
 	[ -z "$sensor_ini" ] && sensor_ini=$(fw_printenv -n sensor)
@@ -714,9 +717,8 @@ update_caminfo() {
 	# Firmware
 	uboot_version=$(fw_printenv -n ver)
 	[ -z "$uboot_version" ] && uboot_version=$(strings /dev/mtdblock0 | grep '^U-Boot \d' | head -1)
-	fw_version=$(grep "OPENIPC_VERSION" /etc/os-release | cut -d= -f2 | tr -d /\"/)
-	fw_variant=$(grep "BUILD_OPTION" /etc/os-release | cut -d= -f2 | tr -d /\"/); [ -z "$fw_variant" ] && fw_variant="lite"
-	fw_build=$(grep "GITHUB_VERSION" /etc/os-release | cut -d= -f2 | tr -d /\"/)
+	fw_version=$(grep "^VERSION" /etc/os-release | cut -d= -f2 | tr -d /\"/)
+	fw_build=$(grep "^GITHUB_VERSION" /etc/os-release | cut -d= -f2 | tr -d /\"/)
 	mj_version=$($mj_bin_file -v)
 
 	# WebUI version
@@ -759,7 +761,7 @@ update_caminfo() {
 		tz_name="Etc/GMT"; echo "$tz_name" >/etc/timezone
 	fi
 
-	local variables="flash_size flash_type fw_version fw_variant fw_build
+	local variables="flash_size flash_size_mb flash_type fw_version fw_build
 network_address network_cidr network_default_interface network_dhcp network_dns_1
 network_dns_2 network_gateway network_hostname network_interfaces network_macaddr network_netmask
 overlay_root mj_version soc soc_family sensor sensor_ini tz_data tz_name
@@ -772,6 +774,7 @@ uboot_version ui_password ui_version"
 	sort <$tmpfile | sed /^$/d >$sysinfo_file && rm $tmpfile && unset tmpfile
 
 	echo -e "debug=\"$debug\"\n# caminfo $(date +"%F %T")\n" >>$sysinfo_file
+	generate_signature
 }
 
 update_uboot_env() {
