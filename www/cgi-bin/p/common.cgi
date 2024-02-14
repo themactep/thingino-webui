@@ -678,7 +678,6 @@ t_value() {
 }
 
 update_caminfo() {
-	# Debug flag
 	debug=$(fw_printenv -n debug)
 	[ -z "$debug" ] && debug=0
 
@@ -763,7 +762,7 @@ overlay_root mj_version soc soc_family sensor tz_data tz_name uboot_version ui_p
 	# sort content alphabetically
 	sort <$tmpfile | sed /^$/d >$sysinfo_file && rm $tmpfile && unset tmpfile
 
-	echo -e "debug=\"$debug\"\n# caminfo $(date +"%F %T")\n" >>$sysinfo_file
+	echo -e "debug=${debug}\n# caminfo $(date +"%F %T")\n" >>$sysinfo_file
 	generate_signature
 }
 
