@@ -690,7 +690,9 @@ update_caminfo() {
 	done; unset _f
 
 	# Hardware
-	flash_type=$(ipcinfo --flash-type)
+
+	# FIXME
+	flash_type="NOR"
 	flash_size=$((0x$(awk '/"all"/ {print $2}' /proc/mtd)))
 	if [ -z "$flash_size" ]; then
 		mtd_size=$(grep -E "nor|nand" $(ls /sys/class/mtd/mtd*/type) | sed -E "s|type.+|size|g")
@@ -698,21 +700,9 @@ update_caminfo() {
 	fi
 	flash_size_mb=$((flash_size / 1024 / 1024))
 
-	sensor_ini=$(ipcinfo --long-sensor)
-	[ -z "$sensor_ini" ] && sensor_ini=$(fw_printenv -n sensor)
-
-	sensor=$(ipcinfo --short-sensor)
-	[ -z "$sensor" ] && sensor=$(echo $sensor_ini | cut -d_ -f1)
-
-	soc=$(ipcinfo --chip-name)
-	if [ -z "$soc" ] || [ "unknown" = "$soc" ]; then
-		soc=$(fw_printenv -n soc)
-	fi
-
-	soc_family=$(ipcinfo --family)
-	if [ "unknown" = "$soc_family" ] && [ "t20" = "$soc" ]; then
-		soc_family="t21"
-	fi
+	sensor=$(cat /etc/sensor/model)
+	soc=$(soc)
+	soc_family=$(soc -f)
 
 	# Firmware
 	uboot_version=$(fw_printenv -n ver)
@@ -764,8 +754,7 @@ update_caminfo() {
 	local variables="flash_size flash_size_mb flash_type fw_version fw_build
 network_address network_cidr network_default_interface network_dhcp network_dns_1
 network_dns_2 network_gateway network_hostname network_interfaces network_macaddr network_netmask
-overlay_root mj_version soc soc_family sensor sensor_ini tz_data tz_name
-uboot_version ui_password ui_version"
+overlay_root mj_version soc soc_family sensor tz_data tz_name uboot_version ui_password ui_version"
 	local v
 	for v in $variables; do
 		eval "echo ${v}=\'\$${v}\'>>${tmpfile}"
