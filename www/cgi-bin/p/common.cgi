@@ -161,11 +161,11 @@ check_file_exist() {
 }
 
 check_password() {
-	_safepage="/cgi-bin/webui-settings.cgi"
-	[ "0${debug}" -ge "1" ] && return
-	[ -z "$REQUEST_URI" ] || [ "$REQUEST_URI" = "${_safepage}" ] && return
+	local safepage="/cgi-bin/webui-settings.cgi"
+	[ "$debug" -gt 0 ] && return
+	[ -z "$REQUEST_URI" ] || [ "$REQUEST_URI" = "$safepage" ] && return
 	if [ ! -f /etc/shadow- ] || [ -z $(grep root /etc/shadow- | cut -d: -f2) ]; then
-		redirect_to "${_safepage}" "danger" "You must set your own secure password!"
+		redirect_to "$safepage" "danger" "You must set your own secure password!"
 	fi
 }
 
@@ -651,7 +651,7 @@ set_error_flag() {
 }
 
 generate_signature() {
-	echo "$soc ($soc_family) SoC, $sensor Sensor, $flash_size_mb MB Flash, $network_hostname, $network_macaddr" >$signature_file
+	echo "$soc, $sensor, $flash_size_mb MB, $network_hostname, $network_macaddr" >$signature_file
 }
 
 signature() {
@@ -679,7 +679,8 @@ t_value() {
 
 update_caminfo() {
 	# Debug flag
-	debug=$(fw_printenv -n debug); [ -z "$debug" ] && debug="0"
+	debug=$(fw_printenv -n debug)
+	[ -z "$debug" ] && debug=0
 
 	local tmpfile=${ui_tmp_dir}/sysinfo.tmp
 	:>$tmpfile
@@ -701,8 +702,8 @@ update_caminfo() {
 	flash_size_mb=$((flash_size / 1024 / 1024))
 
 	sensor=$(cat /etc/sensor/model)
-	soc=$(soc)
-	soc_family=$(soc -f)
+	soc=$(/usr/sbin/soc)
+	soc_family=$(/usr/sbin/soc -f)
 
 	# Firmware
 	uboot_version=$(fw_printenv -n ver)
