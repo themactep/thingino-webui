@@ -8,7 +8,6 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 	mj_conf=/etc/majestic.yaml
 	temp_yaml=/tmp/majestic.yaml
 
-	# make a copy of the actual config into memory
 	cp -f $mj_conf $temp_yaml
 
 	OIFS=$IFS
@@ -17,15 +16,8 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 		form_field_name=$(echo $yaml_param_name | sed 's/^POST_mj_//')
 		key=".$(echo $form_field_name | cut -d= -f1 | sed 's/_/./g')"
 
-		# do not include helping fields into config
-		if [ "$key" = ".netip.password.plain" ] || [ "$key" = ".osd.corner" ]; then
-			continue
-		fi
-
 		value="$(echo $form_field_name | cut -d= -f2)"
 
-		# normalization
-		# (that's why we can't have nice things)
 		case "$key" in
 			.video0.codec)
 				if [ "off" = "$value" ]; then
@@ -51,12 +43,6 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 					yaml-cli -s ".audio.enabled" "true" -i $temp_yaml
 				fi
 				;;
-			.image.rotate)
-				[ "0" = "$value" ] && value="none"
-				;;
-			.motionDetect.visualize)
-				[ "true" = "$value" ] && yaml-cli -s ".osd.enabled" "true" -i $temp_yaml
-				;;
 			.osd.enabled)
 				[ "false" = "$value" ] && yaml-cli -s ".motionDetect.visualize" "false" -i $temp_yaml
 				;;
@@ -66,22 +52,17 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 		oldvalue=$(yaml-cli -g "$key" -i $temp_yaml)
 
 		if [ -z "$value" ]; then
-			# if no new value submitted but there is an existing value, delete the yaml_param_name
 			[ -n "$oldvalue" ] && yaml-cli -d $key -i "$temp_yaml" -o "$temp_yaml"
 		else
-			# if new value is submitted and it differs from the existing one, update the yaml_param_name
 			[ "$oldvalue" != "$value" ] && yaml-cli -s $key "$value" -i "$temp_yaml" -o "$temp_yaml"
 		fi
 	done
 	IFS=$OIFS
 
-	# update config if differs
 	[ -n "$(diff -q $temp_yaml $mj_conf)" ] && cp -f $temp_yaml $mj_conf
 
-	# clean up
 	rm $temp_yaml
 
-	# reload majestic
 	killall -1 majestic
 
 	redirect_to "$HTTP_REFERER"
@@ -89,12 +70,12 @@ fi
 
 config=""
 _mj2="$(echo "$mj" | sed "s/ /_/g")"
-for line in $_mj2; do                  # line: .isp.exposure|Sensor_exposure_time|&micro;s|range|auto,1-500000|auto|From_1_to_500000.
-	yaml_param_name=${line%%|*}    # => .isp.exposure
-	pn=${yaml_param_name#.}        # => isp.exposure
-	pn=${pn//./_}                  # => isp_exposure
-	pn=${pn//-/_}                  # => isp_exposure
-	domain=${pn%%_*}               # => isp
+for line in $_mj2; do
+	yaml_param_name=${line%%|*}
+	pn=${yaml_param_name#.}
+	pn=${pn//./_}
+	pn=${pn//-/_}
+	domain=${pn%%_*}
 
 	if [ "$old_domain" != "$domain" ]; then
 		[ -n "$old_domain" ] && echo "</div></div>"
@@ -102,41 +83,34 @@ for line in $_mj2; do                  # line: .isp.exposure|Sensor_exposure_tim
 		old_domain=$domain
 	fi
 
-	form_field_name=mj_${pn}       # => mj_isp_exposure
-	line=${line#*|}                # line: Sensor_exposure_time|&micro;s|range|auto,1-500000|auto|From_1_to_500000.
-	label_text=${line%%|*}         # => Sensor_exposure_time
-	label_text=${label_text//_/ }  # => Sensor exposure time
-	line=${line#*|}                # line: &micro;s|range|auto,1-500000|auto|From_1_to_500000.
-	units=${line%%|*}              # => &micro;s
-	line=${line#*|}                # line: range|auto,1-500000|auto|From_1_to_500000.
-	form_field_type=${line%%|*}    # => range
-	line=${line#*|}                # line: auto,1-500000|auto|From_1_to_500000.
-	options=${line%%|*}            # => auto,1-500000
-	line=${line#*|}                # line: auto|From_1_to_500000.
-	placeholder=${line%%|*}        # => auto
-	line=${line#*|}                # line: From_1_to_500000.
-	hint=$line                     # => From_1_to_500000.
-	hint=${hint//_/ }              # => From 1 to 500000.
+	form_field_name=mj_${pn}
+	line=${line#*|}
+	label_text=${line%%|*}
+	label_text=${label_text//_/ }
+	line=${line#*|}
+	units=${line%%|*}
+	line=${line#*|}
+	form_field_type=${line%%|*}
+	line=${line#*|}
+	options=${line%%|*}
+	line=${line#*|}
+	placeholder=${line%%|*}
+	line=${line#*|}
+	hint=$line
+	hint=${hint//_/ }
 
 	value="$(yaml-cli -g "$yaml_param_name")"
-	# FIXME: this is not how it should be done. Instead, Majestic should be reporting its true values.
-	# [ -z "$value" ] && value="$placeholder"
 
-	# assign yaml_param_name's value to a variable with yaml_param_name's form_field_name for form fields values
 	eval "$form_field_name=\"\$value\""
 done
 
-# defaults
-video0=$mj_video0_codec
-[ -z "$video0" ] && video0="h264"
+video0=${mj_video0_codec:-h264}
 [ "true" != "$mj_video0_enabled" ] && video0="off"
 
-video1=$mj_video1_codec
-[ -z "$video1" ] && mj_video1="h264"
+video1=${mj_video1_codec:-h264}
 [ "true" != "$mj_video1_enabled" ] && video1="off"
 
-audio=$mj_audio_volume
-[ -z "$audio" ] && audio="50"
+audio=${mj_audio_volume:-50}
 [ "true" != "$mj_audio_enabled" ] && audio="off" && mj_audio_volume=""
 [ "$mj_audio_volume" -gt 0 ] && audio="manual"
 %>
@@ -216,31 +190,6 @@ audio=$mj_audio_volume
 </form>
 
 <script>
-	let MD5 = function(d){return V(Y(X(d),8*d.length))};
-	function X(d){for(var _=Array(d.length>>2),m=0;m<_.length;m++)_[m]=0;for(m=0;m<8*d.length;m+=8)_[m>>5]|=(255&d.charCodeAt(m/8))<<m%32;return _}
-	function V(d){for(var _="",m=0;m<32*d.length;m+=8)_+=String.fromCharCode(d[m>>5]>>>m%32&255);return _}
-	function Y(d,_){d[_>>5]|=128<<_%32,d[14+(_+64>>>9<<4)]=_;for(var m=1732584193,f=-271733879,r=-1732584194,i=271733878,n=0;n<d.length;n+=16){var h=m,t=f,g=r,e=i;f=md5_ii(f=md5_ii(f=md5_ii(f=md5_ii(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_hh(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_gg(f=md5_ff(f=md5_ff(f=md5_ff(f=md5_ff(f,r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+0],7,-680876936),f,r,d[n+1],12,-389564586),m,f,d[n+2],17,606105819),i,m,d[n+3],22,-1044525330),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+4],7,-176418897),f,r,d[n+5],12,1200080426),m,f,d[n+6],17,-1473231341),i,m,d[n+7],22,-45705983),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+8],7,1770035416),f,r,d[n+9],12,-1958414417),m,f,d[n+10],17,-42063),i,m,d[n+11],22,-1990404162),r=md5_ff(r,i=md5_ff(i,m=md5_ff(m,f,r,i,d[n+12],7,1804603682),f,r,d[n+13],12,-40341101),m,f,d[n+14],17,-1502002290),i,m,d[n+15],22,1236535329),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+1],5,-165796510),f,r,d[n+6],9,-1069501632),m,f,d[n+11],14,643717713),i,m,d[n+0],20,-373897302),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+5],5,-701558691),f,r,d[n+10],9,38016083),m,f,d[n+15],14,-660478335),i,m,d[n+4],20,-405537848),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+9],5,568446438),f,r,d[n+14],9,-1019803690),m,f,d[n+3],14,-187363961),i,m,d[n+8],20,1163531501),r=md5_gg(r,i=md5_gg(i,m=md5_gg(m,f,r,i,d[n+13],5,-1444681467),f,r,d[n+2],9,-51403784),m,f,d[n+7],14,1735328473),i,m,d[n+12],20,-1926607734),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+5],4,-378558),f,r,d[n+8],11,-2022574463),m,f,d[n+11],16,1839030562),i,m,d[n+14],23,-35309556),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+1],4,-1530992060),f,r,d[n+4],11,1272893353),m,f,d[n+7],16,-155497632),i,m,d[n+10],23,-1094730640),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+13],4,681279174),f,r,d[n+0],11,-358537222),m,f,d[n+3],16,-722521979),i,m,d[n+6],23,76029189),r=md5_hh(r,i=md5_hh(i,m=md5_hh(m,f,r,i,d[n+9],4,-640364487),f,r,d[n+12],11,-421815835),m,f,d[n+15],16,530742520),i,m,d[n+2],23,-995338651),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+0],6,-198630844),f,r,d[n+7],10,1126891415),m,f,d[n+14],15,-1416354905),i,m,d[n+5],21,-57434055),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+12],6,1700485571),f,r,d[n+3],10,-1894986606),m,f,d[n+10],15,-1051523),i,m,d[n+1],21,-2054922799),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+8],6,1873313359),f,r,d[n+15],10,-30611744),m,f,d[n+6],15,-1560198380),i,m,d[n+13],21,1309151649),r=md5_ii(r,i=md5_ii(i,m=md5_ii(m,f,r,i,d[n+4],6,-145523070),f,r,d[n+11],10,-1120210379),m,f,d[n+2],15,718787259),i,m,d[n+9],21,-343485551),m=safe_add(m,h),f=safe_add(f,t),r=safe_add(r,g),i=safe_add(i,e)}return Array(m,f,r,i)}
-	function md5_cmn(d,_,m,f,r,i){return safe_add(bit_rol(safe_add(safe_add(_,d),safe_add(f,i)),r),m)}
-	function md5_ff(d,_,m,f,r,i,n){return md5_cmn(_&m|~_&f,d,_,r,i,n)}
-	function md5_gg(d,_,m,f,r,i,n){return md5_cmn(_&f|m&~f,d,_,r,i,n)}
-	function md5_hh(d,_,m,f,r,i,n){return md5_cmn(_^m^f,d,_,r,i,n)}
-	function md5_ii(d,_,m,f,r,i,n){return md5_cmn(m^(_|~f),d,_,r,i,n)}
-	function safe_add(d,_){var m=(65535&d)+(65535&_);return(d>>16)+(_>>16)+(m>>16)<<16|65535&m}
-	function bit_rol(d,_){return d<<_|d>>>32-_}
-	function ord(str){return str.charCodeAt(0)}
-	function chr(n){return String.fromCharCode(n)}
-
-	function generateSofiaHash(text) {
-		let h = "";
-		let md5 = MD5(text);
-		for (let i = 0; i <= 7; i++) {
-			let n = (ord(md5[2*i]) + ord(md5[2*i+1])) % 62;
-			n += (n > 9) ? (n > 35) ? 61 : 55 : 48;
-			h += chr(n);
-		}
-		return h;
-	}
-
 	function disableVolume(el) {
 		if (el.checked) {
 			const v = el.value;
