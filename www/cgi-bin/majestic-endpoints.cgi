@@ -29,7 +29,7 @@ page_title="Majestic Endpoints"
 <h3>Still Images</h3>
 <dl>
 <dt class="cp2cb">http://root:root@<%= $network_address %>/image.jpg</dt>
-<dd>Snapshot in JPEG format.<br>Optional parameters:<sup>2,4</sup>
+<dd>Snapshot in JPEG format.<br>Optional parameters:
 <ul class="small">
 <li>width, height - size of resulting image</li>
 <li>qfactor - JPEG quality factor (1-99)</li>
@@ -49,13 +49,6 @@ page_title="Majestic Endpoints"
 </dl>
 </div>
 </div>
-
-<ol class="footnotes small">
-<li class="text-body-secondary">E.g. <i>ffplay -ar 48000 -ac 1 -f s16le http://<%= $network_address %>/audio.pcm</i></li>
-<li class="text-body-secondary">E.g. <i>http://<%= $network_address %>/image.jpg?width=640&height=480&qfactor=50&color2gray=1&crop=80x32x512x400</i></li>
-</ol>
-
-<p class="text-body-secondary">More examples available <a href="https://github.com/OpenIPC/wiki/blob/master/en/majestic-streamer.md">in OpenIPC wiki</a>.</p>
 
 <script>
 	function initializeCopyToClipboard() {
