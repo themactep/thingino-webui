@@ -693,8 +693,8 @@ update_caminfo() {
 
 	# FIXME
 	flash_type="NOR"
-	flash_size=$((0x$(awk '/"all"/ {print $2}' /proc/mtd)))
-	if [ -z "$flash_size" ]; then
+	flash_size=$((0x0$(awk '/"all"/ {print $2}' /proc/mtd)))
+	if [ "$flash_size" -eq 0 ]; then
 		mtd_size=$(grep -E "nor|nand" $(ls /sys/class/mtd/mtd*/type) | sed -E "s|type.+|size|g")
 		flash_size=$(awk '{sum+=$1} END{print sum}' $mtd_size)
 	fi
