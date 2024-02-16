@@ -14,16 +14,16 @@ readconfig() {
 	local name
 	local value
 	for l in $(sed -n "/^\../p" p/mj.cgi|cut -d\| -f1); do
-	  d=${l%.*}; d=${d/./}; name=${l##*.}
-	  value=$(yaml-cli -g "$l")
-	  if [ "$o" != "$d" ]; then
-	    [ -n "$o" ] && echo -n "},"
-	    o="$d"
-	    echo -n "\"${d}\":{"
-	  else
-	    echo -n ","
-	  fi
-	  echo -n "\"${name}\":\"${value}\""
+		d=${l%.*}; d=${d/./}; name=${l##*.}
+		value=$(yaml-cli -g "$l")
+		if [ "$o" != "$d" ]; then
+			[ -n "$o" ] && echo -n "},"
+			o="$d"
+			echo -n "\"${d}\":{"
+		else
+			echo -n ","
+		fi
+	 	echo -n "\"${name}\":\"${value}\""
 	done
 }
 

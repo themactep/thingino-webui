@@ -6,13 +6,13 @@ log="$GET_log"
 case "$log" in
 	dmesg)
 		dmesg >$file
-		 ;;
+		;;
 	logread)
 		logread >$file
-		 ;;
+		;;
 	netstat)
 		netstat -a >$file
-		 ;;
+		;;
 	*)
 		echo "Unknown file."
 		exit 1
