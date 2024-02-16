@@ -701,7 +701,7 @@ update_caminfo() {
 	flash_size_mb=$((flash_size / 1024 / 1024))
 
 	sensor=$(cat /etc/sensor/model)
-	soc=$(/usr/sbin/soc)
+	soc=$(/usr/sbin/soc -m)
 	soc_family=$(/usr/sbin/soc -f)
 
 	# Firmware
