@@ -20,8 +20,11 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 			[ -z "$POST_tz_name" ] && redirect_to $SCRIPT_NAME "warning" "Empty timezone name. Skipping."
 			[ -z "$POST_tz_data" ] && redirect_to $SCRIPT_NAME "warning" "Empty timezone value. Skipping."
 
-			[ "$tz_data" != "$POST_tz_data" ] && echo "${POST_tz_data}" >/etc/TZ
-			[ "$tz_name" != "$POST_tz_name" ] && echo "${POST_tz_name}" >/etc/timezone
+			[ "$tz_data" != "$POST_tz_data" ] && \
+				echo "${POST_tz_data}" >/etc/TZ
+			[ "$tz_name" != "$POST_tz_name" ] && \
+				echo "${POST_tz_name}" >/etc/timezone && \
+				fw_setenv timezone "$POST_tz_name"
 
 			tmp_file=/tmp/ntp.conf
 			:>$tmp_file
@@ -91,6 +94,21 @@ done; unset i; unset x
 
 <script src="/a/tz.js"></script>
 <script>
+	function findTimezone(tz) {
+		return tz.n == $("#tz_name").value;
+	}
+
+	function updateTimezone() {
+		const tz = TZ.filter(findTimezone);
+		$("#tz_data").value = (tz.length == 0) ? "" : tz[0].v;
+	}
+
+	function useBrowserTimezone(event) {
+		event.preventDefault();
+		$("#tz_name").value = Intl.DateTimeFormat().resolvedOptions().timeZone.replaceAll('_', ' ');
+		updateTimezone();
+	}
+
 	$('#sync-time').addEventListener('click', event => {
 		event.preventDefault();
 		fetch('/cgi-bin/j/sync-time.cgi')
@@ -102,5 +120,33 @@ done; unset i; unset x
 				$('#sync-time-wrapper').replaceWith(p);
 			})
 	});
+
+	const tzn = $("#tz_name");
+	if (navigator.userAgent.includes("Android") && navigator.userAgent.includes("Firefox")) {
+		const sel = document.createElement("select");
+		sel.classList.add("form-select");
+		sel.name = "tz_name";
+		sel.id = "tz_name";
+		sel.options.add(new Option());
+		let opt;
+		TZ.forEach(function (tz) {
+			opt = new Option(tz.n);
+			opt.selected = (tz.n == tzn.value);
+			sel.options.add(opt);
+		});
+		tzn.replaceWith(sel);
+	} else {
+		const el = $("#tz_list");
+		el.innerHTML = "";
+		TZ.forEach(function (tz) {
+			const o = document.createElement("option");
+			o.value = tz.n;
+			el.appendChild(o);
+		});
+	}
+	tzn.addEventListener("focus", ev => ev.target.select());
+	tzn.addEventListener("selectionchange", updateTimezone);
+	tzn.addEventListener("change", updateTimezone);
+	$("#frombrowser").addEventListener("click", useBrowserTimezone);
 </script>
 <%in p/footer.cgi %>
