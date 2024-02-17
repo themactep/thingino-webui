@@ -69,17 +69,9 @@ To see a smooth video feed from the camera use one of the <a href="majestic-endp
 </div>
 </div>
 </div>
-<div class="motor justify-content-center mt-4">
-<button class="btn btn-secondary" data-dir="ul">🡼</button>
-<button class="btn btn-secondary" data-dir="uc">🡹</button>
-<button class="btn btn-secondary" data-dir="ur">🡽</button>
-<button class="btn btn-secondary" data-dir="lc">🡸</button>
-<button class="btn btn-secondary" data-dir="cc">⭙</button>
-<button class="btn btn-secondary" data-dir="rc">🡺</button>
-<button class="btn btn-secondary" data-dir="dl">🡿</button>
-<button class="btn btn-secondary" data-dir="dc">🡻</button>
-<button class="btn btn-secondary" data-dir="dr">🡾</button>
-</div>
+<% if [ -f "/usr/bin/motors" ]; then %>
+<%in p/motors.cgi %>
+<% end %>
 </div>
 <script>
 const network_address = "<%= $network_address %>";
@@ -90,42 +82,6 @@ const network_address = "<%= $network_address %>";
 <% [ "true" != "$webhook_enabled"  ] && echo "\$('button[data-sendto=webhook]').disabled = true;" %>
 <% [ "true" != "$telegram_enabled" ] && echo "\$('button[data-sendto=telegram]').disabled = true;" %>
 <% [ "true" != "$yadisk_enabled"   ] && echo "\$('button[data-sendto=yadisk]').disabled = true;" %>
-
-function sendToApi(endpoint) {
-	const xhr = new XMLHttpRequest();
-	xhr.addEventListener("load", reqListener);
-	xhr.open("GET", 'http://' + network_address + endpoint);
-	xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:"));
-	xhr.send();
-}
-
-function reqListener(data) {
-	console.log(data.responseText);
-}
-
-function xhrGet(url) {
-	const xhr = new XMLHttpRequest();
-	xhr.open('GET', url);
-	xhr.send();
-}
-
-function moveMotor(dir) {
-	const steps = 20;
-	const x_max=<% echo -n $(fw_printenv -n motor_maxstep_h) %>;
-	const y_max=<% echo -n $(fw_printenv -n motor_maxstep_v) %>;
-	const x_step = x_max / steps;
-	const y_step = y_max / steps;
-	let y = dir.includes("u") ? -y_step : dir.includes("d") ? y_step : 0;
-	let x = dir.includes("l") ? -x_step : dir.includes("r") ? x_step : 0;
-	xhrGet("/cgi-bin/j/motor.cgi?x=" + x + "&y=" + y);
-}
-
-$$("a[id^=pan-],a[id^=zoom-]").forEach(el => {
-	el.addEventListener("click", ev => {
-		ev.preventDefault();
-		alert("Sorry, this feature does not work, yet!");
-	});
-});
 
 $$("button[data-sendto]").forEach(el => {
 	el.addEventListener("click", ev => {
@@ -168,8 +124,6 @@ $("#toggle-night").addEventListener("click", ev => {
 	}
 	xhrGet("/cgi-bin/j/night.cgi?mode=" + mode);
 });
-
-$$(".motor button").forEach(el => el.addEventListener("click", ev => moveMotor(ev.target.dataset.dir)));
 </script>
 
 <%in p/footer.cgi %>

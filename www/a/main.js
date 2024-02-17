@@ -31,6 +31,24 @@ function setProgressBar(id, value, name) {
 	}
 }
 
+function sendToApi(endpoint) {
+	const xhr = new XMLHttpRequest();
+	xhr.addEventListener("load", reqListener);
+	xhr.open("GET", 'http://' + network_address + endpoint);
+	xhr.setRequestHeader("Authorization", "Basic " + btoa("admin:"));
+	xhr.send();
+}
+
+function reqListener(data) {
+	console.log(data.responseText);
+}
+
+function xhrGet(url) {
+	const xhr = new XMLHttpRequest();
+	xhr.open('GET', url);
+	xhr.send();
+}
+
 function heartbeat() {
 	fetch('/cgi-bin/j/heartbeat.cgi')
 		.then((response) => response.json())
