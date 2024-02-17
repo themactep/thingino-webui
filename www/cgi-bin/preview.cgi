@@ -69,8 +69,18 @@ To see a smooth video feed from the camera use one of the <a href="majestic-endp
 </div>
 </div>
 </div>
+<div class="motor-controls mt-3">
+<div class="d-grid gap-2">
+	<button class="btn btn-secondary" id="motor-up">Up</button>
+	<div class="btn-group" role="group">
+		<button class="btn btn-secondary" id="motor-left">Left</button>
+		<button class="btn btn-secondary" id="motor-center">Center</button>
+		<button class="btn btn-secondary" id="motor-right">Right</button>
+	</div>
+	<button class="btn btn-secondary" id="motor-down">Down</button>
 </div>
-
+</div>
+</div>
 <script>
 const network_address = "<%= $network_address %>";
 
@@ -147,6 +157,40 @@ $("#toggle-night").addEventListener("click", ev => {
 	}
 	xhrGet("/cgi-bin/j/night.cgi?mode=" + mode);
 });
+
+document.getElementById("motor-up").addEventListener("click", () => moveMotor("up"));
+document.getElementById("motor-down").addEventListener("click", () => moveMotor("down"));
+document.getElementById("motor-left").addEventListener("click", () => moveMotor("left"));
+document.getElementById("motor-right").addEventListener("click", () => moveMotor("right"));
+document.getElementById("motor-center").addEventListener("click", () => moveMotor("center"));
+
+function moveMotor(direction) {
+    // Define step size and direction for each motor movement
+    let xStep = 0, yStep = 0;
+    switch(direction) {
+        case "up":
+            yStep = -100; // Adjust step size as needed
+            break;
+        case "down":
+            yStep = 100;
+            break;
+        case "left":
+            xStep = -100;
+            break;
+        case "right":
+            xStep = 100;
+            break;
+        case "center":
+            // Implement centering logic, possibly resetting to a default position
+            xStep = 0; // Example: Reset steps
+            yStep = 0;
+            break;
+    }
+
+    // Construct the endpoint URL with the desired X and Y steps
+    const endpoint = `/cgi-bin/motor-control.cgi?x=${xStep}&y=${yStep}`;
+    xhrGet(endpoint); // Reuse the existing xhrGet function for simplicity
+}
 </script>
 
 <%in p/footer.cgi %>
