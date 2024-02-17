@@ -542,8 +542,8 @@ async function updatePreview() {
 		jpg.src = pimg + '?qfactor=50&t=' + Date.now();
 	}
 	jpg.onload = function() {
-	ctx.drawImage(jpg, 0, 0, jpg.width, jpg.height, 0, 0, pw, ph);
-	canvas.style.background = null;
+		ctx.drawImage(jpg, 0, 0, jpg.width, jpg.height, 0, 0, pw, ph);
+		canvas.style.background = null;
 	}
 }
 

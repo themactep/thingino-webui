@@ -127,3 +127,16 @@ textarea {
 	height: 4px;
 	cursor: pointer;
 }
+
+.motor {
+	align-items: stretch;
+	display: grid;
+	grid-template-columns: 3rem 3rem 3rem;
+	grid-template-rows: 3rem 3rem 3rem;
+	column-gap: .25rem;
+	row-gap: .25rem;
+}
+
+.motor button {
+	font-size: 1.5rem;
+}
