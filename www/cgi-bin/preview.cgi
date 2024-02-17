@@ -69,9 +69,9 @@ To see a smooth video feed from the camera use one of the <a href="majestic-endp
 </div>
 </div>
 </div>
-<% if [ -f "/usr/bin/motors" ]; then %>
+<% if [ -f /usr/bin/motors ]; then %>
 <%in p/motors.cgi %>
-<% end %>
+<% fi %>
 </div>
 <script>
 const network_address = "<%= $network_address %>";
