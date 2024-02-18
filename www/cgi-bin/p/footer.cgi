@@ -7,7 +7,7 @@
 <p id="uptime" class="text-secondary"></p>
 </div>
 <div class="col col-10">
-<p class="text-end">Powered by <a href="https://github.com/themactep/thingino-webui">thingino</a>.</p>
+<p class="text-end">Powered by <a href="https://github.com/themactep/thingino-firmware">thingino</a>.</p>
 </div>
 </div>
 </div>
