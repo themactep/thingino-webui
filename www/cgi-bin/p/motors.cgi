@@ -1,13 +1,13 @@
 <div class="motor justify-content-center mt-4">
-<button class="btn btn-secondary" data-dir="ul">🡼</button>
-<button class="btn btn-secondary" data-dir="uc">🡹</button>
-<button class="btn btn-secondary" data-dir="ur">🡽</button>
-<button class="btn btn-secondary" data-dir="lc">🡸</button>
-<button class="btn btn-secondary" data-dir="cc">⭙</button>
-<button class="btn btn-secondary" data-dir="rc">🡺</button>
-<button class="btn btn-secondary" data-dir="dl">🡿</button>
-<button class="btn btn-secondary" data-dir="dc">🡻</button>
-<button class="btn btn-secondary" data-dir="dr">🡾</button>
+<button class="btn btn-secondary" data-dir="ul">↖</button>
+<button class="btn btn-secondary" data-dir="uc">↑</button>
+<button class="btn btn-secondary" data-dir="ur">↗</button>
+<button class="btn btn-secondary" data-dir="lc">←</button>
+<button class="btn btn-secondary" data-dir="cc">⟴</button>
+<button class="btn btn-secondary" data-dir="rc">→</button>
+<button class="btn btn-secondary" data-dir="dl">↙</button>
+<button class="btn btn-secondary" data-dir="dc">↓</button>
+<button class="btn btn-secondary" data-dir="dr">↘</button>
 </div>
 
 <script>
