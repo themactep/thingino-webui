@@ -1,5 +1,5 @@
 #!/bin/sh
-preview=/tmp/preview.jpg
+preview=/tmp/snapshot.jpg
 date=$(TZ=GMT0 date +'%a, %d %b %Y %T %Z')
 echo "HTTP/1.1 200 OK
 Content-type: image/jpeg
