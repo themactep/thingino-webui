@@ -12,7 +12,7 @@
 
 <script>
 function moveMotor(dir) {
-	const steps = 20;
+	const steps = 100;
 	const x_max=<% echo -n $(fw_printenv -n motor_maxstep_h) %>;
 	const y_max=<% echo -n $(fw_printenv -n motor_maxstep_v) %>;
 	const x_step = x_max / steps;
