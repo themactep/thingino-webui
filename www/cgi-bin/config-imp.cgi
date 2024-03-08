@@ -15,7 +15,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 	if [ -n "$POST_reset_changes" ]; then
 		[ -f "$imp_config_file" ] && rm $imp_config_file
 		[ -f "$imp_config_temp_file" ] && rm $imp_config_temp_file
-		#/etc/init.d/S95majestic restart >/dev/null
+		/etc/init.d/S95prudynt restart >/dev/null
 		sleep 1
 	fi
 
