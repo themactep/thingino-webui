@@ -7,7 +7,7 @@
 <div class="col-md-8 col-xl-9 col-xxl-9 position-relative mb-3">
 <% preview 1 %>
 <p class="small text-body-secondary">The image above refreshes once per second and may appear choppy.
-To see a smooth video feed from the camera use one of the <a href="majestic-endpoints.cgi" target="_blank">video endpoints</a>.
+To see a smooth video feed from the camera use RTSP stream.</p>
 </div>
 <div class="col-md-4 col-xl-3 col-xxl-3">
 <div class="d-grid gap-2 mb-3">

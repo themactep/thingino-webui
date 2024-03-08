@@ -103,18 +103,6 @@ button_download() {
 	echo "<a href=\"dl2.cgi?log=${1}\" class=\"btn btn-primary\">Download log</a>"
 }
 
-button_mj_backup() {
-	echo "<form action=\"majestic-config-actions.cgi\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"backup\">"
-	button_submit "Backup settings"
-	echo "</form>"
-}
-
-button_mj_reset() {
-	echo "<form action=\"majestic-config-actions.cgi\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"reset\">"
-	button_submit "Reset Majestic" "danger"
-	echo "</form>"
-}
-
 button_reboot() {
 	echo "<form action=\"reboot.cgi\" method=\"post\"><input type=\"hidden\" name=\"action\" value=\"reboot\">"
 	button_submit "Reboot camera" "danger"
@@ -312,7 +300,7 @@ field_select() {
 	for o in $o; do
 		v="${o%:*}"
 		n="${o#*:}"
-		[ "$1" != "mj_isp_sensorConfig" ] && n=${n//_/ }
+		n=${n//_/ }
 		echo -n "<option value=\"${v}\""
 		[ "$(t_value "$1")" = "$v" ] && echo -n " selected"
 		echo ">${n}</option>"
@@ -489,12 +477,6 @@ log() {
 	echo $1 >/tmp/webui.log
 }
 
-majestic_diff() {
-	config_file=/etc/majestic.yaml
-	diff /rom$config_file $config_file >/tmp/majestic.patch
-	cat /tmp/majestic.patch
-}
-
 # select_option "name" "value"
 select_option() {
 	local v=$2
@@ -514,11 +496,7 @@ preview() {
 	local refresh_rate=1
 	[ -n "$1" ] && refresh_rate=$1
 	[ "$debug" -gt 0 ] && refresh_rate=$(( refresh_rate * 100 ))
-	if [ "true" = "$(yaml-cli -g .jpeg.enabled)" ]; then
-		echo "<canvas id=\"preview\" style=\"background:gray url(/a/SMPTE_Color_Bars_16x9.svg);background-size:cover;width:100%;height:auto;\"></canvas>"
-	else
-		echo "<p class=\"alert alert-warning\"><a href=\"majestic-settings.cgi?tab=jpeg\">Enable JPEG support</a> to see the preview.</p>"
-	fi
+	echo "<canvas id=\"preview\" style=\"background:gray url(/a/SMPTE_Color_Bars_16x9.svg);background-size:cover;width:100%;height:auto;\"></canvas>"
 	echo "<script>
 function calculatePreviewSize() {
 	const i = new Image();
@@ -709,7 +687,6 @@ update_caminfo() {
 	[ -z "$uboot_version" ] && uboot_version=$(strings /dev/mtdblock0 | grep '^U-Boot \d' | head -1)
 	fw_version=$(grep "^VERSION" /etc/os-release | cut -d= -f2 | tr -d /\"/)
 	fw_build=$(grep "^GITHUB_VERSION" /etc/os-release | cut -d= -f2 | tr -d /\"/)
-	mj_version=$($mj_bin_file -v)
 
 	# WebUI version
 	ui_version="bundled"; [ -f /var/www/.version ] && ui_version=$(cat /var/www/.version)
@@ -754,7 +731,7 @@ update_caminfo() {
 	local variables="flash_size flash_size_mb flash_type fw_version fw_build
 network_address network_cidr network_default_interface network_dhcp network_dns_1
 network_dns_2 network_gateway network_hostname network_interfaces network_macaddr network_netmask
-overlay_root mj_version soc soc_family sensor tz_data tz_name uboot_version ui_password ui_version"
+overlay_root soc soc_family sensor tz_data tz_name uboot_version ui_password ui_version"
 	local v
 	for v in $variables; do
 		eval "echo ${v}=\'\$${v}\'>>${tmpfile}"
@@ -807,7 +784,6 @@ include() {
 ui_tmp_dir=/tmp/webui
 ui_config_dir=/etc/webui
 
-mj_bin_file=/usr/bin/majestic
 flash_file=/tmp/webui-flash.txt
 signature_file=/tmp/webui/signature.txt
 sysinfo_file=/tmp/sysinfo.txt
@@ -825,7 +801,6 @@ pagename=$(basename "$SCRIPT_NAME")
 pagename="${pagename%%.*}"
 
 include p/locale_en.cgi
-include p/mj.cgi
 include /etc/webui/mqtt.conf
 include /etc/webui/socks5.conf
 include /etc/webui/speaker.conf

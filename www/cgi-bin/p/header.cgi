@@ -34,7 +34,6 @@ Pragma: no-cache
 <li><a class="dropdown-item" href="info-httpd.cgi">HTTPd Environment</a></li>
 <li><a class="dropdown-item" href="info-top.cgi">Top Processes</a></li>
 <li><a class="dropdown-item" href="info-overlay.cgi">Overlay Partition</a></li>
-<li><a class="dropdown-item" href="info-majestic.cgi">Majestic Config</a></li>
 <% if [ -e /proc/umap ]; then %>
 <li><a class="dropdown-item" href="info-proc-umap.cgi">Information from /proc/umap</a></li>
 <% fi %>
@@ -50,7 +49,6 @@ Pragma: no-cache
 <li><a class="dropdown-item" href="network.cgi">Network</a></li>
 <li><a class="dropdown-item" href="time-config.cgi">Time</a></li>
 <li><a class="dropdown-item" href="config-light.cgi">Illumination</a></li>
-<li><a class="dropdown-item" href="majestic-settings.cgi">Majestic</a></li>
 <li><a class="dropdown-item" href="config-imp.cgi">IMP Control</a></li>
 <li><a class="dropdown-item" href="network-socks5.cgi">SOCKS5 Proxy</a></li>
 <li><a class="dropdown-item" href="webui-settings.cgi">Web Interface</a></li>
@@ -63,7 +61,6 @@ Pragma: no-cache
 <li class="nav-item dropdown">
 <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownTools" role="button">Tools</a>
 <ul aria-labelledby="dropdownTools" class="dropdown-menu">
-<li><a class="dropdown-item" href="majestic-config-actions.cgi">Majestic Maintenance</a></li>
 <li><a class="dropdown-item" href="tools.cgi">Ping & Traceroute</a></li>
 <li><a class="dropdown-item" href="file-manager.cgi">File Manager</a></li>
 <li><a class="dropdown-item" href="sdcard.cgi">SD Card</a></li>
@@ -81,7 +78,6 @@ Pragma: no-cache
 <a aria-expanded="false" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownHelp" role="button">Help</a>
 <ul aria-labelledby="dropdownHelp" class="dropdown-menu dropdown-menu-lg-end">
 <li><a class="dropdown-item" href="https://thingino.com/">About thingino</a></li>
-<li><a class="dropdown-item" href="majestic-endpoints.cgi">Majestic Endpoints</a></li>
 </ul>
 </li>
 </ul>
@@ -123,7 +119,7 @@ if [ -z "$socks5_host" ] || [ -z "$socks5_port" ]; then %>
 
 <% if [ "true" = "$speaker_enabled" ] && [ "true" != "$(yaml-cli -g .audio.enabled)" ]; then %>
 <div class="alert alert-danger">
-<p class="mb-0">You need to enable audio in <a href="majestic-settings.cgi?tab=audio">Majestic settings.</a></p>
+<p class="mb-0">You need to enable audio in settings.</a></p>
 </div>
 <% fi %>
 
