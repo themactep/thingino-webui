@@ -117,7 +117,7 @@ if [ -z "$socks5_host" ] || [ -z "$socks5_port" ]; then %>
 </div>
 <% fi; fi %>
 
-<% if [ "true" = "$speaker_enabled" ] && [ "true" != "$(yaml-cli -g .audio.enabled)" ]; then %>
+<% if [ "true" = "$speaker_enabled" ]; then %>
 <div class="alert alert-danger">
 <p class="mb-0">You need to enable audio in settings.</a></p>
 </div>
