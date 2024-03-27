@@ -25,6 +25,18 @@ urldecode() {
 	echo -e "${i//%/\\x}"
 }
 
+ok_json() {
+	echo "HTTP/1.1 200 OK
+Content-type: application/json
+Pragma: no-cache
+Expires: $(TZ=GMT0 date +'%a, %d %b %Y %T %Z')
+Etag: \"$(cat /proc/sys/kernel/random/uuid)\"
+
+$1
+"
+	exit 0
+}
+
 # parse parameters from query string
 [ -n "$QUERY_STRING" ] && eval $(echo "$QUERY_STRING" | sed "s/&/;/g")
 
@@ -92,20 +104,26 @@ case "$cmd" in
 	*) ;;
 esac
 
-# save to temp config
-sed -i "/^$cmd/d" /tmp/imp.conf
-echo "$cmd $val" >> /tmp/imp.conf
-
-command="/usr/sbin/imp-control $cmd $val"
-result=$($command)
-
-echo "HTTP/1.1 200 OK
-Content-type: application/json
-Pragma: no-cache
-Expires: $(TZ=GMT0 date +'%a, %d %b %Y %T %Z')
-Etag: \"$(cat /proc/sys/kernel/random/uuid)\"
-
-{\"command\":\"${command}\",\"result\":\"${result}\"}
-"
-
-exit 0
+case "$cmd" in
+	daynight)
+		[ "$val" -eq 1 ] && val="night" || val="day"
+		/usr/sbin/daynight $val
+		ok_json "{\"night\":\"${mode}\"}"
+		;;
+	ir850 | ir940)
+		/usr/sbin/irled $val $cmd
+		ok_json "{\"led_${cmd}\":\"${val}\"}"
+		;;
+	ircut)
+		/usr/sbin/ircut $val
+		ok_json "{\"ircut\":\"${val}\"}"
+		;;
+	*)
+		# save to temp config
+		sed -i "/^$cmd/d" /tmp/imp.conf
+		echo "$cmd $val" >> /tmp/imp.conf
+		command="/usr/sbin/imp-control $cmd $val"
+		result=$($command)
+		ok_json "{\"command\":\"${command}\",\"result\":\"${result}\"}"
+		;;
+esac

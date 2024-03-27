@@ -1,78 +1,116 @@
 #!/usr/bin/haserl
 <%in p/common.cgi %>
-<% page_title="Camera preview" %>
+<%in p/icons.cgi %>
+<%
+page_title="Camera preview"
+rtsp_address=$network_address
+rtsp_username="thingino" # TODO: get from config
+rtsp_password="thingino" # TODO: get from config
+rtsp_port=554 # TODO: get from config
+rtsp_url="rtsp://${rtsp_username}:${rtsp_password}@${rtsp_address}:${rtsp_port}/ch0"
+
+for i in "ispmode"; do
+	eval "$i=\"$(/usr/sbin/imp-control $i)\""
+done
+
+check_flip() {
+	[ $flip -eq 2 ] || [ $flip -eq 3 ] && echo -n " checked"
+}
+
+check_mirror() {
+	[ $flip -eq 1 ] || [ $flip -eq 3 ] && echo -n " checked"
+}
+%>
 <%in p/header.cgi %>
 
 <div class="row preview">
-<div class="col-md-8 col-xl-9 col-xxl-9 position-relative mb-3">
-<% preview 1 %>
-<p class="small text-body-secondary">The image above refreshes once per second and may appear choppy.
-To see a smooth video feed from the camera use RTSP stream.</p>
+<div class="col-md-8 col-xl-9 col-xxl-12 mb-3">
+<div id="frame" class="position-relative mb-2">
+<div class="smpte">
+<div class="bar1"></div>
+<div class="bar2"></div>
+<div class="bar3"></div>
 </div>
-<div class="col-md-4 col-xl-3 col-xxl-3">
-<div class="d-grid gap-2 mb-3">
+<canvas id="preview"></canvas>
+<%in p/motors.cgi %>
+
+<div id="controls" class="position-absolute bottom-0 start-0 end-0">
+<div class="buttons p-3">
+<div class="row">
+<div class="col">
+<div class="btn-group d-flex" role="group" aria-label="Night Mode">
+<input type="checkbox" class="btn-check" name="daynight" id="daynight" value="1"<% checked_if $daynight 1 %>>
+<label class="btn btn-lg btn-dark" for="daynight" title="Night mode"><%= $icon_moon %></label>
+</div>
+</div>
+<div class="col">
+<div class="btn-group d-flex" role="group" aria-label="Color">
+<input type="checkbox" class="btn-check" name="ispmode" id="ispmode" value="1"<% checked_if $ispmode 1 %>>
+<label class="btn btn-lg btn-dark" for="ispmode" title="Color mode"><%= $icon_color %></label>
+</div>
+</div>
+<div class="col">
+<div class="btn-group d-flex" role="group" aria-label="IR filter">
+<input type="checkbox" class="btn-check" name="ircut" id="ircut" value="1"<% checked_if $ircut 1 %><% fw_printenv -n gpio_ircut >/dev/null || echo " disabled" %>>
+<label class="btn btn-lg btn-dark" for="ircut" title="IR filter"><%= $icon_ircut %></label>
+</div>
+</div>
+<div class="col">
+<div class="btn-group d-flex" role="group" aria-label="Illumination">
+<input type="checkbox" class="btn-check" name="ir850" id="ir850" value="1"<% checked_if $ir850 1 %><% fw_printenv -n gpio_ir850 >/dev/null || echo " disabled" %>>
+<label class="btn btn-lg btn-dark" for="ir850" title="IR LED 850 nm"><%= $icon_ir850 %></label>
+<input type="checkbox" class="btn-check" name="ir940" id="ir940" value="1"<% checked_if $ir940 1 %><% fw_printenv -n gpio_ir940 >/dev/null || echo " disabled" %>>
+<label class="btn btn-lg btn-dark" for="ir940" title="IR LED 940 nm"><%= $icon_ir940 %></label>
+<input type="checkbox" class="btn-check" name="white" id="white" value="1"<% checked_if $white 1 %><% fw_printenv -n gpio_whled >/dev/null || echo " disabled" %>>
+<label class="btn btn-lg btn-dark" for="white" title="White LED"><%= $icon_white %></label>
+</div>
+</div>
+<div class="col">
+<div class="btn-group d-flex" role="group" aria-label="Flip and Mirror">
+<input type="checkbox" class="btn-check" name="flip" id="flip" value="1"<% check_flip %>>
+<label class="btn btn-lg btn-dark" for="flip" title="Flip vertically"><%= $icon_flip %></label>
+<input type="checkbox" class="btn-check" name="mirror" id="mirror" value="1"<% check_mirror %>>
+<label class="btn btn-lg btn-dark" for="mirror" title="Flip horizontally"><%= $icon_flop %></label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p class="small text-body-secondary">The image above refreshes once per second and may appear choppy.<br>
+Please open RTSP stream at <i><a href="<%= $rtsp_url %>"><%= $rtsp_url %></a></i> in you favorite media player to see video feed.</p>
+</div>
+<div class="col-md-4 col-xl-3 col-xxl-12">
+<div class="d-flex flex-row gap-2 mb-3">
 <div class="input-group">
-<button class="form-control btn btn-primary text-start" type="button" data-sendto="email">Send to email</button>
-<div class="input-group-text">
-<a href="plugin-send2email.cgi" title="Email settings"><img src="/a/gear.svg" alt="Gear"></a>
-</div>
+<button class="form-control btn btn-primary text-start" type="button" data-sendto="email">Email</button>
+<div class="input-group-text"><a href="plugin-send2email.cgi" title="Email settings"><%= $icon_gear %></a></div>
 </div>
 <div class="input-group">
-<button class="form-control btn btn-primary text-start" type="button" data-sendto="ftp">Send to FTP</button>
-<div class="input-group-text">
-<a href="plugin-send2ftp.cgi" title="FTP Storage settings"><img src="/a/gear.svg" alt="Gear"></a>
-</div>
+<button class="form-control btn btn-primary text-start" type="button" data-sendto="ftp">FTP</button>
+<div class="input-group-text"><a href="plugin-send2ftp.cgi" title="FTP Storage settings"><%= $icon_gear %></a></div>
 </div>
 <div class="input-group">
-<button class="form-control btn btn-primary text-start" type="button" data-sendto="telegram">Send to Telegram</button>
-<div class="input-group-text">
-<a href="plugin-send2telegram.cgi" title="Telegram bot settings"><img src="/a/gear.svg" alt="Gear"></a>
-</div>
+<button class="form-control btn btn-primary text-start" type="button" data-sendto="telegram">Telegram</button>
+<div class="input-group-text"><a href="plugin-send2telegram.cgi" title="Telegram bot settings"><%= $icon_gear %></a></div>
 </div>
 <div class="input-group">
-<button class="form-control btn btn-primary text-start" type="button" data-sendto="mqtt">Send to MQTT</button>
-<div class="input-group-text">
-<a href="plugin-send2mqtt.cgi" title="MQTT settings"><img src="/a/gear.svg" alt="Gear"></a>
-</div>
+<button class="form-control btn btn-primary text-start" type="button" data-sendto="mqtt">MQTT</button>
+<div class="input-group-text"><a href="plugin-send2mqtt.cgi" title="MQTT settings"><%= $icon_gear %></a></div>
 </div>
 <div class="input-group">
-<button class="form-control btn btn-primary text-start" type="button" data-sendto="webhook">Send to webhook</button>
-<div class="input-group-text">
-<a href="plugin-send2webhook.cgi" title="Webhook settings"><img src="/a/gear.svg" alt="Gear"></a>
-</div>
+<button class="form-control btn btn-primary text-start" type="button" data-sendto="webhook">WebHook</button>
+<div class="input-group-text"><a href="plugin-send2webhook.cgi" title="Webhook settings"><%= $icon_gear %></a></div>
 </div>
 <div class="input-group">
-<button class="form-control btn btn-primary text-start" type="button" data-sendto="yadisk">Send to Yandex Disk</button>
-<div class="input-group-text">
-<a href="plugin-send2yadisk.cgi" title="Yandex Disk bot settings"><img src="/a/gear.svg" alt="Gear"></a>
+<button class="form-control btn btn-primary text-start" type="button" data-sendto="yadisk">Yandex Disk</button>
+<div class="input-group-text"><a href="plugin-send2yadisk.cgi" title="Yandex Disk bot settings"><%= $icon_gear %></a></div>
 </div>
 </div>
-<div class="input-group">
-<button type="button" class="form-control btn btn-primary text-start" id="toggle-night" data-bs-toggle="button">Day/Night Mode</button>
-<div class="input-group-text">
-<a href="#night-buttons" data-bs-toggle="collapse" data-bs-target="#night-buttons"><img src="/a/chevron-compact-down.svg" alt="Open"></a>
 </div>
 </div>
 
-<div class="collapse collapsed" id="night-buttons">
-<div class="btn-group d-flex" role="group" aria-label="IR LEDs">
-<input type="checkbox" class="btn-check" id="toggle-color" value="1">
-<label class="btn btn-outline-primary" for="toggle-color" title="ISP Color Mode"><img src="/a/palette.svg" alt="Icon: Color mode"></label>
-<input type="checkbox" class="btn-check" id="toggle-ircut" value="1"<% fw_printenv -n gpio_ircut >/dev/null || echo " disabled" %>>
-<label class="btn btn-outline-primary" for="toggle-ircut" title="IRCUT Filter"><img src="/a/shadows.svg" alt="Icon: IRCUT filter"></label>
-<input type="checkbox" class="btn-check" id="toggle-ir850" value="1"<% fw_printenv -n gpio_ir850 >/dev/null || echo " disabled" %>>
-<label class="btn btn-outline-primary" for="toggle-ir850" title="IR LEDs 850 nm"><img src="/a/ir850.svg" alt="Icon: IR 850 LED"></label>
-<input type="checkbox" class="btn-check" id="toggle-ir940" value="1"<% fw_printenv -n gpio_ir940 >/dev/null || echo " disabled" %>>
-<label class="btn btn-outline-primary" for="toggle-ir940" title="IR LEDs 940 nm"><img src="/a/ir940.svg" alt="Icon: IR 940 LED"></label>
-<input type="checkbox" class="btn-check" id="toggle-white" value="1"<% fw_printenv -n gpio_whled >/dev/null || echo " disabled" %>>
-<label class="btn btn-outline-primary" for="toggle-white" title="White Light LEDs"><img src="/a/light-on.svg" alt="Icon: White light"></label>
-</div>
-</div>
-</div>
-<% if [ -f /usr/bin/motors ]; then %>
-<%in p/motors.cgi %>
-<% fi %>
-</div>
+<script src="/a/imp-config.js"></script>
 <script>
 const network_address = "<%= $network_address %>";
 
@@ -92,38 +130,66 @@ $$("button[data-sendto]").forEach(el => {
 	});
 });
 
-["color", "ircut"].forEach(n => {
-	$("#toggle-" + n).addEventListener("change", ev => {
-		mode = (ev.target.checked) ? "on" : "off";
-		xhrGet("/cgi-bin/j/" + n + ".cgi?mode=" + mode);
-	});
+function calculatePreviewSize() {
+	const i = new Image();
+	i.src = pimg;
+	i.onload = function() {
+		ratio = i.naturalWidth / i.naturalHeight;
+		pw = canvas.clientWidth
+		pw -= pw % 16
+		ph = pw / ratio
+		ph -= ph % 16
+
+		console.log(pw, ph);
+		const frame= $('#frame');
+		frame.style.width = pw + 'px';
+		frame.style.height = ph + 'px';
+
+		canvas.width = pw;
+		canvas.height = ph;
+		updatePreview();
+	}
+}
+
+async function updatePreview() {
+	jpg.src = pimg + '?t=' + Date.now();
+	jpg.onload = function() {
+		ctx.drawImage(jpg, 0, 0, jpg.width, jpg.height, 0, 0, pw, ph);
+		canvas.style.background = null;
+	}
+}
+
+const l = document.location;
+const pimg = '/cgi-bin/image.cgi';
+const jpg = new Image();
+jpg.addEventListener('load', async function() {
+	await sleep(1000);
+	updatePreview();
 });
 
-[ "ir850", "ir940", "white" ].forEach(n => {
-	$("#toggle-" + n).addEventListener("change", ev => {
-		mode = (ev.target.checked) ? "on" : "off";
-		xhrGet("/cgi-bin/j/irled.cgi?type=" + n + "&mode=" + mode);
-	});
-});
+const canvas = $('#preview');
+const ctx = canvas.getContext('2d');
+let pw, ph, ratio;
+calculatePreviewSize();
 
-$("#toggle-night").addEventListener("click", ev => {
-	if (ev.target.classList.contains('active')) {
-		$("#toggle-color").checked = false;
-		$("#toggle-ircut").checked = false;
-		["ir850", "ir940", "white"].forEach(n => $("#toggle-" + n).checked = true)
-		ev.target.classList.toggle('btn-secondary')
-		ev.target.textContent = 'night mode on'
+$("#daynight")?.addEventListener("change", ev => {
+	if (ev.target.checked) {
+		$("#ispmode").checked = false;
+		$("#ircut").checked = false;
+		["ir850", "ir940", "white"].forEach(n => $("#" + n).checked = true)
 		mode = "night";
 	} else {
-		$("#toggle-color").checked = true;
-		$("#toggle-ircut").checked = true;
-		["ir850", "ir940", "white"].forEach(n => $("#toggle-" + n).checked = false)
-		ev.target.classList.toggle('btn-secondary')
-		ev.target.textContent = 'night mode off'
+		$("#ispmode").checked = true;
+		$("#ircut").checked = true;
+		["ir850", "ir940", "white"].forEach(n => $("#" + n).checked = false)
 		mode = "day";
 	}
-	xhrGet("/cgi-bin/j/night.cgi?mode=" + mode);
 });
 </script>
+
+<style>
+#controls div.buttons { background: #88888888; visibility: hidden; width: 100%; height: 100%; }
+#controls:hover div.buttons { visibility: visible; }
+</style>
 
 <%in p/footer.cgi %>

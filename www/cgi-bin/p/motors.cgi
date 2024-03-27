@@ -1,25 +1,60 @@
-<div class="motor justify-content-center mt-4">
-<button class="btn btn-secondary" data-dir="ul">↖</button>
-<button class="btn btn-secondary" data-dir="uc">↑</button>
-<button class="btn btn-secondary" data-dir="ur">↗</button>
-<button class="btn btn-secondary" data-dir="lc">←</button>
-<button class="btn btn-secondary" data-dir="cc">⟴</button>
-<button class="btn btn-secondary" data-dir="rc">→</button>
-<button class="btn btn-secondary" data-dir="dl">↙</button>
-<button class="btn btn-secondary" data-dir="dc">↓</button>
-<button class="btn btn-secondary" data-dir="dr">↘</button>
+<% if [ -f /usr/bin/motors ]; then %>
+<div id="motor" class="position-absolute top-50 start-50 translate-middle">
+<div class="jst">
+<a class="s" data-dir="uc"></a>
+<a class="s" data-dir="ur"></a>
+<a class="s" data-dir="cr"></a>
+<a class="s" data-dir="dr"></a>
+<a class="s" data-dir="dc"></a>
+<a class="s" data-dir="dl"></a>
+<a class="s" data-dir="cl"></a>
+<a class="s" data-dir="ul"></a>
+<a class="b" data-dir="h"></a>
+</div>
 </div>
 
 <script>
-function moveMotor(dir) {
-	const steps = 100;
+function moveMotor(dir, steps = 100, d = 'g') {
+	console.log(dir, steps);
 	const x_max=<% echo -n $(fw_printenv -n motor_maxstep_h) %>;
 	const y_max=<% echo -n $(fw_printenv -n motor_maxstep_v) %>;
 	const x_step = x_max / steps;
 	const y_step = y_max / steps;
-	let y = dir.includes("u") ? -y_step : dir.includes("d") ? y_step : 0;
-	let x = dir.includes("l") ? -x_step : dir.includes("r") ? x_step : 0;
-	xhrGet("/cgi-bin/j/motor.cgi?x=" + x + "&y=" + y);
+	if (dir == 'cc') {
+		xhrGet("/cgi-bin/j/motor.cgi?d=x&x=" + x_max / 2 + "&y=" + y_max / 2);
+	} else {
+		let y = dir.includes("u") ? -y_step : dir.includes("d") ? y_step : 0;
+		let x = dir.includes("l") ? -x_step : dir.includes("r") ? x_step : 0;
+		xhrGet("/cgi-bin/j/motor.cgi?x=" + x + "&y=" + y);
+	}
 }
-$$(".motor button").forEach(el => el.addEventListener("click", ev => moveMotor(ev.target.dataset.dir)));
+let timer;
+$$(".jst a.s").forEach(el => {
+	el.addEventListener("click", ev => {if (ev.detail === 1) {timer = setTimeout(() => {moveMotor(ev.target.dataset.dir, 80)}, 200)}});
+	el.addEventListener("dblclick", ev => {if (ev.detail === 2) {clearTimeout(timer);moveMotor(ev.target.dataset.dir, 20)}});
+});
+$(".jst a.b").addEventListener("click", ev => {if (ev.detail === 1) {timer = setTimeout(() => { moveMotor('cc') }, 200)}});
+$(".jst a.b").addEventListener("dblclick", ev => {moveMotor(ev.target.dataset.dir, 20)});
 </script>
+
+<style>
+#motor { width: 25vh; height: 25vh; }
+#motor:hover .jst { visibility: visible; }
+.jst { width: 100%; height: 100%; border-radius: 50%; position: relative; overflow: hidden; visibility: hidden; }
+.jst a { position: absolute; left: 50%; top: 50%; cursor: pointer; }
+.jst a.s { transform-origin: 100% 100%; width: 5000px; height: 5000px; margin-top: -5000px; margin-left: -5000px; background-color: #88888833; }
+.jst a.s:hover { background-color: #ff880088; }
+.jst a.s:active { background-color: #ff8800ff; }
+.jst a.s:nth-child(1) { transform: rotate( 67.5deg) skew(45deg); }
+.jst a.s:nth-child(2) { transform: rotate(112.5deg) skew(45deg); }
+.jst a.s:nth-child(3) { transform: rotate(157.5deg) skew(45deg); }
+.jst a.s:nth-child(4) { transform: rotate(202.5deg) skew(45deg); }
+.jst a.s:nth-child(5) { transform: rotate(247.5deg) skew(45deg); }
+.jst a.s:nth-child(6) { transform: rotate(292.5deg) skew(45deg); }
+.jst a.s:nth-child(7) { transform: rotate(-22.5deg) skew(45deg); }
+.jst a.s:nth-child(8) { transform: rotate( 22.5deg) skew(45deg); }
+.b { clip-path: circle(30%); width: 60%; height: 60%; margin-left: -30%; margin-top: -30%; background: #808080; }
+.b:hover { background: #ff330088; }
+.b:active { background: #ff3300ff; }
+</style>
+<% fi %>

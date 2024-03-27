@@ -25,7 +25,7 @@ function callImp(command, value) {
 	xhr.open('GET', '/cgi-bin/j/imp.cgi?cmd=' + command + '&val=' + value);
 	xhr.send();
 
-	document.querySelector('#savechanges').classList.remove('d-none');
+	document.querySelector('#savechanges')?.classList.remove('d-none');
 }
 
 // numbers

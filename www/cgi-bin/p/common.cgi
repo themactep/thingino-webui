@@ -492,51 +492,6 @@ pre() {
 	tag "pre" "$(echo -e "$1" | sed "s/&/\&amp;/g;s/</\&lt;/g;s/>/\&gt;/g;s/\"/\&quot;/g")" "$2" "$3"
 }
 
-preview() {
-	local refresh_rate=1
-	[ -n "$1" ] && refresh_rate=$1
-	[ "$debug" -gt 0 ] && refresh_rate=$(( refresh_rate * 100 ))
-	echo "<canvas id=\"preview\" style=\"background:gray url(/a/SMPTE_Color_Bars_16x9.svg);background-size:cover;width:100%;height:auto;\"></canvas>"
-	echo "<script>
-function calculatePreviewSize() {
-	const i = new Image();
-	i.src = pimg;
-	i.onload = function() {
-		ratio = i.naturalWidth / i.naturalHeight;
-		pw = canvas.clientWidth
-		pw -= pw % 16
-		ph = pw / ratio
-		ph -= ph % 16
-		canvas.width = pw;
-		canvas.height = ph;
-		updatePreview();
-	}
-}
-
-async function updatePreview() {
-	jpg.src = pimg + '?t=' + Date.now();
-	jpg.onload = function() {
-		ctx.drawImage(jpg, 0, 0, jpg.width, jpg.height, 0, 0, pw, ph);
-		canvas.style.background = null;
-	}
-}
-
-const l = document.location;
-const pimg = '/cgi-bin/image.cgi';
-const jpg = new Image();
-jpg.addEventListener('load', async function() {
-	await sleep(${refresh_rate} * 1000);
-	updatePreview();
-});
-
-const canvas = \$('#preview');
-const ctx = canvas.getContext('2d');
-let pw, ph, ratio;
-calculatePreviewSize();
-</script>
-"
-}
-
 progressbar() {
 	local c="primary"
 	[ "$1" -ge "75" ] && c="danger"

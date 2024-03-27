@@ -5,11 +5,12 @@
 
 [ -z "$x" ] && x=0
 [ -z "$y" ] && y=0
+[ -z "$d" ] && d="g"
 
 if [ "$x" -eq 0 ] && [ "$y" -eq 0 ]; then
 	args="-r"
 else
-	args="-d g -x $x -y $y"
+	args="-d $d -x $x -y $y"
 fi
 
 /bin/motors $args
