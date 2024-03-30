@@ -21,10 +21,6 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 				redirect_back "warning" "${POST_mac_address} is as invalid MAC address."
 			fi
 			;;
-		reset)
-			/usr/sbin/sysreset -n
-			redirect_back
-			;;
 		update)
 			# parse values from parameters
 			for p in $params; do
@@ -100,15 +96,6 @@ fi
 <% field_text "network_dns_2" "DNS 2" %>
 <% button_submit %>
 </form>
-
-<div class="alert alert-danger mt-4">
-<h5>Reset network configuration</h5>
-<p>Restore the config file bundled with firmware. All changes to the default configuration will be lost!</p>
-<form action="<%= $SCRIPT_NAME %>" method="post" enctype="multipart/form-data">
-<% field_hidden "action" "reset" %>
-<% button_submit "Reset config" "danger" %>
-</form>
-</div>
 </div>
 <div class="col col-md-6 col-lg-8">
 <% ex "cat /etc/hostname" %>
