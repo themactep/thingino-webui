@@ -375,23 +375,23 @@ field_textedit() {
 	echo "</p>"
 }
 
-flash_append() {
-	echo "$1:$2" >>"$flash_file"
+alert_append() {
+	echo "$1:$2" >>"$alert_file"
 }
 
-flash_delete() {
-	:>"$flash_file"
+alert_delete() {
+	:>"$alert_file"
 }
 
-flash_read() {
-	[ ! -f "$flash_file" ] && return
-	[ -z "$(cat $flash_file)" ] && return
+alert_read() {
+	[ ! -f "$alert_file" ] && return
+	[ -z "$(cat $alert_file)" ] && return
 	local c
 	local m
 	local l
 	OIFS="$IFS"
 	IFS=$'\n'
-	for l in $(cat "$flash_file"); do
+	for l in $(cat "$alert_file"); do
 		c="$(echo $l | cut -d':' -f1)"
 		m="$(echo $l | cut -d':' -f2-)"
 		echo "<div class=\"alert alert-${c} alert-dismissible fade show\" role=\"alert\">${m}" \
@@ -399,11 +399,11 @@ flash_read() {
 			"</div>"
 	done
 	IFS=$OIFS
-	flash_delete
+	alert_delete
 }
 
-flash_save() {
-	echo "${1}:${2}" >$flash_file
+alert_save() {
+	echo "${1}:${2}" >$alert_file
 }
 
 header_bad_request() {
@@ -507,7 +507,7 @@ redirect_back() {
 
 # redirect_to "url" "flash class" "flash text"
 redirect_to() {
-	[ -n "$3" ] && flash_save "$2" "$3"
+	[ -n "$3" ] && alert_save "$2" "$3"
 	echo "HTTP/1.1 303 See Other
 Content-type: text/html; charset=UTF-8
 Cache-Control: no-store
@@ -575,7 +575,7 @@ sanitize4web() {
 }
 
 set_error_flag() {
-	flash_append "danger" "$1"
+	alert_append "danger" "$1"
 	error=1
 }
 
@@ -735,7 +735,7 @@ include() {
 ui_tmp_dir=/tmp/webui
 ui_config_dir=/etc/webui
 
-flash_file=/tmp/webui-flash.txt
+alert_file=/tmp/webui/alert.txt
 signature_file=/tmp/webui/signature.txt
 sysinfo_file=/tmp/sysinfo.txt
 

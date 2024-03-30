@@ -26,8 +26,8 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 		[ -z "$mqtt_port" ] && set_error_flag "MQTT port cannot be empty."
 		# [ -z "$mqtt_username" ] && set_error_flag "MQTT username cannot be empty."
 		# [ -z "$mqtt_password" ] && set_error_flag "MQTT password cannot be empty."
-		[ -z "$mqtt_topic" ] && flash_append "danger" "MQTT topic cannot be empty."
-		[ -z "$mqtt_message" ] && flash_append "danger" "MQTT message cannot be empty."
+		[ -z "$mqtt_topic" ] && alert_append "danger" "MQTT topic cannot be empty."
+		[ -z "$mqtt_message" ] && alert_append "danger" "MQTT message cannot be empty."
 	fi
 
 	if [ "${mqtt_topic:0:1}" = "/" ] || [ "${mqtt_snap_topic:0:1}" = "/" ]; then

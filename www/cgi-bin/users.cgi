@@ -23,11 +23,11 @@ if [ -n "$POST_action" ] && [ "$POST_action" = "create" ]; then
 
 	if [ -z "$error" ]; then
 		if grep -q "^${user_name}:" /etc/passwd; then
-			flash_append "warning" "User ${user_name} found."
+			alert_append "warning" "User ${user_name} found."
 		else
 			adduser ${user_name} -h ${user_home:-/dev/null} -s ${user_shell:-/bin/false} -G ${user_group:-users} -D -g "${user_full_name}"
 			if [ $? -eq 0 ]; then
-				flash_append "success" "User ${user_name} created."
+				alert_append "success" "User ${user_name} created."
 			else
 				set_error_flag "Failed to create user ${user_name}."
 			fi
@@ -36,10 +36,10 @@ if [ -n "$POST_action" ] && [ "$POST_action" = "create" ]; then
 		if [ -z "$error" ]; then
 			result=$(echo "${user_name}:${user_password}" | chpasswd -c sha512 2>&1)
 			if [ $? -eq 0 ]; then
-				flash_append "success" "Password for ${user_name} set."
+				alert_append "success" "Password for ${user_name} set."
 				redirect_back
 			else
-				flash_append "danger" "$result"
+				alert_append "danger" "$result"
 			fi
 		fi
 	fi

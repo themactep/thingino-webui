@@ -11,7 +11,7 @@ function readKey() {
 
 function saveKey() {
 	if [ -n "$(fw_printenv sshkey_${1})" ]; then
-		flash_save "danger" "${1} key already in backup. You need to delete it before saving a new key."
+		alert_save "danger" "${1} key already in backup. You need to delete it before saving a new key."
 	else
 		fw_setenv sshkey_${1} $(gzip -c /etc/dropbear/dropbear_${1}_host_key - 2>/dev/null | base64 | tr -d '\n')
 	fi
@@ -19,19 +19,19 @@ function saveKey() {
 
 function restoreKey() {
 	if [ -z "$(fw_printenv sshkey_${1})" ]; then
-		flash_save "danger" "${1} key is not in the environment."
+		alert_save "danger" "${1} key is not in the environment."
 	else
 		fw_printenv -n sshkey_${1} | base64 -d | gzip -d > /etc/dropbear/dropbear_${1}_host_key
-		flash_save "success" "${1} key restored from environment."
+		alert_save "success" "${1} key restored from environment."
 	fi
 }
 
 function deleteKey() {
 	if [ -z "$(fw_printenv sshkey_${1})" ]; then
-		flash_save "danger" "${1} Cannot find saved SSH key."
+		alert_save "danger" "${1} Cannot find saved SSH key."
 	else
 		fw_setenv sshkey_${1}
-		flash_save "success" "${1} key deleted from environment."
+		alert_save "success" "${1} key deleted from environment."
 	fi
 }
 

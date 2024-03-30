@@ -154,4 +154,4 @@ if [ -z "$socks5_host" ] || [ -z "$socks5_port" ]; then %>
 <% fi %>
 
 <h2><%= $page_title %></h2>
-<% flash_read %>
+<% alert_read %>
