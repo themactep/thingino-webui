@@ -3,7 +3,7 @@
 <%
 plugin="network"
 page_title="Network settings"
-params="address dhcp dns_1 dns_2 gateway hostname netmask interface wlan_device wlan_ssid wlan_password"
+params="address dhcp dns_1 dns_2 gateway hostname netmask interface wlan_device wlan_ssid wlan_pass"
 tmp_file=/tmp/${plugin}.conf
 
 network_wlan_device="$(fw_printenv -n wlandev)"
@@ -36,11 +36,11 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 
 			[ -z "$network_interface" ] && set_error_flag "Default network interface cannot be empty."
 
-			if [ "wlan0" = "$network_interface" ]; then
-				[ -z "$network_wlan_device" ] && set_error_flag "WLAN Device cannot be empty."
-				[ -z "$network_wlan_ssid" ] && set_error_flag"WLAN SSID cannot be empty."
-				[ -z "$network_wlan_pass" ] && set_error_flag "WLAN Password cannot be empty."
-			fi
+#			if [ "wlan0" = "$network_interface" ]; then
+#				[ -z "$network_wlan_device" ] && set_error_flag "WLAN Device cannot be empty."
+#				[ -z "$network_wlan_ssid" ] && set_error_flag"WLAN SSID cannot be empty."
+#				[ -z "$network_wlan_pass" ] && set_error_flag "WLAN Password cannot be empty."
+#			fi
 
 			if [ "false" = "$network_dhcp" ]; then
 				network_mode="static"
