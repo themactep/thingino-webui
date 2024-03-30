@@ -128,7 +128,7 @@ if [ -z "$socks5_host" ] || [ -z "$socks5_port" ]; then %>
 <p>$TZ variable in system environment needs updating!</p>
 <span class="d-flex gap-3">
 <a class="btn btn-danger" href="reboot.cgi">Reboot camera</a>
-<a class="btn btn-primary" href="timezone.cgi">See timezone settings</a>
+<a class="btn btn-primary" href="time-config.cgi">See timezone settings</a>
 </span>
 </div>
 <% fi %>
