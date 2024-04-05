@@ -25,7 +25,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 			# parse values from parameters
 			for p in $params; do
 				eval ${plugin}_${p}=\$POST_${plugin}_${p}
-			w	sanitize "${plugin}_${p}"
+				sanitize "${plugin}_${p}"
 			done; unset p
 
 			network_interface=$(echo $network_interfaces | cut -d' ' -f1)
@@ -36,7 +36,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 				[ -z "$network_wlan_device" ] && set_error_flag "WLAN Device cannot be empty."
 				[ -z "$network_wlan_ssid" ] && set_error_flag"WLAN SSID cannot be empty."
 				[ -z "$network_wlan_pass" ] && set_error_flag "WLAN Password cannot be empty."
-#			fi
+			fi
 
 			if [ "false" = "$network_dhcp" ]; then
 				network_mode="static"
