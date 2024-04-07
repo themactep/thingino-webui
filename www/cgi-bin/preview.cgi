@@ -1,3 +1,23 @@
+#!/bin/sh
+preview=/tmp/snapshot.jpg
+echo "HTTP/1.1 200 OK
+Content-Type: multipart/x-mixed-replace; boundary=frame
+Pragma: no-cache
+Connecton: close
+"
+
+echo -n -e "--frame\r\nContent-Type: image/jpeg\r\n\r\n"
+cat $preview
+echo -n -e "--frame\r\nContent-Type: image/jpeg\r\n\r\n"
+sleep 5
+while [ 1 ]
+do
+cat $preview
+echo -n -e "\r\n\r\n"
+echo -n -e "--frame\r\nContent-Type: image/jpeg\r\n\r\n"
+sleep 1
+done
+[root@thingino-t31l cgi-bin]# cat preview.cgi
 #!/usr/bin/haserl
 <%in p/common.cgi %>
 <%in p/icons.cgi %>
@@ -31,7 +51,7 @@ check_mirror() {
 <div class="bar2"></div>
 <div class="bar3"></div>
 </div>
-<canvas id="preview"></canvas>
+<img id="preview" ></img>
 <%in p/motors.cgi %>
 
 <div id="controls" class="position-absolute bottom-0 start-0 end-0">
@@ -130,12 +150,32 @@ $$("button[data-sendto]").forEach(el => {
 	});
 });
 
+
+const l = document.location;
+const pimg = '/cgi-bin/image.cgi';
+const jpg = document.getElementById("preview");
+
+document.addEventListener('DOMContentLoaded', loaded, false);
+
+async function loaded() {
+	console.log("load");
+	calculatePreviewSize();
+	while (true) {
+		await jpg.decode().catch(function() {
+			console.log("restarting mjpeg");
+			jpg.src="";
+			jpg.src=pimg;
+		});
+	await new Promise((resolve) => setTimeout(resolve, 5000));
+	}
+}
+
 function calculatePreviewSize() {
-	const i = new Image();
-	i.src = pimg;
-	i.onload = function() {
-		ratio = i.naturalWidth / i.naturalHeight;
-		pw = canvas.clientWidth
+	console.log("calculate");
+	jpg.src = pimg;
+	jpg.onload = function() {
+		ratio = jpg.naturalWidth / jpg.naturalHeight;
+		pw = window.innerWidth *0.8;
 		pw -= pw % 16
 		ph = pw / ratio
 		ph -= ph % 16
@@ -145,32 +185,11 @@ function calculatePreviewSize() {
 		frame.style.width = pw + 'px';
 		frame.style.height = ph + 'px';
 
-		canvas.width = pw;
-		canvas.height = ph;
-		updatePreview();
+		jpg.width = pw;
+		jpg.height = ph;
 	}
 }
 
-async function updatePreview() {
-	jpg.src = pimg + '?t=' + Date.now();
-	jpg.onload = function() {
-		ctx.drawImage(jpg, 0, 0, jpg.width, jpg.height, 0, 0, pw, ph);
-		canvas.style.background = null;
-	}
-}
-
-const l = document.location;
-const pimg = '/cgi-bin/image.cgi';
-const jpg = new Image();
-jpg.addEventListener('load', async function() {
-	await sleep(1000);
-	updatePreview();
-});
-
-const canvas = $('#preview');
-const ctx = canvas.getContext('2d');
-let pw, ph, ratio;
-calculatePreviewSize();
 
 $("#daynight")?.addEventListener("change", ev => {
 	if (ev.target.checked) {
