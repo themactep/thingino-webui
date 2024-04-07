@@ -31,7 +31,7 @@ check_mirror() {
 <div class="bar2"></div>
 <div class="bar3"></div>
 </div>
-<img id="preview" ></img>
+<img id="preview"></img>
 <%in p/motors.cgi %>
 
 <div id="controls" class="position-absolute bottom-0 start-0 end-0">
@@ -143,10 +143,10 @@ async function loaded() {
 	while (true) {
 		await jpg.decode().catch(function() {
 			console.log("restarting mjpeg");
-			jpg.src="";
-			jpg.src=pimg;
+			jpg.src = "";
+			jpg.src = pimg;
 		});
-	await new Promise((resolve) => setTimeout(resolve, 5000));
+		await new Promise((resolve) => setTimeout(resolve, 5000));
 	}
 }
 
@@ -161,7 +161,7 @@ function calculatePreviewSize() {
 		ph -= ph % 16
 
 		console.log(pw, ph);
-		const frame= $('#frame');
+		const frame = $('#frame');
 		frame.style.width = pw + 'px';
 		frame.style.height = ph + 'px';
 
