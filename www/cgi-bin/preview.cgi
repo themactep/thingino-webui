@@ -31,7 +31,7 @@ check_mirror() {
 <div class="bar2"></div>
 <div class="bar3"></div>
 </div>
-<img id="preview"></img>
+<img id="preview" class="img-fluid"></img>
 <%in p/motors.cgi %>
 
 <div id="controls" class="position-absolute bottom-0 start-0 end-0">
@@ -155,16 +155,10 @@ function calculatePreviewSize() {
 	jpg.src = pimg;
 	jpg.onload = function() {
 		ratio = jpg.naturalWidth / jpg.naturalHeight;
-		pw = window.innerWidth *0.8;
 		pw -= pw % 16
 		ph = pw / ratio
 		ph -= ph % 16
-
 		console.log(pw, ph);
-		const frame = $('#frame');
-		frame.style.width = pw + 'px';
-		frame.style.height = ph + 'px';
-
 		jpg.width = pw;
 		jpg.height = ph;
 	}
