@@ -1,13 +1,18 @@
 #!/bin/sh
 preview=/tmp/snapshot.jpg
-date=$(TZ=GMT0 date +'%a, %d %b %Y %T %Z')
+frame="--frame\r\nContent-Type: image/jpeg\r\n\r\n"
 echo "HTTP/1.1 200 OK
-Content-type: image/jpeg
-Content-Disposition: inline; filename=preview-$(date +%s).jpg
-Cache-Control: no-store
+Content-Type: multipart/x-mixed-replace; boundary=frame
 Pragma: no-cache
-Date: $date
-Expires: $date
 Connecton: close
 "
+
+echo -n -e $frame
 cat $preview
+echo -n -e $frame
+while :; do
+    cat $preview
+    echo -n -e "\r\n\r\n"
+    echo -n -e $frame
+    sleep 1
+done
