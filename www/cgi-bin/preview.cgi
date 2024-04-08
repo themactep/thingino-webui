@@ -138,32 +138,13 @@ const jpg = document.getElementById("preview");
 document.addEventListener('DOMContentLoaded', loaded, false);
 
 async function loaded() {
-	console.log("load");
-	calculatePreviewSize();
 	while (true) {
 		await jpg.decode().catch(function() {
-			console.log("restarting mjpeg");
-			jpg.src = "";
 			jpg.src = pimg;
 		});
 		await new Promise((resolve) => setTimeout(resolve, 5000));
 	}
 }
-
-function calculatePreviewSize() {
-	console.log("calculate");
-	jpg.src = pimg;
-	jpg.onload = function() {
-		ratio = jpg.naturalWidth / jpg.naturalHeight;
-		pw -= pw % 16
-		ph = pw / ratio
-		ph -= ph % 16
-		console.log(pw, ph);
-		jpg.width = pw;
-		jpg.height = ph;
-	}
-}
-
 
 $("#daynight")?.addEventListener("change", ev => {
 	if (ev.target.checked) {
