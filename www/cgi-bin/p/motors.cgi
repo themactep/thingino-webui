@@ -18,20 +18,19 @@ function moveMotor(dir, steps = 100, d = 'g') {
 	console.log(dir, steps);
 	const x_max=<% echo -n $(fw_printenv -n motor_maxstep_h) %>;
 	const y_max=<% echo -n $(fw_printenv -n motor_maxstep_v) %>;
-	const x_step = x_max / steps;
-	const y_step = y_max / steps;
+	const step = x_max / steps;
 	if (dir == 'cc') {
 		xhrGet("/cgi-bin/j/motor.cgi?d=x&x=" + x_max / 2 + "&y=" + y_max / 2);
 	} else {
-		let y = dir.includes("u") ? -y_step : dir.includes("d") ? y_step : 0;
-		let x = dir.includes("l") ? -x_step : dir.includes("r") ? x_step : 0;
+		let y = dir.includes("u") ? -step : dir.includes("d") ? step : 0;
+		let x = dir.includes("l") ? -step : dir.includes("r") ? step : 0;
 		xhrGet("/cgi-bin/j/motor.cgi?x=" + x + "&y=" + y);
 	}
 }
 let timer;
 $$(".jst a.s").forEach(el => {
-	el.addEventListener("click", ev => {if (ev.detail === 1) {timer = setTimeout(() => {moveMotor(ev.target.dataset.dir, 80)}, 200)}});
-	el.addEventListener("dblclick", ev => {if (ev.detail === 2) {clearTimeout(timer);moveMotor(ev.target.dataset.dir, 20)}});
+	el.addEventListener("click", ev => {if (ev.detail === 1) {timer = setTimeout(() => {moveMotor(ev.target.dataset.dir, 100)}, 200)}});
+	el.addEventListener("dblclick", ev => {if (ev.detail === 2) {clearTimeout(timer);moveMotor(ev.target.dataset.dir, 10)}});
 });
 $(".jst a.b").addEventListener("click", ev => {if (ev.detail === 1) {timer = setTimeout(() => { moveMotor('cc') }, 200)}});
 $(".jst a.b").addEventListener("dblclick", ev => {moveMotor(ev.target.dataset.dir, 20)});
