@@ -81,7 +81,7 @@ check_mirror() {
 Please open RTSP stream at <i><a href="<%= $rtsp_url %>"><%= $rtsp_url %></a></i> in you favorite media player to see video feed.</p>
 </div>
 <div class="col-md-4 col-xl-3 col-xxl-12">
-<div class="d-flex flex-row gap-2 mb-3">
+<div class="d-flex flex-column flex-md-row gap-2 mb-3">
 <div class="input-group">
 <button class="form-control btn btn-primary text-start" type="button" data-sendto="email">Email</button>
 <div class="input-group-text"><a href="plugin-send2email.cgi" title="Email settings"><%= $icon_gear %></a></div>
