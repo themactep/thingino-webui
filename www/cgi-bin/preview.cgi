@@ -35,42 +35,26 @@ check_mirror() {
 <%in p/motors.cgi %>
 
 <div id="controls" class="position-absolute bottom-0 start-0 end-0">
-<div class="buttons p-3">
+<div class="buttons p-0">
 <div class="row">
 <div class="col">
 <div class="btn-group d-flex" role="group" aria-label="Night Mode">
 <input type="checkbox" class="btn-check" name="daynight" id="daynight" value="1"<% checked_if $daynight 1 %>>
-<label class="btn btn-lg btn-dark" for="daynight" title="Night mode"><%= $icon_moon %></label>
-</div>
-</div>
-<div class="col">
-<div class="btn-group d-flex" role="group" aria-label="Color">
+<label class="btn btn-dark" for="daynight" title="Night mode"><%= $icon_moon %></label>
 <input type="checkbox" class="btn-check" name="ispmode" id="ispmode" value="1"<% checked_if $ispmode 1 %>>
-<label class="btn btn-lg btn-dark" for="ispmode" title="Color mode"><%= $icon_color %></label>
-</div>
-</div>
-<div class="col">
-<div class="btn-group d-flex" role="group" aria-label="IR filter">
+<label class="btn btn-sm btn-dark" for="ispmode" title="Color mode"><%= $icon_color %></label>
 <input type="checkbox" class="btn-check" name="ircut" id="ircut" value="1"<% checked_if $ircut 1 %><% fw_printenv -n gpio_ircut >/dev/null || echo " disabled" %>>
-<label class="btn btn-lg btn-dark" for="ircut" title="IR filter"><%= $icon_ircut %></label>
-</div>
-</div>
-<div class="col">
-<div class="btn-group d-flex" role="group" aria-label="Illumination">
+<label class="btn btn-sm btn-dark" for="ircut" title="IR filter"><%= $icon_ircut %></label>
 <input type="checkbox" class="btn-check" name="ir850" id="ir850" value="1"<% checked_if $ir850 1 %><% fw_printenv -n gpio_ir850 >/dev/null || echo " disabled" %>>
-<label class="btn btn-lg btn-dark" for="ir850" title="IR LED 850 nm"><%= $icon_ir850 %></label>
+<label class="btn btn-sm btn-dark" for="ir850" title="IR LED 850 nm"><%= $icon_ir850 %></label>
 <input type="checkbox" class="btn-check" name="ir940" id="ir940" value="1"<% checked_if $ir940 1 %><% fw_printenv -n gpio_ir940 >/dev/null || echo " disabled" %>>
-<label class="btn btn-lg btn-dark" for="ir940" title="IR LED 940 nm"><%= $icon_ir940 %></label>
+<label class="btn btn-sm btn-dark" for="ir940" title="IR LED 940 nm"><%= $icon_ir940 %></label>
 <input type="checkbox" class="btn-check" name="white" id="white" value="1"<% checked_if $white 1 %><% fw_printenv -n gpio_whled >/dev/null || echo " disabled" %>>
-<label class="btn btn-lg btn-dark" for="white" title="White LED"><%= $icon_white %></label>
-</div>
-</div>
-<div class="col">
-<div class="btn-group d-flex" role="group" aria-label="Flip and Mirror">
+<label class="btn btn-sm btn-dark" for="white" title="White LED"><%= $icon_white %></label>
 <input type="checkbox" class="btn-check" name="flip" id="flip" value="1"<% check_flip %>>
-<label class="btn btn-lg btn-dark" for="flip" title="Flip vertically"><%= $icon_flip %></label>
+<label class="btn btn-sm btn-dark" for="flip" title="Flip vertically"><%= $icon_flip %></label>
 <input type="checkbox" class="btn-check" name="mirror" id="mirror" value="1"<% check_mirror %>>
-<label class="btn btn-lg btn-dark" for="mirror" title="Flip horizontally"><%= $icon_flop %></label>
+<label class="btn btn-sm btn-dark" for="mirror" title="Flip horizontally"><%= $icon_flop %></label>
 </div>
 </div>
 </div>
