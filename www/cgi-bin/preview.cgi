@@ -115,7 +115,7 @@ $$("button[data-sendto]").forEach(el => {
 });
 
 const l = document.location;
-const pimg = '/cgi-bin/image.cgi';
+const pimg = '/cgi-bin/mjpeg.cgi';
 const jpg = document.getElementById("preview");
 
 document.addEventListener('DOMContentLoaded', loaded, false);
