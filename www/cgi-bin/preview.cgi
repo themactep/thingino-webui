@@ -24,7 +24,7 @@ check_mirror() {
 <%in p/header.cgi %>
 
 <div class="row preview">
-<div class="col-md-8 col-xl-9 col-xxl-12 mb-3">
+<div class="col-12 mb-3">
 <div id="frame" class="position-relative mb-2">
 <div class="smpte">
 <div class="bar1"></div>
@@ -64,7 +64,7 @@ check_mirror() {
 <p class="small text-body-secondary">The image above refreshes once per second and may appear choppy.<br>
 Please open RTSP stream at <i><a href="<%= $rtsp_url %>"><%= $rtsp_url %></a></i> in you favorite media player to see video feed.</p>
 </div>
-<div class="col-md-4 col-xl-3 col-xxl-12">
+<div class="col-12">
 <div class="d-flex flex-column flex-md-row gap-2 mb-3">
 <div class="input-group">
 <button class="form-control btn btn-primary text-start" type="button" data-sendto="email">Email</button>
