@@ -38,6 +38,12 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 		done; unset p
 		mv $tmp_file $config_file
 
+		if [ $motion_enabled = "true" ]; then
+			sed -i '/^motion:/{n;s/false/true/}' /etc/prudynt.cfg
+		else
+			sed -i '/^motion:/{n;s/true/false/}' /etc/prudynt.cfg
+		fi
+
 		update_caminfo
 		redirect_to "$SCRIPT_NAME"
 	fi
