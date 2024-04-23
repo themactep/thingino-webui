@@ -11,6 +11,8 @@ tmp_file=/tmp/${plugin}
 config_file="${ui_config_dir}/${plugin}.conf"
 [ ! -f "$config_file" ] && touch $config_file
 
+prudynt_config=/etc/prudynt.cfg
+
 if [ "POST" = "$REQUEST_METHOD" ]; then
 	# parse values from parameters
 	for p in $params; do
@@ -38,11 +40,17 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 		done; unset p
 		mv $tmp_file $config_file
 
+		cp $prudynt_config $tmp_file
 		if [ $motion_enabled = "true" ]; then
-			sed -i '/^motion:/{n;s/false/true/}' /etc/prudynt.cfg
+			sed -i '/^motion:/n/enabled:/{s/ false;/ true;/}' $tmp_file
 		else
-			sed -i '/^motion:/{n;s/true/false/}' /etc/prudynt.cfg
+			sed -i '/^motion:/n/enabled:/{s/ true;/ false;/}' $tmp_file
 		fi
+		sed -i -E "/^motion:/n/sensitivity:/{s/: \d*;/: ${motion_sensitivity};/}" $tmp_file
+		sed -i -E "/^motion:/n/cooldown_time:/{s/: \d*;/: ${motion_throttle};/}" $tmp_file
+		mv $tmp_file $prudynt_config
+
+		$motion_enabled
 
 		update_caminfo
 		redirect_to "$SCRIPT_NAME"
@@ -61,8 +69,8 @@ fi
 <div class="row g-4 mb-4">
 <div class="col col-lg-4">
 <% field_switch "motion_enabled" "Enable motion guard" %>
-<% field_range "motion_sensitivity" "Minimum number of objects" "1,30,1" %>
-<% field_range "motion_throttle" "Delay between notifications, sec." "1,30,1" %>
+<% field_range "motion_sensitivity" "Sensitivity" "1,8,1" %>
+<% field_range "motion_throttle" "Delay between alerts, sec." "5,30,1" %>
 </div>
 <div class="col col-lg-4">
 <h3>Actions</h3>
@@ -99,7 +107,7 @@ fi
 </form>
 
 <script>
-<% [ "true" != "$email_enabled"    ] && echo "\$('#motion_send2email').disabled = true; \$('li.send2email').clasList.add('bg-warning');" %>
+<% [ "true" != "$email_enabled"    ] && echo "\$('#motion_send2email').disabled = true;" %>
 <% [ "true" != "$ftp_enabled"      ] && echo "\$('#motion_send2ftp').disabled = true;" %>
 <% [ "true" != "$mqtt_enabled"     ] && echo "\$('#motion_send2mqtt').disabled = true;" %>
 <% [ "true" != "$telegram_enabled" ] && echo "\$('#motion_send2telegram').disabled = true;" %>
