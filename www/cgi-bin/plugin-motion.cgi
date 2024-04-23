@@ -12,6 +12,7 @@ config_file="${ui_config_dir}/${plugin}.conf"
 [ ! -f "$config_file" ] && touch $config_file
 
 prudynt_config=/etc/prudynt.cfg
+prudynt_control=/etc/init.d/S95prudynt
 
 if [ "POST" = "$REQUEST_METHOD" ]; then
 	# parse values from parameters
@@ -50,7 +51,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 		sed -i -E "/^motion:/n/cooldown_time:/{s/: \d*;/: ${motion_throttle};/}" $tmp_file
 		mv $tmp_file $prudynt_config
 
-		$motion_enabled
+		$prudynt_control restart >/dev/null
 
 		update_caminfo
 		redirect_to "$SCRIPT_NAME"
