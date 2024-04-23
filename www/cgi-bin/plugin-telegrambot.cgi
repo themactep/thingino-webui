@@ -123,10 +123,10 @@ const default_commands = [
 	{command:'start',script:'echo "Hello"',description:'Start conversation'},
 	{command:'help',script:'echo "Try https://thingino.com/"',description:'Request help'},
 	{command:'info',script:'cat /etc/os-release',description:'Information about system'},
-	{command:'snap',script:'snapshot4cron && send2telegram -c $chat_id -p /tmp/snapshot4cron.jpg -i',description:'Take a snapshot'},
-	{command:'stop',script:'/etc/init.d/S93telegrambot stop',description:'Stop the bot'},
+	{command:'snap',script:'send2telegram -c $chat_id -p /tmp/snapshot4cron.jpg -i',description:'Take a snapshot'},
 	{command:'yadisk',script:'send2yadisk && send2telegram -c $chat_id -m "Sent to Yandex Disk"',description:'Send snapshot to Yandex Disk'},
 	{command:'restart',script:'/etc/init.d/S93telegrambot restart',description:'Restart the bot'},
+	{command:'stop',script:'/etc/init.d/S93telegrambot stop',description:'Stop the bot'},
 ]
 function resetBotCommands() {
 	$$('.bot-commands input[type=text]').forEach(e => e.value = '');
