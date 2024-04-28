@@ -7,13 +7,17 @@
 [ -z "$y" ] && y=0
 [ -z "$d" ] && d="g"
 
-if [ "$x" -eq 0 ] && [ "$y" -eq 0 ]; then
-	args="-r"
-else
-	args="-d $d -x $x -y $y"
-fi
-
-/bin/motors $args
+case "$d" in
+	g)
+		motors -d g -x $x -y $y >/dev/null
+		;;
+	r)
+		motors -r >/dev/null
+		;;
+	x)
+		motors -d x -x $x -y $y >/dev/null
+		;;
+esac
 
 echo "HTTP/1.1 200 OK
 Content-type: application/json
@@ -21,5 +25,5 @@ Pragma: no-cache
 Expires: $(TZ=GMT0 date +'%a, %d %b %Y %T %Z')
 Etag: \"$(cat /proc/sys/kernel/random/uuid)\"
 
-{\"status\":\"OK\"}
+$(motors -j)
 "

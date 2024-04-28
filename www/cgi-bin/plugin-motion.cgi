@@ -21,7 +21,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 		sanitize "${plugin}_${p}"
 	done; unset p
 
-	### Validation
+	# validation
 	if [ "true" = "$motion_enabled" ]; then
 		[ "false" = "$motion_send2email" ] && \
 			[ "false" = "$motion_send2ftp" ] && \
@@ -34,7 +34,6 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 	fi
 
 	if [ -z "$error" ]; then
-		# create temp config file
 		:>$tmp_file
 		for p in $params; do
 			echo "${plugin}_${p}=\"$(eval echo \$${plugin}_${p})\"" >>$tmp_file
@@ -59,7 +58,7 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 else
 	include $config_file
 
-	# Default values
+	# default values
 	[ -z "$motion_sensitivity" ] && motion_sensitivity=1
 	[ -z "$motion_throttle"    ] && motion_throttle=10
 fi
@@ -68,12 +67,12 @@ fi
 
 <form action="<%= $SCRIPT_NAME %>" method="post">
 <div class="row g-4 mb-4">
-<div class="col col-lg-4">
+<div class="col col-12 col-xl-4">
 <% field_switch "motion_enabled" "Enable motion guard" %>
 <% field_range "motion_sensitivity" "Sensitivity" "1,8,1" %>
 <% field_range "motion_throttle" "Delay between alerts, sec." "5,30,1" %>
 </div>
-<div class="col col-lg-4">
+<div class="col col-12 col-xl-4">
 <h3>Actions</h3>
 <ul class="list-group mb-3">
 <li class="list-group-item send2email">
@@ -99,7 +98,7 @@ fi
 </li>
 </ul>
 </div>
-<div class="col col-lg-4">
+<div class="col col-12 col-xl-4">
 <% [ -f $config_file ] && ex "cat $config_file" %>
 </div>
 </div>
