@@ -19,8 +19,11 @@ if [ "POST" = "$REQUEST_METHOD" ]; then
 	update_uboot_env day_night_min $day_night_min
 	update_uboot_env day_night_max $day_night_max
 	update_uboot_env gpio_ir850 $POST_ir850_pin
+	update_uboot_env pwm_ch_ir850 $POST_ir850_channel
 	update_uboot_env gpio_ir940 $POST_ir940_pin
-	update_uboot_env gpio_whled $POST_whled_pin
+	update_uboot_env pwm_ch_ir940 $POST_ir940_channel
+	update_uboot_env gpio_white $POST_white_pin
+	update_uboot_env pwm_ch_white $POST_white_channel
 	update_uboot_env gpio_ircut "$POST_ircut_pin1 $POST_ircut_pin2"
 fi
 
@@ -28,8 +31,11 @@ fi
 day_night_min=$(fw_printenv -n day_night_min)
 day_night_max=$(fw_printenv -n day_night_max)
 ir850_pin=$(fw_printenv -n gpio_ir850)
+ir850_channel=$(fw_printenv -n pwm_ch_ir850)
 ir940_pin=$(fw_printenv -n gpio_ir940)
-whled_pin=$(fw_printenv -n gpio_whled)
+ir940_channel=$(fw_printenv -n pwm_ch_ir940)
+white_pin=$(fw_printenv -n gpio_white)
+white_channel=$(fw_printenv -n pwm_ch_white)
 ircut_pins=$(fw_printenv -n gpio_ircut)
 ircut_pin1=$(echo $ircut_pins | awk '{print $1}')
 ircut_pin2=$(echo $ircut_pins | awk '{print $2}')
@@ -51,8 +57,13 @@ fi
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
 <div class="col">
 <% field_number "ir850_pin" "850 nm IR LED GPIO pin" %>
+<% field_number "ir850_channel" "850 nm IR LED PWM channel" %>
 <% field_number "ir940_pin" "940 nm IR LED GPIO pin" %>
-<% field_number "whled_pin" "White Light LED GPIO pin" %>
+<% field_number "ir940_channel" "940 nm IR LED PWM channel" %>
+<% field_number "white_pin" "White Light LED GPIO pin" %>
+<% field_number "white_channel" "White Light LED PWM channel" %>
+</div>
+<div class="col">
 <% field_number "ircut_pin1" "IR CUT filter GPIO pin 1" %>
 <% field_number "ircut_pin2" "IR CUT filter GPIO pin 2" %>
 <% field_number "day_night_threshold" "Day/Night Trigger Threshold" %>
@@ -62,8 +73,11 @@ fi
 <h3>Environment Settings</h3>
 <pre>
 gpio_ir850: <%= $ir850_pin %>
+pwm_ch_ir850: <%= $ir850_channel %>
 gpio_ir940: <%= $ir940_pin %>
-gpio_whled: <%= $whled_pin %>
+pwm_ch_ir940: <%= $ir940_channel %>
+gpio_white: <%= $white_pin %>
+pwm_ch_white: <%= $white_channel %>
 gpio_ircut: <%= $ircut_pins %>
 day_night_min: <%= $day_night_min %>
 day_night_max: <%= $day_night_max %>
