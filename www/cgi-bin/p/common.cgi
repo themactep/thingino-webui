@@ -742,9 +742,6 @@ sysinfo_file=/tmp/sysinfo.txt
 [ ! -d $ui_tmp_dir ] && mkdir -p $ui_tmp_dir
 [ ! -d $ui_config_dir ] && mkdir -p $ui_config_dir
 
-lang_path=/var/www/lang/
-[ ! -d $lang_path ] && mkdir -p $lang_path
-
 [ ! -f $sysinfo_file ] && update_caminfo
 include $sysinfo_file
 
