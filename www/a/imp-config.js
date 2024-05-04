@@ -1,5 +1,17 @@
 function callImp(command, value) {
-	if (["flip", "mirror"].includes(command)) {
+	if(command.startsWith("osd_")) {
+		let i=command.split('_')[2];
+		let a=command.split('_')[1];
+		let g=document.querySelector('.group_osd[data-idx="'+i+'"]')
+		let c=g.getAttribute("data-conf").split(" ");
+		if(a == 'fgAlpha') c[1] = value
+		if(a == 'show') c[2] = value
+		if(a == 'posx') c[3] = value
+		if(a == 'posy') c[4] = value
+		g.setAttribute('data-conf', c.join(' '));
+		value = g.getAttribute("data-conf");
+		command = 'setosd';
+	} else if (["flip", "mirror"].includes(command)) {
 		command = "flip"
 		value = 0
 		if (document.querySelector('#flip').checked) value = (1 << 1)

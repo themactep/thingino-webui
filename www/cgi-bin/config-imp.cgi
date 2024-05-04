@@ -37,6 +37,12 @@ for i in $commands; do
 	eval "$i=\"$(/usr/sbin/imp-control $i)\""
 done
 
+# reading actual osd values from implib
+osd="0 1 2 3"
+for i in $osd; do
+	eval "osd_$i=\"$(/usr/sbin/imp-control getosd $i)\""
+done
+
 # read values from temp config file
 # if grep -q "^$i\s" $imp_config_temp_file; then
 #	eval "$i=\"$(sed -n "/^$i\s/p" $imp_config_temp_file | cut -d" " -f2-)\""
@@ -69,7 +75,6 @@ check_mirror() {
 }
 %>
 <%in p/header.cgi %>
-
 <div class="row row-cols-4 g-4">
 <div class="col">
 <h3>Video Output</h3>
@@ -153,17 +158,13 @@ check_mirror() {
 </div>
 <div class="col">
 <h3>OSD</h3>
-<% field_range "setosdalpha" "Opacity" "0,255" %>
-<div class="row">
-<div class="col">
-<% field_number "setosdpos_x" "X-position" %>
-</div>
-<div class="col">
-<% field_number "setosdpos_y" "Y-position" %>
-</div>
-</div>
+<% group_osd "Date & Time" 0 %>
+<% group_osd "Title" 1 %>
+<% group_osd "Uptime" 2 %>
+<% group_osd "Logo" 3 %>
 <% field_text "frontcrop" "Front Crop" %>
 </div>
+
 </div>
 
 <div id="savechanges" class="alert alert-warning mb-3 d-none">
