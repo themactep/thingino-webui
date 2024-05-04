@@ -118,6 +118,15 @@ case "$cmd" in
 		/usr/sbin/ircut $val
 		ok_json "{\"ircut\":\"${val}\"}"
 		;;
+	setosd)
+		# save to temp config
+		handle=`echo "$val" | cut -d" " -f1`
+		sed -i "/^$cmd $handle/d" /tmp/imp.conf
+		echo "$cmd $val" >> /tmp/imp.conf
+		command="/usr/sbin/imp-control $cmd $val"
+		result=$($command)
+		ok_json "{\"command\":\"${command}\",\"result\":\"${result}\"}"	
+		;;
 	*)
 		# save to temp config
 		sed -i "/^$cmd/d" /tmp/imp.conf

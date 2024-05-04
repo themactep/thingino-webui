@@ -375,6 +375,43 @@ field_textedit() {
 	echo "</p>"
 }
 
+# field_osd "name" "file" "label"
+group_osd() {
+	#$1 #title
+	#$2 #index (handle)
+	[ -z "$l" ] && l="$(t_label "$1")"
+	[ -z "$l" ] && l="<span class=\"bg-warning\">${1}</span>"
+	local c=$(t_value "osd_${2}")
+	local e=$(echo "${c}" | cut -d" " -f3)
+	local o=$(echo "${c}" | cut -d" " -f2)
+	local px=$(echo "${c}" | cut -d" " -f4)
+	local py=$(echo "${c}" | cut -d" " -f5)
+	echo "<div class=\"group_osd mb-3\" data-idx=\"${2}\" data-conf=\"${c}\">" \
+		 "<p class=\"range mb-1\" id=\"osd_${2}_wrap\">" \
+		 "	<label class=\"form-label\" for=\"osd_${2}\">" \
+		 "		${1}" \
+		 "	</label>" \
+		 "	<span class=\"input-group\">" \
+		 "		<label class=\"input-group-text\">" \
+		 "			<input type=\"checkbox\" class=\"form-control form-check-input\" id=\"osd_show_${2}\" name=\"osd_show_${2}\" title=\"Enabled\" $(checked_if ${e} 1)>" \
+		 "		</label>" \
+		 "		<input type=\"hidden\" id=\"osd_fgAlpha_${2}\" name=\"osd_fgAlpha_${2}\" value>" \
+		 "		<input type=\"range\" class=\"form-control form-range\" id=\"osd_fgAlpha_${2}-range\" value=\"${o}\" min=\"0\" max=\"255\" step=\"\" title=\"Opacity\">" \
+		 "		<span class=\"input-group-text show-value\" id=\"osd_fgAlpha_${2}-show\">${o}</span>" \
+		 "	</span>" \
+		 "</p>" \
+		 "<p class=\"number mb-1\">" \
+		 "	<span class=\"input-group\">" \
+		 " 		<span class=\"input-group-text show-value\" style=\"min-width: 4.6rem;\">Offset</span>" \
+		 "		<span class=\"input-group-text show-value\">x</span>" \
+		 "		<input type=\"number\" id=\"osd_posx_${2}\" name=\"osd_posx_${2}\" class=\"form-control text-end\" value=\"${px}\" min=\"\" max=\"\" step=\"\" autocomplete=\"off\">" \
+		 "		<span class=\"input-group-text show-value\">y</span>" \
+		 "		<input type=\"number\" id=\"osd_posy_${2}\" name=\"osd_posy_${2}\" class=\"form-control text-end\" value=\"${py}\" min=\"\" max=\"\" step=\"\" autocomplete=\"off\">" \
+		 "	</span>" \
+		 "</p></div>"	
+}
+
+
 alert_append() {
 	echo "$1:$2" >>"$alert_file"
 }
